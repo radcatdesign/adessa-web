@@ -52,7 +52,7 @@
     .mia-video .char { display: inline-block; }
     .video-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 85px; border-radius: 4px; overflow: hidden; z-index: 5; }
     .video-container::after { content: ""; position: absolute; inset: 0; background: rgb(34 29 23 / var(--shade, 0)); }
-    .video-container video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 100vh; object-fit: cover; }
+    .video-container video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 100lvh; min-height: 100vh; object-fit: cover; }
     .no-anim .video-container { width: 100%; height: 100%; --shade: .3; }
     .no-anim .mia-video .text-wrapper { color: var(--cream); }
     @media (max-width: 768px) {
@@ -437,7 +437,7 @@
   function videoReveal() {
     gsap.set('.video-container', { width: '0px', height: '0px' });
     gsap.timeline({ scrollTrigger: { trigger: '.animation-container', start: 'top top', end: '+=180%', pin: true, scrub: 1 } })
-      .to('.video-container', { width: '100vw', height: '100svh', borderRadius: '0px', duration: 1, ease: 'power2.inOut' }, 0.5)
+      .to('.video-container', { width: '100%', height: '100%', borderRadius: '0px', duration: 1, ease: 'power2.inOut' }, 0.5)
       .to('.mia-video .text-wrapper', { color: '#fffaf0', textShadow: '0 1px 24px rgba(34,29,23,0.45)', duration: 0.5, ease: 'power1.inOut' }, 0.65)
       .to('.video-container', { '--shade': 0.3, duration: 0.6, ease: 'none' }, 0.7)
       .to({}, { duration: 0.3 });
