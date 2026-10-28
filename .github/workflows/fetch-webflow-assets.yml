@@ -1,0 +1,26 @@
+# One-time job: copies the last Webflow-hosted files into the repo, then deletes itself.
+name: Fetch Webflow assets
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/fetch-webflow-assets.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download
+        run: |
+          set -e
+          curl -fsSL -o videos/Adessa-home.webm "https://s3.amazonaws.com/webflow-prod-assets/69b741bfa24ee9adba91b98a/6a4bbc289eca813857d0dfb7_Adessa-home.webm"
+          curl -fsSL -o images/placeholder.svg "https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg"
+          ls -la videos/Adessa-home.webm images/placeholder.svg
+      - name: Commit and remove this workflow
+        run: |
+          git rm -q .github/workflows/fetch-webflow-assets.yml
+          git add videos/Adessa-home.webm images/placeholder.svg
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Add homepage video and placeholder from Webflow hosting"
+          git push
