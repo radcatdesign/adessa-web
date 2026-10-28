@@ -37,6 +37,33 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/miami-showroom",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/miami-showroom.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/documents/Adessa-MIA-Showroom-Investment-Brief.pdf",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }
