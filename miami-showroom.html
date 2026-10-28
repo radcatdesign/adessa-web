@@ -59,11 +59,37 @@
       .mia-video .split-text { font-size: 30px; }
     }
     @media (max-width: 767px) {
-      .mia-hero__header { justify-content: flex-start; padding: 50px 20px 0; }
-      .mia-hero__top-btn { top: 44px; }
+      .mia-hero__header { justify-content: center; padding: 50px 20px 0; }
+      .mia-hero__top-btn { display: none; }
       .mia-hero__content { justify-content: flex-end; bottom: 8svh; gap: 20px; }
       .mia-hero__block { padding: 0 10px; }
     }
+    /* Mobile chapter nav */
+    .mia-chap { display: none; }
+    @media (max-width: 991px) {
+      .mia-chap { display: block; position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 1000; font-family: var(--font-sans); }
+      .mia-chap__btn { width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(74,65,50,.14); background: rgba(255,250,240,.82); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(34,29,23,.18); display: grid; place-items: center; cursor: pointer; padding: 0; color: var(--charcoal); opacity: 0; transform: translateY(16px) scale(.9); pointer-events: none; transition: opacity .4s var(--ease), transform .4s var(--ease); }
+      .mia-chap.is-shown .mia-chap__btn, .mia-chap.is-open .mia-chap__btn { opacity: 1; transform: none; pointer-events: auto; }
+      .mia-chap__icon { position: relative; width: 20px; height: 12px; display: block; }
+      .mia-chap__icon i { position: absolute; left: 0; height: 1.5px; border-radius: 2px; background: currentColor; transition: transform .35s var(--ease), opacity .25s, width .35s var(--ease), top .35s var(--ease); }
+      .mia-chap__icon i:nth-child(1) { top: 0; width: 20px; }
+      .mia-chap__icon i:nth-child(2) { top: 5.25px; width: 14px; }
+      .mia-chap__icon i:nth-child(3) { top: 10.5px; width: 20px; }
+      .mia-chap.is-open .mia-chap__icon i:nth-child(1) { top: 5.25px; transform: rotate(45deg); }
+      .mia-chap.is-open .mia-chap__icon i:nth-child(2) { opacity: 0; }
+      .mia-chap.is-open .mia-chap__icon i:nth-child(3) { top: 5.25px; transform: rotate(-45deg); }
+      .mia-chap__panel { position: absolute; right: 0; bottom: 70px; width: min(300px, calc(100vw - 40px)); padding: var(--space-24); border-radius: var(--radius-xl); background: rgba(255,250,240,.9); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border: 1px solid rgba(74,65,50,.12); box-shadow: 0 20px 50px rgba(34,29,23,.22); transform-origin: 100% 100%; transition: opacity .3s var(--ease), transform .3s var(--ease); }
+      .mia-chap__panel[hidden] { display: block; opacity: 0; transform: translateY(10px) scale(.96); pointer-events: none; visibility: hidden; }
+      .mia-chap__title { color: var(--taupe); margin: 0 0 var(--space-12); }
+      .mia-chap ol { list-style: none; margin: 0; padding: 0; }
+      .mia-chap li a { display: flex; align-items: baseline; gap: var(--space-16); padding: 12px 0; color: var(--charcoal); text-decoration: none; border-top: 1px solid rgba(74,65,50,.1); }
+      .mia-chap li:first-child a { border-top: 0; }
+      .mia-chap li a .ds-label-s { color: var(--taupe); width: 18px; }
+      .mia-chap__t { font-family: var(--font-serif); font-weight: 300; font-size: 19px; line-height: 1.2; }
+      .mia-chap li a.is-active .mia-chap__t { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+      .mia-chap li a.is-active .ds-label-s { color: var(--charcoal); }
+    }
+
     .mia-eyebrow { display: flex; align-items: center; gap: var(--space-12); color: var(--color-text-secondary); }
     .mia-eyebrow span:first-child { color: var(--color-text-muted); }
     .mia-head { display: flex; flex-direction: column; gap: var(--space-24); max-width: 880px; }
@@ -129,6 +155,43 @@
     .mia-targets .mia-stat { align-items: center; }
     .mia-wide { border-radius: var(--radius-xl); overflow: hidden; aspect-ratio: 21 / 9; }
     .mia-wide img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Milestones timeline */
+    .mia-milestones { background: var(--color-surface-subtle); }
+    .mia-tl-wrap { position: relative; }
+    .mia-tl { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); height: 400px; }
+    .mia-tl__line { position: absolute; left: 5%; right: 5%; top: 200px; height: 1px; background: var(--color-border-strong); transform-origin: 0 50%; }
+    .mia-tl__item { position: relative; }
+    .mia-tl__dot { position: absolute; left: 50%; top: 200px; width: 13px; height: 13px; margin: -6px 0 0 -6.5px; border-radius: 50%; background: var(--color-text-primary); box-shadow: 0 0 0 5px var(--color-surface-subtle); }
+    .mia-tl__card { position: absolute; left: 50%; width: 210px; margin-left: -105px; text-align: center; display: flex; flex-direction: column; gap: var(--space-12); }
+    .mia-tl__item--top .mia-tl__card { bottom: 232px; }
+    .mia-tl__item--bottom .mia-tl__card { top: 232px; }
+    .mia-tl__card .ds-body-s { color: var(--color-text-secondary); }
+    .mia-tl__item:first-child .mia-tl__card { left: 0; margin-left: -20px; text-align: left; }
+    .mia-tl__item:last-child .mia-tl__card { left: auto; right: -20px; margin-left: 0; text-align: right; }
+    .mia-strip { display: grid; grid-template-columns: .65fr .75fr 1.25fr 1.25fr 1.25fr; gap: var(--space-16); }
+    .mia-strip__item { margin: 0; display: flex; flex-direction: column; gap: var(--space-12); }
+    .mia-strip .mia-mask { height: 240px; overflow: hidden; border-radius: var(--radius-lg); background: var(--color-surface-muted); }
+    .mia-strip img { width: 100%; height: 100%; object-fit: cover; }
+    .mia-strip figcaption { color: var(--color-text-secondary); }
+    @media (max-width: 1100px) {
+      .mia-tl { display: block; height: auto; padding-left: var(--space-40); }
+      .mia-tl__line { left: 6px; right: auto; top: 8px; bottom: 8px; width: 1px; height: auto; transform-origin: 50% 0; }
+      .mia-tl__item { padding-bottom: var(--space-32); }
+      .mia-tl__item:last-child { padding-bottom: 0; }
+      .mia-tl__dot { left: calc(var(--space-40) * -1 + 6.5px); top: 8px; }
+      .mia-tl__card, .mia-tl__item:first-child .mia-tl__card, .mia-tl__item:last-child .mia-tl__card { position: static; width: auto; margin: 0; text-align: left; gap: var(--space-8); }
+      .mia-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .mia-strip__item { grid-column: span 2; }
+      .mia-strip__item:nth-child(n+4) { grid-column: span 3; }
+      .mia-strip .mia-mask { height: 200px; }
+    }
+    @media (max-width: 600px) {
+      .mia-strip { grid-template-columns: 1fr 1fr; }
+      .mia-strip__item, .mia-strip__item:nth-child(n+4) { grid-column: span 1; }
+      .mia-strip__item:last-child { grid-column: span 2; }
+      .mia-strip .mia-mask { height: 180px; }
+    }
 
     .mia-road { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-24); position: relative; }
     .mia-phase { border: var(--stroke-hairline) solid var(--color-border-default); border-radius: var(--radius-xl); padding: var(--space-40) var(--space-32); display: flex; flex-direction: column; gap: var(--space-8); text-align: center; align-items: center; }
@@ -329,10 +392,42 @@
   </section>
 
   <!-- 05 -->
+  <section class="ds-section mia-milestones" id="milestones">
+    <div class="ds-container ds-stack" style="--stack-gap: var(--space-80)">
+      <div class="mia-head mia-head--center">
+        <p class="mia-eyebrow ds-label-s"><span>05</span><span>Adessa from idea to now</span></p>
+        <h2 class="ds-h1" data-text-anim>In 365 days, we’ve gone from “woah, TMS” to team, public proof of concept, IP and capital.</h2>
+      </div>
+      <div class="mia-tl-wrap">
+        <div class="mia-tl__line" aria-hidden="true"></div>
+        <ol class="mia-tl">
+          <li class="mia-tl__item mia-tl__item--bottom"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Oct 2025</p><p class="ds-body-s">Original idea: fancy psychiatry meets hospitality.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--top"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Dec 2025</p><p class="ds-body-s">Tom quits his job. Dan, Tom and Brendan name it Adessa.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--bottom"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Feb 2026</p><p class="ds-body-s">First version of the business model.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--top"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Mar 2026</p><p class="ds-body-s">Adessa comes out of stealth.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--bottom"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Apr 2026</p><p class="ds-body-s">Miami popup announced. 100 signups on day one.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--top"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">May 2026</p><p class="ds-body-s">V1 AQ built as an assessment platform.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--bottom"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Jun 2026</p><p class="ds-body-s">The Miami popup.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--top"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Aug 2026</p><p class="ds-body-s">Miami showroom proposal accepted.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--bottom"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Sep 2026</p><p class="ds-body-s">$1M+ syndication, London.</p></div></li>
+          <li class="mia-tl__item mia-tl__item--top"><span class="mia-tl__dot"></span><div class="mia-tl__card"><p class="ds-label-m">Oct 2026</p><p class="ds-body-s">Showroom LOI. V2 AQ demo in Miami.</p></div></li>
+        </ol>
+      </div>
+      <div class="mia-strip">
+          <figure class="mia-strip__item"><div class="mia-mask"><img src="images/mia/phone.webp" alt="A guest at the Miami popup" loading="lazy" width="900" height="1350"></div><figcaption class="ds-label-s">Apr 2026 · Popup announced</figcaption></figure>
+          <figure class="mia-strip__item"><div class="mia-mask"><img src="images/mia/aq-report.webp" alt="The first AQ client report" loading="lazy" width="1084" height="1404"></div><figcaption class="ds-label-s">May 2026 · V1 AQ</figcaption></figure>
+          <figure class="mia-strip__item"><div class="mia-mask"><img src="images/mia/lounge.webp" alt="Guests at the Miami popup" loading="lazy" width="1600" height="1067"></div><figcaption class="ds-label-s">Jun 2026 · Miami popup</figcaption></figure>
+          <figure class="mia-strip__item"><div class="mia-mask"><img src="images/mia/aq-report-desk.webp" alt="A printed AQ report" loading="lazy" width="1536" height="1024"></div><figcaption class="ds-label-s">Oct 2026 · V2 AQ</figcaption></figure>
+          <figure class="mia-strip__item"><div class="mia-mask"><img src="images/mia/showroom.webp" alt="The Miami showroom rendering" loading="lazy" width="1800" height="1200"></div><figcaption class="ds-label-s">Oct 2026 · Showroom LOI</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
   <section class="ds-section" id="invest">
     <div class="ds-container ds-stack" style="--stack-gap: var(--space-80)">
       <div class="mia-head mia-head--center">
-        <p class="mia-eyebrow ds-label-s"><span>05</span><span>The opportunity ahead</span></p>
+        <p class="mia-eyebrow ds-label-s"><span>06</span><span>The opportunity ahead</span></p>
         <h2 class="ds-h1" data-text-anim>Help us build the future of cognitive wellbeing.</h2>
         <p class="ds-body-l ds-text-secondary">One Miami showroom creates a validated platform, then launches a capital-light path to global scale.</p>
       </div>
@@ -374,7 +469,7 @@
       <div class="ds-footer__cols">
         <nav class="ds-footer__col" aria-label="Brief">
           <p class="ds-label-s ds-text-muted">Brief</p>
-          <a href="#opportunity">Opportunity</a><a href="#aq">AQ</a><a href="#validation">Validation</a><a href="#showroom">Showroom</a>
+          <a href="#opportunity">Opportunity</a><a href="#aq">AQ</a><a href="#validation">Validation</a><a href="#showroom">Showroom</a><a href="#milestones">Milestones</a>
         </nav>
         <nav class="ds-footer__col" aria-label="Contact">
           <p class="ds-label-s ds-text-muted">Contact</p>
@@ -393,6 +488,23 @@
 
 </div>
 </div>
+
+<nav class="mia-chap" aria-label="Chapters">
+  <div class="mia-chap__panel" id="mia-chap-panel" hidden>
+    <p class="ds-label-s mia-chap__title">Chapters</p>
+    <ol>
+      <li><a href="#opportunity" data-chapter="opportunity"><span class="ds-label-s">01</span><span class="mia-chap__t">The opportunity</span></a></li>
+      <li><a href="#aq" data-chapter="aq"><span class="ds-label-s">02</span><span class="mia-chap__t">AQ</span></a></li>
+      <li><a href="#validation" data-chapter="validation"><span class="ds-label-s">03</span><span class="mia-chap__t">Validation</span></a></li>
+      <li><a href="#showroom" data-chapter="showroom"><span class="ds-label-s">04</span><span class="mia-chap__t">Miami showroom</span></a></li>
+      <li><a href="#milestones" data-chapter="milestones"><span class="ds-label-s">05</span><span class="mia-chap__t">Idea to now</span></a></li>
+      <li><a href="#invest" data-chapter="invest"><span class="ds-label-s">06</span><span class="mia-chap__t">The opportunity ahead</span></a></li>
+    </ol>
+  </div>
+  <button class="mia-chap__btn" type="button" aria-expanded="false" aria-controls="mia-chap-panel" aria-label="Open chapters">
+    <span class="mia-chap__icon" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+</nav>
 
 <script src="js/vendor/gsap.min.js"></script>
 <script src="js/vendor/SplitText.min.js"></script>
@@ -454,13 +566,13 @@
     var sel = [
       'main .mia-eyebrow', 'main p:not([data-text-anim]):not(.mia-stat__v)', 'main li', 'main h3',
       'main .mia-card', 'main .mia-phase', 'main .mia-questions > div', 'main .mia-vals > div', 'main .mia-panel',
-      'main .mia-partner img', 'main .ds-chip', 'main .ds-btn', 'main .mia-targets', 'main .mia-cta',
+      'main .mia-partner img', 'main figcaption', 'main .ds-chip', 'main .ds-btn', 'main .mia-targets', 'main .mia-cta',
       'footer .ds-nav__logo', 'footer p', 'footer a', 'footer .ds-footer__bottom > *'
     ].join(',');
     var all = Array.prototype.slice.call(document.querySelectorAll(sel));
     var set = new Set(all);
     var targets = all.filter(function (el) {
-      if (el.closest('[data-text-anim]')) return false;
+      if (el.closest('[data-text-anim]') || el.closest('.mia-tl-wrap')) return false;
       for (var p = el.parentElement; p; p = p.parentElement) { if (set.has(p)) return false; }
       return true;
     });
@@ -479,7 +591,7 @@
 
   // Glide to an in-page section (Read the brief, nav anchors)
   function smoothAnchors() {
-    document.querySelectorAll('a[data-scroll-to], a[href^="#"]').forEach(function (a) {
+    document.querySelectorAll('a[data-scroll-to], a[href^="#"]:not([data-chapter])').forEach(function (a) {
       var id = a.getAttribute('href'); if (!id || id.length < 2) return;
       a.addEventListener('click', function (e) {
         var target = document.querySelector(id); if (!target) return;
@@ -497,16 +609,32 @@
 
   // Photos open like a curtain from the bottom while the image settles from a slight zoom
   function maskReveals() {
-    document.querySelectorAll('.mia-collage .mia-mask, .mia-plan, .mia-wide').forEach(function (frame) {
+    document.querySelectorAll('.mia-collage .mia-mask, .mia-strip .mia-mask, .mia-plan, .mia-wide').forEach(function (frame) {
       var img = frame.querySelector('img'); if (!img) return;
-      var siblings = Array.prototype.slice.call(frame.parentElement.children).filter(function (el) { return el.matches('.mia-mask'); });
-      var i = Math.max(0, siblings.indexOf(frame));
+      var group = frame.closest('.mia-collage, .mia-strip');
+      var i = group ? Array.prototype.indexOf.call(group.querySelectorAll('.mia-mask'), frame) : 0;
+      if (group && group.matches('.mia-strip') && window.innerWidth > 1100) i = i * 0.6;
       gsap.set(frame, { clipPath: 'inset(100% 0% 0% 0%)' });
       gsap.set(img, { scale: 1.25, transformOrigin: '50% 60%' });
       gsap.timeline({ scrollTrigger: { trigger: frame, start: 'top bottom-=60', once: true }, delay: i * 0.18 })
         .to(frame, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'power4.inOut' }, 0)
         .to(img, { scale: 1, duration: 2.4, ease: 'power3.out' }, 0.1);
     });
+  }
+
+  // Timeline: the line draws, dots pop in along it, milestones rise in order
+  function timeline() {
+    var wrap = document.querySelector('.mia-tl-wrap'); if (!wrap) return;
+    var vertical = window.innerWidth <= 1100;
+    var line = wrap.querySelector('.mia-tl__line'), dots = wrap.querySelectorAll('.mia-tl__dot'), cards = wrap.querySelectorAll('.mia-tl__card');
+    gsap.set(line, vertical ? { scaleY: 0 } : { scaleX: 0 });
+    gsap.set(dots, { scale: 0 });
+    gsap.set(cards, { opacity: 0, y: function (i, el) { return el.parentElement.classList.contains('mia-tl__item--top') && !vertical ? -16 : 16; } });
+    var step = 2.4 / dots.length;
+    gsap.timeline({ scrollTrigger: { trigger: wrap, start: 'top 75%', once: true } })
+      .to(line, vertical ? { scaleY: 1, duration: 2.4, ease: 'power1.inOut' } : { scaleX: 1, duration: 2.4, ease: 'power1.inOut' }, 0)
+      .to(dots, { scale: 1, duration: 0.5, ease: 'back.out(2.2)', stagger: step }, 0.1)
+      .to(cards, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: step }, 0.2);
   }
 
   // Numbers drift up from about 85% of their value and settle softly as they fade in
@@ -537,8 +665,41 @@
     });
   }
 
-  function start() { textAnim(); showDelay(); videoReveal(); countUp(); revealAll(); maskReveals(); smoothAnchors(); ScrollTrigger.refresh(); }
+  function start() { textAnim(); showDelay(); videoReveal(); countUp(); revealAll(); maskReveals(); timeline(); smoothAnchors(); ScrollTrigger.refresh(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+<script>
+(function () {
+  var nav = document.querySelector('.mia-chap'); if (!nav) return;
+  var btn = nav.querySelector('.mia-chap__btn'), panel = nav.querySelector('.mia-chap__panel');
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a[data-chapter]'));
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close chapters' : 'Open chapters');
+    if (open) { panel.hidden = false; } else { panel.hidden = true; }
+  }
+  btn.addEventListener('click', function () { setOpen(!nav.classList.contains('is-open')); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('is-open')) { setOpen(false); btn.focus(); } });
+  document.addEventListener('click', function (e) { if (nav.classList.contains('is-open') && !nav.contains(e.target)) setOpen(false); });
+  links.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var target = document.getElementById(a.dataset.chapter); if (!target) return;
+      e.preventDefault(); e.stopPropagation(); setOpen(false);
+      var sm = window.ScrollSmoother && ScrollSmoother.get();
+      if (sm) sm.scrollTo(target, true, 'top top');
+      else window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: reduce ? 'auto' : 'smooth' });
+      history.replaceState(null, '', '#' + a.dataset.chapter);
+    });
+  });
+  if (!('IntersectionObserver' in window)) { nav.classList.add('is-shown'); return; }
+  var hero = document.querySelector('.mia-hero');
+  new IntersectionObserver(function (es) { nav.classList.toggle('is-shown', !es[0].isIntersecting); }, { threshold: 0.15 }).observe(hero);
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (en) { if (en.isIntersecting) links.forEach(function (a) { a.classList.toggle('is-active', a.dataset.chapter === en.target.id); }); });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  links.forEach(function (a) { var t = document.getElementById(a.dataset.chapter); if (t) io.observe(t); });
 })();
 </script>
 </body>
