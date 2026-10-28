@@ -92,6 +92,8 @@
     .mia-steps li { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--space-24); align-items: baseline; padding: var(--space-24) 0; border-top: var(--stroke-hairline) solid var(--color-border-default); }
     .mia-steps li:last-child { border-bottom: var(--stroke-hairline) solid var(--color-border-default); }
     .mia-steps li p { color: var(--color-text-secondary); }
+    .mia-photo { margin: 0; border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.35); max-width: 560px; justify-self: center; width: 100%; }
+    .mia-photo img { width: 100%; height: auto; }
     .mia-papers { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
     .mia-paper { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); overflow: hidden; }
     .mia-paper img { width: 100%; height: auto; }
@@ -246,10 +248,7 @@
           <li><span class="ds-label-m">Reassess</span><p class="ds-body-s">Repeat measurement to examine change over time and refine programming.</p></li>
         </ol>
       </div>
-      <div class="mia-papers" data-show-delay="100" aria-label="Sample AQ client report">
-        <figure class="mia-paper"><img src="images/mia/aq-report.webp" alt="AQ client report with the ring chart and score E.81" loading="lazy" width="1084" height="1404"></figure>
-        <figure class="mia-paper"><img src="images/mia/aq-activation.webp" alt="Recommended Activation session from the AQ report" loading="lazy" width="1082" height="1400"></figure>
-      </div>
+      <figure class="mia-photo" data-show-delay="100"><img src="images/mia/aq-binder.webp" alt="A printed AQ report in a leather binder: A.82, greatest potential in working memory" loading="lazy" width="800" height="1067"></figure>
     </div>
   </section>
 
