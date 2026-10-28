@@ -10,5 +10,5 @@ Static code export of the Adessa Webflow site (adessamind.com), served by Vercel
 ## Notes
 - `vercel.json` turns on clean URLs, so `/miami` serves `miami.html` and `/miami.html` redirects to `/miami`.
 - `404.html` is Vercel's not-found page. `401.html` is Webflow's password page and does nothing here.
-- The waitlist popup forms are native Webflow forms and do not submit outside Webflow hosting. The HubSpot embeds (`hs-form-frame`) work as-is.
+- The waitlist and request-access popups use HubSpot embeds (`hs-form-frame`), which work as-is. Each popup also holds a native Webflow form inside a hidden `.hide` wrapper. It would not submit outside Webflow hosting, so keep it hidden.
 - Webflow CDN still hosts GSAP and the OG image URLs.
