@@ -85,6 +85,8 @@
       .mia-chap__panel { position: absolute; right: 0; bottom: 70px; width: min(300px, calc(100vw - 40px)); padding: var(--space-24); border-radius: var(--radius-xl); background: transparent; isolation: isolate; border: 1px solid rgba(74,65,50,.12); box-shadow: 0 20px 50px rgba(34,29,23,.22); transform-origin: 100% 100%; transition: opacity .3s var(--ease), transform .3s var(--ease); }
       .mia-chap__panel[hidden] { display: block; opacity: 0; transform: translateY(10px) scale(.96); pointer-events: none; visibility: hidden; }
       .mia-chap__title { color: var(--taupe); margin: 0 0 var(--space-12); }
+      .mia-chap__cta { width: 100%; margin-top: var(--space-16); background: var(--charcoal); color: var(--ivory); border-color: var(--charcoal); }
+      .mia-chap__cta:hover { background: var(--stone); border-color: var(--stone); }
       .mia-chap ol { list-style: none; margin: 0; padding: 0; }
       .mia-chap li a { display: flex; align-items: baseline; gap: var(--space-16); padding: 12px 0; color: var(--charcoal); text-decoration: none; border-top: 1px solid rgba(74,65,50,.1); }
       .mia-chap li:first-child a { border-top: 0; }
@@ -511,6 +513,7 @@
       <li><a href="#milestones" data-chapter="milestones"><span class="ds-label-s">05</span><span class="mia-chap__t">Idea to now</span></a></li>
       <li><a href="#invest" data-chapter="invest"><span class="ds-label-s">06</span><span class="mia-chap__t">The opportunity ahead</span></a></li>
     </ol>
+    <a class="ds-btn mia-chap__cta" href="mailto:tom@adessamind.com?subject=Adessa%20Miami%20showroom%20early%20close">Talk to us</a>
   </div>
   <button class="mia-chap__btn" type="button" aria-expanded="false" aria-controls="mia-chap-panel" aria-label="Open chapters">
     <span class="mia-chap__icon" aria-hidden="true"><i></i><i></i><i></i></span>
