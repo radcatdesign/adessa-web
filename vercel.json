@@ -12,7 +12,25 @@
       ]
     },
     {
-      "source": "/(design-system|templates/(.*))",
+      "source": "/design-system",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/design-system.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/templates/:path*",
       "headers": [
         {
           "key": "X-Robots-Tag",
