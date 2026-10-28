@@ -208,6 +208,8 @@
     .mia-cta__terms { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-12); }
     .mia-cta__terms .ds-chip { color: var(--white); border-color: rgba(255,255,255,.7); }
     .mia-cta .ds-row { justify-content: center; margin-top: var(--space-16); }
+    .mia-btn-white { background: var(--white); color: var(--charcoal); border-color: var(--white); }
+    .mia-btn-white:hover { background: var(--ivory); border-color: var(--ivory); }
     .mia-legal { color: var(--color-text-muted); max-width: 760px; margin: 0 auto; text-align: center; }
 
     @media (max-width: 991px) {
@@ -437,7 +439,7 @@
         <div class="mia-phase"><p class="ds-label-s ds-text-secondary">2028</p><h3 class="ds-h2">Scale</h3><p class="ds-label-m" style="color:var(--color-text-primary)">Global</p><p class="ds-body-s">Repeatable Mind Spa model.</p></div>
       </div>
       <div class="mia-cta">
-        <video class="mia-cta__video" autoplay muted loop playsinline preload="metadata" poster="images/mia/cta-poster.jpg" aria-hidden="true" oncanplay="this.classList.add('is-ready')">
+        <video class="mia-cta__video" autoplay muted loop playsinline preload="metadata" poster="images/mia/cta-poster.jpg" aria-hidden="true" onloadedmetadata="this.defaultPlaybackRate=0.5;this.playbackRate=0.5" oncanplay="this.playbackRate=0.5;this.classList.add('is-ready')">
           <source src="videos/adessa-texture-loop.webm" type="video/webm">
           <source src="videos/adessa-texture-loop.mp4" type="video/mp4">
         </video>
@@ -450,7 +452,7 @@
           <span class="ds-chip">$10M post-money SAFE cap</span>
         </div>
         <div class="ds-row">
-          <a class="ds-btn ds-btn--glass" href="mailto:tom@adessamind.com?subject=Adessa%20Miami%20showroom%20early%20close">Talk to us <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+          <a class="ds-btn mia-btn-white" href="mailto:tom@adessamind.com?subject=Adessa%20Miami%20showroom%20early%20close">Talk to us</a>
           <a class="ds-btn ds-btn--glass" href="documents/Adessa-MIA-Showroom-Investment-Brief.pdf" target="_blank" rel="noopener">Download the brief</a>
         </div>
       </div>
