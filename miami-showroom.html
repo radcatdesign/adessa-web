@@ -190,7 +190,7 @@
       <h1 class="mia-hero__title" data-text-anim>AQ validation<br>and go&#8209;to&#8209;market.</h1>
       <p class="mia-hero__sub" data-text-anim data-text-anim-delay="0.8">$250K early close | November 2026</p>
       <div class="mia-hero__btns">
-        <a class="ds-btn ds-btn--glass" data-show-delay="1800" href="#opportunity">Read the brief <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+        <a class="ds-btn ds-btn--glass" data-show-delay="1800" data-scroll-to href="#opportunity">Read the brief</a>
       </div>
     </div>
     <div class="mia-hero__scroll" data-show-delay="1800"><div class="mia-scroll-line"></div></div>
@@ -471,6 +471,24 @@
     });
   }
 
+  // Glide to an in-page section (Read the brief, nav anchors)
+  function smoothAnchors() {
+    document.querySelectorAll('a[data-scroll-to], a[href^="#"]').forEach(function (a) {
+      var id = a.getAttribute('href'); if (!id || id.length < 2) return;
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(id); if (!target) return;
+        e.preventDefault();
+        var sm = ScrollSmoother.get();
+        if (sm) { sm.scrollTo(target, true, 'top top'); }
+        else {
+          var o = { y: window.scrollY }, to = target.getBoundingClientRect().top + window.scrollY;
+          gsap.to(o, { y: to, duration: 1.4, ease: 'power3.inOut', onUpdate: function () { window.scrollTo(0, o.y); } });
+        }
+        history.replaceState(null, '', id);
+      });
+    });
+  }
+
   // Numbers drift up from about 85% of their value and settle softly as they fade in
   function countUp() {
     var io = new IntersectionObserver(function (entries) {
@@ -499,7 +517,7 @@
     });
   }
 
-  function start() { textAnim(); showDelay(); videoReveal(); countUp(); revealAll(); ScrollTrigger.refresh(); }
+  function start() { textAnim(); showDelay(); videoReveal(); countUp(); revealAll(); smoothAnchors(); ScrollTrigger.refresh(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
 </script>
