@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Adessa Design System</title>
+  <meta name="description" content="Internal reference for the Adessa design system: tokens, type, components and page patterns.">
+  <link href="images/favicon.jpg" rel="shortcut icon" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="css/adessa-ds.css" rel="stylesheet">
+  <style>
+  .doc { display:grid; grid-template-columns: 240px minmax(0,1fr); min-height:100vh; }
+  .doc-side { position:sticky; top:0; height:100vh; padding:var(--space-32) var(--space-24); border-right:1px solid var(--color-border-default); display:flex; flex-direction:column; gap:var(--space-40); background:var(--color-surface-page); z-index:5; }
+  .doc-side .ds-nav__logo { width:110px; color:var(--color-text-primary); }
+  .doc-side ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--space-16); }
+  .doc-side a { color:var(--color-text-secondary); text-decoration:none; }
+  .doc-side a:hover, .doc-side a.is-active { color:var(--color-text-primary); }
+  .doc-side a.is-active::before { content:""; display:inline-block; width:16px; height:1px; background:currentColor; vertical-align:middle; margin-right:10px; }
+  .doc-side__foot { margin-top:auto; display:flex; flex-direction:column; gap:var(--space-16); align-items:flex-start; }
+  .doc-theme { display:inline-flex; padding:3px; border:1px solid var(--color-border-strong); border-radius:var(--radius-pill); }
+  .doc-theme button { border:0; background:transparent; color:var(--color-text-secondary); padding:8px 14px; border-radius:var(--radius-pill); cursor:pointer; }
+  .doc-theme button[aria-pressed="true"] { background:var(--color-action-primary-bg); color:var(--color-action-primary-text); }
+  .doc-main { min-width:0; }
+  .doc-sec { padding:var(--space-120) var(--space-80); border-bottom:1px solid var(--color-border-default); display:flex; flex-direction:column; gap:var(--space-64); scroll-margin-top:0; }
+  .doc-sec__head { display:flex; flex-direction:column; gap:var(--space-16); max-width:760px; }
+  .doc-cover { min-height:72vh; display:flex; flex-direction:column; justify-content:flex-end; gap:var(--space-24); padding:var(--space-80); color:var(--white); background:var(--espresso-900) url('images/ds/texture-strands-smoke.webp') center/cover; position:relative; isolation:isolate; }
+  .doc-cover::before { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(34,29,23,.05), rgba(34,29,23,.6)); }
+  .doc-cover .ds-nav__logo { width:min(360px, 70vw); color:var(--white); }
+  .doc-principles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-40); }
+  .doc-principles > div { border-top:1px solid var(--color-border-default); padding-top:var(--space-32); display:flex; flex-direction:column; gap:var(--space-12); }
+  .doc-swatches { display:grid; grid-template-columns:repeat(auto-fill, minmax(128px,1fr)); gap:var(--space-40) var(--space-24); }
+  .doc-swatch { all:unset; display:flex; flex-direction:column; gap:6px; cursor:pointer; }
+  .doc-swatch__chip { width:100%; aspect-ratio:1; border-radius:50%; border:1px solid var(--color-border-default); margin-bottom:6px; transition:transform var(--duration) var(--ease); }
+  .doc-swatch:hover .doc-swatch__chip { transform:scale(1.04); }
+  .doc-swatch:focus-visible { outline:2px solid var(--color-focus-ring); outline-offset:4px; border-radius:8px; }
+  .doc-sems { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-24); }
+  .doc-sem { border:1px solid var(--color-border-default); border-radius:var(--radius-lg); padding:var(--space-40); display:flex; flex-direction:column; gap:var(--space-24); }
+  .doc-sem ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--space-12); }
+  .doc-sem__row { display:grid; grid-template-columns:40px minmax(0,auto) 1fr; gap:var(--space-16); align-items:center; cursor:pointer; }
+  .doc-sem__row code { color:var(--color-text-primary); }
+  .doc-sem__chip { width:40px; height:24px; border-radius:var(--radius-pill); border:1px solid var(--color-border-default); display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-size:16px; }
+  .doc-sem__chip--text { border:0; }
+  .doc-sem__chip--stroke { border-width:2px; background:transparent; }
+  .doc-type { display:grid; grid-template-columns:260px minmax(0,1fr); gap:var(--space-40); align-items:center; padding:var(--space-24) 0; border-top:1px solid var(--color-border-default); }
+  .doc-type__meta { display:flex; flex-direction:column; gap:6px; }
+  .doc-type__meta code { cursor:pointer; }
+  .doc-spaces { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--space-12); }
+  .doc-space { display:grid; grid-template-columns:120px auto 1fr; gap:var(--space-24); align-items:center; cursor:pointer; }
+  .doc-space__bar { height:16px; border-radius:4px; background:var(--clay); display:block; }
+  .doc-radii { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:var(--space-40); }
+  .doc-radius { display:flex; flex-direction:column; gap:6px; cursor:pointer; }
+  .doc-radius__box { width:96px; height:96px; background:var(--color-surface-muted); display:block; margin-bottom:6px; }
+  .doc-images { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-24); }
+  .doc-images figure { display:flex; flex-direction:column; gap:var(--space-12); }
+  .doc-images img { border-radius:var(--radius-lg); aspect-ratio:8/5; object-fit:cover; width:100%; }
+  .doc-images a { color:var(--color-text-secondary); }
+  .doc-demo { display:flex; flex-direction:column; gap:var(--space-24); }
+  .doc-demo__head { display:flex; justify-content:space-between; align-items:flex-end; gap:var(--space-24); }
+  .doc-demo__head > div { display:flex; flex-direction:column; gap:6px; max-width:640px; }
+  .doc-demo__figma { font-family:var(--font-sans); font-size:12px; color:var(--color-text-muted); white-space:nowrap; }
+  .doc-demo__stage { border:1px solid var(--color-border-default); border-radius:var(--radius-lg); padding:var(--space-48); overflow:hidden; }
+  .doc-demo__stage--bare { padding:0; }
+  .doc-demo__stage--image { background:var(--espresso-900) url('images/ds/texture-strands-smoke-800.webp') center/cover; }
+  .doc-demo__stage .ds-hero { min-height:620px; }
+  .doc-code { position:relative; border:1px solid var(--color-border-default); border-radius:var(--radius-md); background:var(--color-surface-subtle); }
+  .doc-code summary { cursor:pointer; padding:var(--space-16) var(--space-24); color:var(--color-text-secondary); list-style:none; }
+  .doc-code summary::-webkit-details-marker { display:none; }
+  .doc-code summary::before { content:"+"; display:inline-block; width:16px; }
+  .doc-code[open] summary::before { content:"−"; }
+  .doc-code pre { margin:0; padding:0 var(--space-24) var(--space-24); overflow:auto; max-height:420px; }
+  .doc-code code, .doc pre code { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12.5px; line-height:1.6; color:var(--color-text-primary); }
+  .doc-copy { position:absolute; top:10px; right:12px; border:1px solid var(--color-border-strong); background:transparent; color:var(--color-text-secondary); border-radius:var(--radius-pill); padding:7px 12px; cursor:pointer; display:none; }
+  .doc-code[open] .doc-copy { display:block; }
+  .doc-usage { border:1px solid var(--color-border-default); border-radius:var(--radius-lg); background:var(--color-surface-subtle); padding:var(--space-32); overflow:auto; }
+  .doc-usage pre { margin:0; }
+  .doc-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-24); counter-reset:step; }
+  .doc-steps > div { border:1px solid var(--color-border-default); border-radius:var(--radius-lg); padding:var(--space-32); display:flex; flex-direction:column; gap:var(--space-12); counter-increment:step; }
+  .doc-steps > div::before { content:counter(step, decimal-leading-zero); font-family:var(--font-sans); font-size:10px; letter-spacing:.3em; color:var(--color-text-muted); }
+  .doc-toast { position:fixed; left:50%; bottom:24px; transform:translate(-50%, 20px); opacity:0; pointer-events:none; background:var(--color-action-primary-bg); color:var(--color-action-primary-text); padding:12px 20px; border-radius:var(--radius-pill); transition:opacity .2s var(--ease), transform .2s var(--ease); z-index:50; }
+  .doc-toast.is-on { opacity:1; transform:translate(-50%,0); }
+  .doc-mobile-bar { display:none; }
+  @media (max-width: 1100px) {
+    .doc { grid-template-columns:minmax(0,1fr); }
+    .doc-side { display:none; }
+    .doc-mobile-bar { display:flex; position:sticky; top:0; z-index:5; justify-content:space-between; align-items:center; padding:var(--space-16) var(--space-24); background:var(--color-surface-page); border-bottom:1px solid var(--color-border-default); }
+    .doc-mobile-bar .ds-nav__logo { width:96px; color:var(--color-text-primary); }
+    .doc-sec { padding:var(--space-80) var(--space-24); }
+    .doc-cover { padding:var(--space-40) var(--space-24); }
+  }
+  @media (max-width: 767px) {
+    .doc-principles, .doc-sems, .doc-images, .doc-steps { grid-template-columns:minmax(0,1fr); }
+    .doc-type { grid-template-columns:minmax(0,1fr); gap:var(--space-12); }
+    .doc-demo__stage { padding:var(--space-24); }
+    .doc-demo__head { flex-direction:column; align-items:flex-start; }
+    .doc-sem { padding:var(--space-24); }
+    .doc-sem__row { grid-template-columns:40px 1fr; }
+    .doc-sem__row > span:last-child { grid-column:2; }
+    .doc-space { grid-template-columns:88px minmax(0,1fr) 44px; gap:var(--space-12); }
+    .doc-space__bar { max-width:100%; }
+    .doc-demo, .doc-code { min-width:0; }
+  }
+</style>
+</head>
+<body class="ds">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="adessa-wordmark" viewBox="0 0 975 261"><g transform="matrix(1,0,0,1,-8.521543,-2.988026)"> <g transform="matrix(0.885963,0,0,0.885963,-22.057345,-326.186091)"> <path d="M235.802,662L259.505,662L153.406,371.544L151.149,371.544L135.723,399.009L34.515,662L54.456,662L87.941,567.188L201.565,567.188L235.802,662ZM143.624,410.296L145.129,410.296L197.05,554.396L92.456,554.396L143.624,410.296Z" style="fill-rule:nonzero;"/> <path d="M406.238,655.98C417.526,649.96 423.545,644.693 428.813,639.802L428.813,664.634L448.753,662.376L448.753,373.801L428.437,377.187L428.437,488.93C423.169,486.673 403.229,483.287 392.694,483.287C340.773,483.287 292.991,518.277 292.991,579.98C292.991,628.139 326.1,665.762 367.486,665.762C380.654,665.762 396.833,661.248 406.238,655.98ZM314.813,569.822C314.813,524.673 343.783,494.198 381.407,490.811C395.704,491.188 416.021,500.217 428.437,504.732L428.437,634.911C414.892,642.436 397.585,648.832 378.021,648.832C336.258,648.832 314.813,613.465 314.813,569.822Z" style="fill-rule:nonzero;"/> <path d="M644.397,641.683C645.15,636.792 645.902,633.406 646.279,629.643C637.625,638.297 617.308,649.584 587.585,649.584C549.585,649.584 524.754,622.119 524.754,578.099C524.754,568.693 525.506,560.039 527.011,552.138L647.031,552.138C647.407,549.505 647.784,546.871 647.784,544.237C648.16,498.336 620.318,483.287 584.199,483.287C573.288,483.287 556.734,488.93 544.318,497.584C521.367,513.01 503.308,543.861 503.308,582.614C503.308,633.03 537.922,665.762 580.437,665.762C611.665,665.762 632.734,655.98 644.397,641.683ZM578.179,490.435C613.922,491.188 627.09,508.495 627.09,540.475L528.516,545.366C537.922,509.247 561.625,491.188 578.179,490.435Z" style="fill-rule:nonzero;"/> <path d="M796.398,493.445C782.853,488.554 768.932,483.287 754.635,483.287C740.338,483.287 727.17,488.554 716.259,495.703C704.596,503.604 696.318,516.772 696.318,529.94C696.318,561.921 715.506,567.188 745.606,580.356C778.715,595.03 788.121,598.416 788.121,624.376C788.121,645.069 768.556,655.228 756.14,657.109C738.457,657.109 714.754,646.574 697.071,639.426L691.427,655.228C710.992,662.376 727.922,665.762 738.833,665.762C762.16,665.762 773.071,657.861 784.358,649.208C795.269,640.554 803.17,626.634 803.17,611.584C803.17,582.99 782.853,575.089 753.883,561.921C721.903,547.624 710.992,543.485 710.992,522.039C710.992,503.227 727.17,493.445 739.21,491.94C756.14,491.94 775.328,501.346 790.378,508.495L796.398,493.445Z" style="fill-rule:nonzero;"/> <path d="M944.259,493.445C930.715,488.554 916.794,483.287 902.497,483.287C888.2,483.287 875.032,488.554 864.121,495.703C852.457,503.604 844.18,516.772 844.18,529.94C844.18,561.921 863.368,567.188 893.467,580.356C926.576,595.03 935.982,598.416 935.982,624.376C935.982,645.069 916.418,655.228 904.002,657.109C886.319,657.109 862.616,646.574 844.933,639.426L839.289,655.228C858.853,662.376 875.784,665.762 886.695,665.762C910.022,665.762 920.933,657.861 932.22,649.208C943.131,640.554 951.032,626.634 951.032,611.584C951.032,582.99 930.715,575.089 901.745,561.921C869.764,547.624 858.853,543.485 858.853,522.039C858.853,503.227 875.032,493.445 887.071,491.94C904.002,491.94 923.19,501.346 938.24,508.495L944.259,493.445Z" style="fill-rule:nonzero;"/> <path d="M1014.992,491.188C1012.359,494.95 1006.715,503.604 999.567,513.386L1000.319,514.138C1013.864,506.237 1031.923,499.089 1048.854,499.089C1077.072,499.089 1090.24,510.752 1090.24,531.445L1090.24,566.435L997.685,601.049C995.428,608.95 993.547,616.475 993.547,622.871C993.547,648.455 1009.725,665.762 1035.309,665.762C1050.359,665.762 1064.28,660.871 1074.438,652.218C1080.834,646.95 1086.854,640.931 1090.24,635.287L1090.616,635.287L1090.616,637.168C1090.616,657.485 1105.29,665.762 1118.458,665.762C1121.844,665.762 1127.111,665.01 1128.24,664.257L1135.012,648.832C1133.131,649.584 1128.993,649.96 1127.111,649.96C1116.577,649.96 1110.557,644.317 1110.557,631.148L1110.557,525.425C1110.557,499.841 1089.488,483.287 1055.25,483.287C1038.695,483.287 1024.022,487.425 1014.992,491.188ZM1013.864,618.733C1013.864,614.218 1014.992,607.069 1016.874,602.931L1090.24,570.574L1090.24,629.643C1079.705,645.069 1062.775,654.099 1043.586,654.099C1022.893,654.099 1013.864,639.049 1013.864,618.733Z" style="fill-rule:nonzero;"/> </g> </g></symbol><symbol id="adessa-mind" viewBox="0 0 975 345"><g transform="matrix(1,0,0,1,-8.521543,-2.988026)"> <g transform="matrix(0.885963,0,0,0.885963,-22.057345,-326.186091)"> <path d="M235.802,662L259.505,662L153.406,371.544L151.149,371.544L135.723,399.009L34.515,662L54.456,662L87.941,567.188L201.565,567.188L235.802,662ZM143.624,410.296L145.129,410.296L197.05,554.396L92.456,554.396L143.624,410.296Z" style="fill-rule:nonzero;"/> <path d="M406.238,655.98C417.526,649.96 423.545,644.693 428.813,639.802L428.813,664.634L448.753,662.376L448.753,373.801L428.437,377.187L428.437,488.93C423.169,486.673 403.229,483.287 392.694,483.287C340.773,483.287 292.991,518.277 292.991,579.98C292.991,628.139 326.1,665.762 367.486,665.762C380.654,665.762 396.833,661.248 406.238,655.98ZM314.813,569.822C314.813,524.673 343.783,494.198 381.407,490.811C395.704,491.188 416.021,500.217 428.437,504.732L428.437,634.911C414.892,642.436 397.585,648.832 378.021,648.832C336.258,648.832 314.813,613.465 314.813,569.822Z" style="fill-rule:nonzero;"/> <path d="M644.397,641.683C645.15,636.792 645.902,633.406 646.279,629.643C637.625,638.297 617.308,649.584 587.585,649.584C549.585,649.584 524.754,622.119 524.754,578.099C524.754,568.693 525.506,560.039 527.011,552.138L647.031,552.138C647.407,549.505 647.784,546.871 647.784,544.237C648.16,498.336 620.318,483.287 584.199,483.287C573.288,483.287 556.734,488.93 544.318,497.584C521.367,513.01 503.308,543.861 503.308,582.614C503.308,633.03 537.922,665.762 580.437,665.762C611.665,665.762 632.734,655.98 644.397,641.683ZM578.179,490.435C613.922,491.188 627.09,508.495 627.09,540.475L528.516,545.366C537.922,509.247 561.625,491.188 578.179,490.435Z" style="fill-rule:nonzero;"/> <path d="M796.398,493.445C782.853,488.554 768.932,483.287 754.635,483.287C740.338,483.287 727.17,488.554 716.259,495.703C704.596,503.604 696.318,516.772 696.318,529.94C696.318,561.921 715.506,567.188 745.606,580.356C778.715,595.03 788.121,598.416 788.121,624.376C788.121,645.069 768.556,655.228 756.14,657.109C738.457,657.109 714.754,646.574 697.071,639.426L691.427,655.228C710.992,662.376 727.922,665.762 738.833,665.762C762.16,665.762 773.071,657.861 784.358,649.208C795.269,640.554 803.17,626.634 803.17,611.584C803.17,582.99 782.853,575.089 753.883,561.921C721.903,547.624 710.992,543.485 710.992,522.039C710.992,503.227 727.17,493.445 739.21,491.94C756.14,491.94 775.328,501.346 790.378,508.495L796.398,493.445Z" style="fill-rule:nonzero;"/> <path d="M944.259,493.445C930.715,488.554 916.794,483.287 902.497,483.287C888.2,483.287 875.032,488.554 864.121,495.703C852.457,503.604 844.18,516.772 844.18,529.94C844.18,561.921 863.368,567.188 893.467,580.356C926.576,595.03 935.982,598.416 935.982,624.376C935.982,645.069 916.418,655.228 904.002,657.109C886.319,657.109 862.616,646.574 844.933,639.426L839.289,655.228C858.853,662.376 875.784,665.762 886.695,665.762C910.022,665.762 920.933,657.861 932.22,649.208C943.131,640.554 951.032,626.634 951.032,611.584C951.032,582.99 930.715,575.089 901.745,561.921C869.764,547.624 858.853,543.485 858.853,522.039C858.853,503.227 875.032,493.445 887.071,491.94C904.002,491.94 923.19,501.346 938.24,508.495L944.259,493.445Z" style="fill-rule:nonzero;"/> <path d="M1014.992,491.188C1012.359,494.95 1006.715,503.604 999.567,513.386L1000.319,514.138C1013.864,506.237 1031.923,499.089 1048.854,499.089C1077.072,499.089 1090.24,510.752 1090.24,531.445L1090.24,566.435L997.685,601.049C995.428,608.95 993.547,616.475 993.547,622.871C993.547,648.455 1009.725,665.762 1035.309,665.762C1050.359,665.762 1064.28,660.871 1074.438,652.218C1080.834,646.95 1086.854,640.931 1090.24,635.287L1090.616,635.287L1090.616,637.168C1090.616,657.485 1105.29,665.762 1118.458,665.762C1121.844,665.762 1127.111,665.01 1128.24,664.257L1135.012,648.832C1133.131,649.584 1128.993,649.96 1127.111,649.96C1116.577,649.96 1110.557,644.317 1110.557,631.148L1110.557,525.425C1110.557,499.841 1089.488,483.287 1055.25,483.287C1038.695,483.287 1024.022,487.425 1014.992,491.188ZM1013.864,618.733C1013.864,614.218 1014.992,607.069 1016.874,602.931L1090.24,570.574L1090.24,629.643C1079.705,645.069 1062.775,654.099 1043.586,654.099C1022.893,654.099 1013.864,639.049 1013.864,618.733Z" style="fill-rule:nonzero;"/> <g transform="matrix(1.128715,0,0,1.128715,24.896465,368.171269)"> <g transform="matrix(1,0,0,1,-4.275457,0)"> <path d="M725.797,347L725.797,300.81L729.207,300.81L746.443,326.478L744.769,326.478L762.067,300.81L765.477,300.81L765.477,347L761.447,347L761.447,306.731L762.439,307.289L745.73,332.244L745.544,332.244L728.804,307.289L729.827,306.731L729.827,347L725.797,347Z" style="fill-rule:nonzero;"/> </g> <g transform="matrix(1,0,0,1,33.127209,0)"> <rect x="777.071" y="300.81" width="4.03" height="46.19" style="fill-rule:nonzero;"/> </g> <g transform="matrix(1,0,0,1,70.529876,0)"> <path d="M792.695,347L792.695,300.81L796.105,300.81L824.098,340.924L822.765,340.924L822.765,300.81L826.795,300.81L826.795,347L823.385,347L795.299,306.638L796.725,306.638L796.725,347L792.695,347Z" style="fill-rule:nonzero;"/> </g> <g transform="matrix(1,0,0,1,107.932543,0)"> <path d="M838.389,347L838.389,300.81L853.362,300.81C857.888,300.81 861.815,301.75 865.142,303.631C868.469,305.512 871.042,308.178 872.861,311.629C874.68,315.08 875.589,319.162 875.589,323.874C875.589,328.545 874.68,332.616 872.861,336.088C871.042,339.56 868.469,342.247 865.142,344.148C861.815,346.049 857.888,347 853.362,347L838.389,347ZM842.419,343.28L853.3,343.28C856.958,343.28 860.146,342.479 862.863,340.877C865.581,339.276 867.689,337.018 869.188,334.104C870.686,331.19 871.435,327.78 871.435,323.874C871.435,319.968 870.681,316.568 869.172,313.675C867.663,310.782 865.55,308.534 862.832,306.933C860.115,305.331 856.937,304.53 853.3,304.53L842.419,304.53L842.419,343.28Z" style="fill-rule:nonzero;"/> </g> </g> </g> </g></symbol><symbol id="ds-arrow" viewBox="0 0 14 10"><path d="M0 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.2" fill="none"/></symbol></svg>
+<div class="doc-mobile-bar">
+  <a class="ds-nav__logo" href="/" aria-label="Adessa home"><svg viewBox="0 0 975 261" role="img" aria-label="Adessa"><use href="#adessa-wordmark"/></svg></a>
+  <div class="doc-theme ds-label-s" role="group" aria-label="Theme"><button type="button" data-set-theme="light">Light</button><button type="button" data-set-theme="dark">Dark</button></div>
+</div>
+<div class="doc">
+  <aside class="doc-side">
+    <a class="ds-nav__logo" href="/" aria-label="Adessa home"><svg viewBox="0 0 975 261" role="img" aria-label="Adessa"><use href="#adessa-wordmark"/></svg></a>
+    <div><p class="ds-caption-m ds-text-secondary">Design System</p><p class="ds-ui ds-text-muted">Version 1.0 · October 2026</p></div>
+    <nav aria-label="Sections"><ul><li><a href="#overview" class="ds-label-s">Overview</a></li>
+<li><a href="#color" class="ds-label-s">Color</a></li>
+<li><a href="#type" class="ds-label-s">Typography</a></li>
+<li><a href="#space" class="ds-label-s">Spacing and radius</a></li>
+<li><a href="#imagery" class="ds-label-s">Imagery</a></li>
+<li><a href="#components" class="ds-label-s">Components</a></li>
+<li><a href="#pages" class="ds-label-s">Building a page</a></li></ul></nav>
+    <div class="doc-side__foot">
+      <div class="doc-theme ds-label-s" role="group" aria-label="Theme"><button type="button" data-set-theme="light">Light</button><button type="button" data-set-theme="dark">Dark</button></div>
+      <a class="ds-btn ds-btn--secondary ds-btn--s" href="https://www.figma.com/design/AfqGfoDWyCsRQX1Z8z1A5e/Adessa?node-id=686-2" target="_blank" rel="noopener">Open in Figma <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <section class="doc-cover" id="top">
+      <span class="ds-nav__logo"><svg viewBox="0 0 975 261" role="img" aria-label="Adessa"><use href="#adessa-wordmark"/></svg></span>
+      <p class="ds-caption-l">Design System</p>
+      <p class="ds-label-s">Version 1.0 · October 2026 · For every new page</p>
+    </section>
+
+    <section class="doc-sec" id="overview">
+      <div class="doc-sec__head">
+        <p class="ds-label-s ds-text-muted">01</p>
+        <h2 class="ds-h1">How Adessa should feel</h2>
+        <p class="ds-body-l ds-text-secondary">Neural networks meet natural materials. Pages are warm, quiet and precise: lots of cream space, light serif type, tracked caps for anything you can tap, and imagery of light moving through texture. This page and the Figma file are the same system; if they ever disagree, Figma wins and this page gets updated.</p>
+      </div>
+      <div class="doc-principles">
+        <div class="ds-reveal"><h3 class="ds-h4">Calm before clever</h3><p class="ds-body-s ds-text-secondary">One idea per section. Let the type and the texture do the work; skip decoration that doesn’t carry meaning.</p></div>
+        <div class="ds-reveal"><h3 class="ds-h4">Warm, never clinical</h3><p class="ds-body-s ds-text-secondary">Cream and stone instead of white and grey. Science is in the substance, not in the styling.</p></div>
+        <div class="ds-reveal"><h3 class="ds-h4">Precise where it counts</h3><p class="ds-body-s ds-text-secondary">Numbers, dates and actions are set in tracked caps or Display figures so they read at a glance.</p></div>
+      </div>
+      <div class="doc-usage"><pre><code>&lt;!-- In &lt;head&gt; --&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;link href=&quot;css/adessa-ds.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;!-- On &lt;body&gt; --&gt;
+&lt;body class=&quot;ds&quot;&gt;
+
+&lt;!-- Flip any block to dark --&gt;
+&lt;section class=&quot;ds-section&quot; data-theme=&quot;dark&quot;&gt; ... &lt;/section&gt;</code></pre></div>
+    </section>
+
+    <section class="doc-sec" id="color">
+      <div class="doc-sec__head">
+        <p class="ds-label-s ds-text-muted">02</p>
+        <h2 class="ds-h1">Color</h2>
+        <p class="ds-body-l ds-text-secondary">Six neutrals from the brand concept carry every page. The accents come from the current site and are for data, tags and small moments, never large fills. Build with the semantic tokens; the raw palette is reference. Click any swatch to copy its variable.</p>
+      </div>
+      <div class="ds-stack"><p class="ds-label-l ds-text-secondary">Neutrals</p><div class="doc-swatches"><button class="doc-swatch" type="button" data-copy-text="var(--cream)" title="Copy var(--cream)"><span class="doc-swatch__chip" style="background:var(--cream)"></span><span class="ds-label-s">Cream</span><span class="ds-caption-m ds-text-secondary">#FFFAF0</span><span class="ds-ui ds-text-muted">var(--cream)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--ivory)" title="Copy var(--ivory)"><span class="doc-swatch__chip" style="background:var(--ivory)"></span><span class="ds-label-s">Ivory</span><span class="ds-caption-m ds-text-secondary">#F6EEE3</span><span class="ds-ui ds-text-muted">var(--ivory)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--oat)" title="Copy var(--oat)"><span class="doc-swatch__chip" style="background:var(--oat)"></span><span class="ds-label-s">Oat</span><span class="ds-caption-m ds-text-secondary">#D6C6B4</span><span class="ds-ui ds-text-muted">var(--oat)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--sand)" title="Copy var(--sand)"><span class="doc-swatch__chip" style="background:var(--sand)"></span><span class="ds-label-s">Sand</span><span class="ds-caption-m ds-text-secondary">#BBA991</span><span class="ds-ui ds-text-muted">var(--sand)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--taupe)" title="Copy var(--taupe)"><span class="doc-swatch__chip" style="background:var(--taupe)"></span><span class="ds-label-s">Taupe</span><span class="ds-caption-m ds-text-secondary">#A38E79</span><span class="ds-ui ds-text-muted">var(--taupe)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--stone)" title="Copy var(--stone)"><span class="doc-swatch__chip" style="background:var(--stone)"></span><span class="ds-label-s">Stone</span><span class="ds-caption-m ds-text-secondary">#776858</span><span class="ds-ui ds-text-muted">var(--stone)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--charcoal)" title="Copy var(--charcoal)"><span class="doc-swatch__chip" style="background:var(--charcoal)"></span><span class="ds-label-s">Charcoal</span><span class="ds-caption-m ds-text-secondary">#4A4132</span><span class="ds-ui ds-text-muted">var(--charcoal)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--espresso-800)" title="Copy var(--espresso-800)"><span class="doc-swatch__chip" style="background:var(--espresso-800)"></span><span class="ds-label-s">Espresso 800</span><span class="ds-caption-m ds-text-secondary">#2D2620</span><span class="ds-ui ds-text-muted">var(--espresso-800)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--espresso-900)" title="Copy var(--espresso-900)"><span class="doc-swatch__chip" style="background:var(--espresso-900)"></span><span class="ds-label-s">Espresso 900</span><span class="ds-caption-m ds-text-secondary">#221D17</span><span class="ds-ui ds-text-muted">var(--espresso-900)</span></button></div></div>
+      <div class="ds-stack"><p class="ds-label-l ds-text-secondary">Accents</p><div class="doc-swatches"><button class="doc-swatch" type="button" data-copy-text="var(--clay)" title="Copy var(--clay)"><span class="doc-swatch__chip" style="background:var(--clay)"></span><span class="ds-label-s">Clay</span><span class="ds-caption-m ds-text-secondary">#B49A8D</span><span class="ds-ui ds-text-muted">var(--clay)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--rose)" title="Copy var(--rose)"><span class="doc-swatch__chip" style="background:var(--rose)"></span><span class="ds-label-s">Rose</span><span class="ds-caption-m ds-text-secondary">#BFA4A4</span><span class="ds-ui ds-text-muted">var(--rose)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--sage)" title="Copy var(--sage)"><span class="doc-swatch__chip" style="background:var(--sage)"></span><span class="ds-label-s">Sage</span><span class="ds-caption-m ds-text-secondary">#748485</span><span class="ds-ui ds-text-muted">var(--sage)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--sea)" title="Copy var(--sea)"><span class="doc-swatch__chip" style="background:var(--sea)"></span><span class="ds-label-s">Sea</span><span class="ds-caption-m ds-text-secondary">#8E9BA4</span><span class="ds-ui ds-text-muted">var(--sea)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--dusk)" title="Copy var(--dusk)"><span class="doc-swatch__chip" style="background:var(--dusk)"></span><span class="ds-label-s">Dusk</span><span class="ds-caption-m ds-text-secondary">#515355</span><span class="ds-ui ds-text-muted">var(--dusk)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--dusk-deep)" title="Copy var(--dusk-deep)"><span class="doc-swatch__chip" style="background:var(--dusk-deep)"></span><span class="ds-label-s">Dusk Deep</span><span class="ds-caption-m ds-text-secondary">#38393B</span><span class="ds-ui ds-text-muted">var(--dusk-deep)</span></button>
+<button class="doc-swatch" type="button" data-copy-text="var(--ash)" title="Copy var(--ash)"><span class="doc-swatch__chip" style="background:var(--ash)"></span><span class="ds-label-s">Ash</span><span class="ds-caption-m ds-text-secondary">#A69D9B</span><span class="ds-ui ds-text-muted">var(--ash)</span></button></div></div>
+      <div class="ds-stack"><p class="ds-label-l ds-text-secondary">Semantic tokens</p><div class="doc-sems"><div class="doc-sem" data-theme="light"><p class="ds-label-s ds-text-muted">Light mode</p><ul><li class="doc-sem__row" data-copy-text="var(--color-surface-page)" tabindex="0" role="button" title="Copy var(--color-surface-page)"><span class="doc-sem__chip" style="background:var(--color-surface-page)"></span><code class="ds-ui">--color-surface-page</code><span class="ds-ui ds-text-secondary">Page background</span></li><li class="doc-sem__row" data-copy-text="var(--color-surface-subtle)" tabindex="0" role="button" title="Copy var(--color-surface-subtle)"><span class="doc-sem__chip" style="background:var(--color-surface-subtle)"></span><code class="ds-ui">--color-surface-subtle</code><span class="ds-ui ds-text-secondary">Panels, inputs, footer</span></li><li class="doc-sem__row" data-copy-text="var(--color-surface-muted)" tabindex="0" role="button" title="Copy var(--color-surface-muted)"><span class="doc-sem__chip" style="background:var(--color-surface-muted)"></span><code class="ds-ui">--color-surface-muted</code><span class="ds-ui ds-text-secondary">Filled chips, image placeholders</span></li><li class="doc-sem__row" data-copy-text="var(--color-surface-inverse)" tabindex="0" role="button" title="Copy var(--color-surface-inverse)"><span class="doc-sem__chip" style="background:var(--color-surface-inverse)"></span><code class="ds-ui">--color-surface-inverse</code><span class="ds-ui ds-text-secondary">Inverted blocks</span></li><li class="doc-sem__row" data-copy-text="var(--color-text-primary)" tabindex="0" role="button" title="Copy var(--color-text-primary)"><span class="doc-sem__chip doc-sem__chip--text" style="color:var(--color-text-primary)">Aa</span><code class="ds-ui">--color-text-primary</code><span class="ds-ui ds-text-secondary">Headlines and body</span></li><li class="doc-sem__row" data-copy-text="var(--color-text-secondary)" tabindex="0" role="button" title="Copy var(--color-text-secondary)"><span class="doc-sem__chip doc-sem__chip--text" style="color:var(--color-text-secondary)">Aa</span><code class="ds-ui">--color-text-secondary</code><span class="ds-ui ds-text-secondary">Supporting copy, eyebrows</span></li><li class="doc-sem__row" data-copy-text="var(--color-text-muted)" tabindex="0" role="button" title="Copy var(--color-text-muted)"><span class="doc-sem__chip doc-sem__chip--text" style="color:var(--color-text-muted)">Aa</span><code class="ds-ui">--color-text-muted</code><span class="ds-ui ds-text-secondary">Large or decorative only</span></li><li class="doc-sem__row" data-copy-text="var(--color-border-default)" tabindex="0" role="button" title="Copy var(--color-border-default)"><span class="doc-sem__chip doc-sem__chip--stroke" style="border-color:var(--color-border-default)"></span><code class="ds-ui">--color-border-default</code><span class="ds-ui ds-text-secondary">Rules, card edges</span></li><li class="doc-sem__row" data-copy-text="var(--color-border-strong)" tabindex="0" role="button" title="Copy var(--color-border-strong)"><span class="doc-sem__chip doc-sem__chip--stroke" style="border-color:var(--color-border-strong)"></span><code class="ds-ui">--color-border-strong</code><span class="ds-ui ds-text-secondary">Inputs, outline chips</span></li><li class="doc-sem__row" data-copy-text="var(--color-action-primary-bg)" tabindex="0" role="button" title="Copy var(--color-action-primary-bg)"><span class="doc-sem__chip" style="background:var(--color-action-primary-bg)"></span><code class="ds-ui">--color-action-primary-bg</code><span class="ds-ui ds-text-secondary">Primary button</span></li><li class="doc-sem__row" data-copy-text="var(--color-focus-ring)" tabindex="0" role="button" title="Copy var(--color-focus-ring)"><span class="doc-sem__chip doc-sem__chip--stroke" style="border-color:var(--color-focus-ring)"></span><code class="ds-ui">--color-focus-ring</code><span class="ds-ui ds-text-secondary">Keyboard focus</span></li></ul></div><div class="doc-sem" data-theme="dark"><p class="ds-label-s ds-text-muted">Dark mode</p><ul><li class="doc-sem__row" data-copy-text="var(--color-surface-page)" tabindex="0" role="button" title="Copy var(--color-surface-page)"><span class="doc-sem__chip" style="background:var(--color-surface-page)"></span><code class="ds-ui">--color-surface-page</code><span class="ds-ui ds-text-secondary">Page background</span></li><li class="doc-sem__row" data-copy-text="var(--color-surface-subtle)" tabindex="0" role="button" title="Copy var(--color-surface-subtle)"><span class="doc-sem__chip" style="background:var(--color-surface-subtle)"></span><code class="ds-ui">--color-surface-subtle</code><span class="ds-ui ds-text-secondary">Panels, inputs, footer</span></li><li class="doc-sem__row" data-copy-text="var(--color-surface-muted)" tabindex="0" role="button" title="Copy var(--color-surface-muted)"><span class="doc-sem__chip" style="background:var(--color-surface-muted)"></span><code class="ds-ui">--color-surface-muted</code><span class="ds-ui ds-text-secondary">Filled chips, image placeholders</span></li><li class="doc-sem__row" data-copy-text="var(--color-surface-inverse)" tabindex="0" role="button" title="Copy var(--color-surface-inverse)"><span class="doc-sem__chip" style="background:var(--color-surface-inverse)"></span><code class="ds-ui">--color-surface-inverse</code><span class="ds-ui ds-text-secondary">Inverted blocks</span></li><li class="doc-sem__row" data-copy-text="var(--color-text-primary)" tabindex="0" role="button" title="Copy var(--color-text-primary)"><span class="doc-sem__chip doc-sem__chip--text" style="color:var(--color-text-primary)">Aa</span><code class="ds-ui">--color-text-primary</code><span class="ds-ui ds-text-secondary">Headlines and body</span></li><li class="doc-sem__row" data-copy-text="var(--color-text-secondary)" tabindex="0" role="button" title="Copy var(--color-text-secondary)"><span class="doc-sem__chip doc-sem__chip--text" style="color:var(--color-text-secondary)">Aa</span><code class="ds-ui">--color-text-secondary</code><span class="ds-ui ds-text-secondary">Supporting copy, eyebrows</span></li><li class="doc-sem__row" data-copy-text="var(--color-text-muted)" tabindex="0" role="button" title="Copy var(--color-text-muted)"><span class="doc-sem__chip doc-sem__chip--text" style="color:var(--color-text-muted)">Aa</span><code class="ds-ui">--color-text-muted</code><span class="ds-ui ds-text-secondary">Large or decorative only</span></li><li class="doc-sem__row" data-copy-text="var(--color-border-default)" tabindex="0" role="button" title="Copy var(--color-border-default)"><span class="doc-sem__chip doc-sem__chip--stroke" style="border-color:var(--color-border-default)"></span><code class="ds-ui">--color-border-default</code><span class="ds-ui ds-text-secondary">Rules, card edges</span></li><li class="doc-sem__row" data-copy-text="var(--color-border-strong)" tabindex="0" role="button" title="Copy var(--color-border-strong)"><span class="doc-sem__chip doc-sem__chip--stroke" style="border-color:var(--color-border-strong)"></span><code class="ds-ui">--color-border-strong</code><span class="ds-ui ds-text-secondary">Inputs, outline chips</span></li><li class="doc-sem__row" data-copy-text="var(--color-action-primary-bg)" tabindex="0" role="button" title="Copy var(--color-action-primary-bg)"><span class="doc-sem__chip" style="background:var(--color-action-primary-bg)"></span><code class="ds-ui">--color-action-primary-bg</code><span class="ds-ui ds-text-secondary">Primary button</span></li><li class="doc-sem__row" data-copy-text="var(--color-focus-ring)" tabindex="0" role="button" title="Copy var(--color-focus-ring)"><span class="doc-sem__chip doc-sem__chip--stroke" style="border-color:var(--color-focus-ring)"></span><code class="ds-ui">--color-focus-ring</code><span class="ds-ui ds-text-secondary">Keyboard focus</span></li></ul></div></div>
+      <p class="ds-body-s ds-text-secondary">Contrast on cream: Charcoal 9.6:1, Stone 5.2:1, Taupe 3.0:1. Taupe is for text 24px and up or decoration only.</p></div>
+    </section>
+
+    <section class="doc-sec" id="type">
+      <div class="doc-sec__head">
+        <p class="ds-label-s ds-text-muted">03</p>
+        <h2 class="ds-h1">Typography</h2>
+        <p class="ds-body-l ds-text-secondary">Fraunces Light does the talking: headlines, body and italic captions. Plus Jakarta Sans appears only as tracked capitals for labels, buttons and navigation. Display and heading sizes scale down fluidly on smaller screens. Click a class to copy it.</p>
+      </div>
+      <div><div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Display XL</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-display-xl" role="button" tabindex="0" title="Copy class">.ds-display-xl</code><span class="ds-ui ds-text-muted">96 / 105% · Fraunces Light</span></div><p class="ds-display-xl">Your mind, in balance.</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Display L</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-display-l" role="button" tabindex="0" title="Copy class">.ds-display-l</code><span class="ds-ui ds-text-muted">72 / 110% · Fraunces Light</span></div><p class="ds-display-l">A clearer perspective.</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Heading 1</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-h1" role="button" tabindex="0" title="Copy class">.ds-h1</code><span class="ds-ui ds-text-muted">56 / 115% · Fraunces Light</span></div><p class="ds-h1">Understand your mind’s potential</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Heading 2</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-h2" role="button" tabindex="0" title="Copy class">.ds-h2</code><span class="ds-ui ds-text-muted">44 / 120% · Fraunces Light</span></div><p class="ds-h2">Cognitive wellbeing for a brighter tomorrow</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Heading 3</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-h3" role="button" tabindex="0" title="Copy class">.ds-h3</code><span class="ds-ui ds-text-muted">32 / 125% · Fraunces Light</span></div><p class="ds-h3">Discovery, then activation</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Heading 4</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-h4" role="button" tabindex="0" title="Copy class">.ds-h4</code><span class="ds-ui ds-text-muted">24 / 130% · Fraunces Light</span></div><p class="ds-h4">What your AQ is telling you</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Body L</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-body-l" role="button" tabindex="0" title="Copy class">.ds-body-l</code><span class="ds-ui ds-text-muted">22 / 145% · Fraunces Light</span></div><p class="ds-body-l">Cognitive and biometric assessments uncover your AQ, or Adessa Quotient.</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Body M</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-body-m" role="button" tabindex="0" title="Copy class">.ds-body-m</code><span class="ds-ui ds-text-muted">18 / 150% · Fraunces Light</span></div><p class="ds-body-m">A custom sequence of stimuli designed to unlock a sharper, clearer and more focused state of mind.</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Body S</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-body-s" role="button" tabindex="0" title="Copy class">.ds-body-s</code><span class="ds-ui ds-text-muted">16 / 150% · Fraunces Light</span></div><p class="ds-body-s">Selection notifications and location details go out the week before each event.</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Caption L</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-caption-l" role="button" tabindex="0" title="Copy class">.ds-caption-l</code><span class="ds-ui ds-text-muted">18 / 130% · Fraunces Light Italic</span></div><p class="ds-caption-l">Discovery</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Caption M</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-caption-m" role="button" tabindex="0" title="Copy class">.ds-caption-m</code><span class="ds-ui ds-text-muted">14 / 130% · Fraunces Light Italic</span></div><p class="ds-caption-m">Brand texture, light through water</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Label L</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-label-l" role="button" tabindex="0" title="Copy class">.ds-label-l</code><span class="ds-ui ds-text-muted">14 / 120% · Jakarta SemiBold · 0.22em</span></div><p class="ds-label-l">Investor portal</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Label M</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-label-m" role="button" tabindex="0" title="Copy class">.ds-label-m</code><span class="ds-ui ds-text-muted">12 / 120% · Jakarta SemiBold · 0.26em</span></div><p class="ds-label-m">Join the waitlist</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">Label S</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-label-s" role="button" tabindex="0" title="Copy class">.ds-label-s</code><span class="ds-ui ds-text-muted">10 / 120% · Jakarta Medium · 0.30em</span></div><p class="ds-label-s">Philadelphia · November 18</p></div>
+<div class="doc-type"><div class="doc-type__meta"><span class="ds-label-s">UI Body</span><code class="ds-ui ds-text-secondary" data-copy-text="ds-ui" role="button" tabindex="0" title="Copy class">.ds-ui</code><span class="ds-ui ds-text-muted">14 / 150% · Jakarta Regular</span></div><p class="ds-ui">Help text under form fields and dense interface copy.</p></div></div>
+    </section>
+
+    <section class="doc-sec" id="space">
+      <div class="doc-sec__head">
+        <p class="ds-label-s ds-text-muted">04</p>
+        <h2 class="ds-h1">Spacing and radius</h2>
+        <p class="ds-body-l ds-text-secondary">An 8px rhythm with a few large steps for breathing room. Sections sit 120px apart on desktop, 80px on tablet and 64px on phones (the <code class="ds-ui">ds-section</code> class handles it). Corners are soft on images and panels, fully round on anything you can tap.</p>
+      </div>
+      <ul class="doc-spaces"><li class="doc-space" data-copy-text="var(--space-4)" role="button" tabindex="0"><span class="ds-label-s">space-4</span><span class="doc-space__bar" style="width:var(--space-4)"></span><span class="ds-ui ds-text-muted">4px</span></li>
+<li class="doc-space" data-copy-text="var(--space-8)" role="button" tabindex="0"><span class="ds-label-s">space-8</span><span class="doc-space__bar" style="width:var(--space-8)"></span><span class="ds-ui ds-text-muted">8px</span></li>
+<li class="doc-space" data-copy-text="var(--space-12)" role="button" tabindex="0"><span class="ds-label-s">space-12</span><span class="doc-space__bar" style="width:var(--space-12)"></span><span class="ds-ui ds-text-muted">12px</span></li>
+<li class="doc-space" data-copy-text="var(--space-16)" role="button" tabindex="0"><span class="ds-label-s">space-16</span><span class="doc-space__bar" style="width:var(--space-16)"></span><span class="ds-ui ds-text-muted">16px</span></li>
+<li class="doc-space" data-copy-text="var(--space-24)" role="button" tabindex="0"><span class="ds-label-s">space-24</span><span class="doc-space__bar" style="width:var(--space-24)"></span><span class="ds-ui ds-text-muted">24px</span></li>
+<li class="doc-space" data-copy-text="var(--space-32)" role="button" tabindex="0"><span class="ds-label-s">space-32</span><span class="doc-space__bar" style="width:var(--space-32)"></span><span class="ds-ui ds-text-muted">32px</span></li>
+<li class="doc-space" data-copy-text="var(--space-40)" role="button" tabindex="0"><span class="ds-label-s">space-40</span><span class="doc-space__bar" style="width:var(--space-40)"></span><span class="ds-ui ds-text-muted">40px</span></li>
+<li class="doc-space" data-copy-text="var(--space-48)" role="button" tabindex="0"><span class="ds-label-s">space-48</span><span class="doc-space__bar" style="width:var(--space-48)"></span><span class="ds-ui ds-text-muted">48px</span></li>
+<li class="doc-space" data-copy-text="var(--space-56)" role="button" tabindex="0"><span class="ds-label-s">space-56</span><span class="doc-space__bar" style="width:var(--space-56)"></span><span class="ds-ui ds-text-muted">56px</span></li>
+<li class="doc-space" data-copy-text="var(--space-64)" role="button" tabindex="0"><span class="ds-label-s">space-64</span><span class="doc-space__bar" style="width:var(--space-64)"></span><span class="ds-ui ds-text-muted">64px</span></li>
+<li class="doc-space" data-copy-text="var(--space-72)" role="button" tabindex="0"><span class="ds-label-s">space-72</span><span class="doc-space__bar" style="width:var(--space-72)"></span><span class="ds-ui ds-text-muted">72px</span></li>
+<li class="doc-space" data-copy-text="var(--space-80)" role="button" tabindex="0"><span class="ds-label-s">space-80</span><span class="doc-space__bar" style="width:var(--space-80)"></span><span class="ds-ui ds-text-muted">80px</span></li>
+<li class="doc-space" data-copy-text="var(--space-120)" role="button" tabindex="0"><span class="ds-label-s">space-120</span><span class="doc-space__bar" style="width:var(--space-120)"></span><span class="ds-ui ds-text-muted">120px</span></li>
+<li class="doc-space" data-copy-text="var(--space-160)" role="button" tabindex="0"><span class="ds-label-s">space-160</span><span class="doc-space__bar" style="width:var(--space-160)"></span><span class="ds-ui ds-text-muted">160px</span></li>
+<li class="doc-space" data-copy-text="var(--space-240)" role="button" tabindex="0"><span class="ds-label-s">space-240</span><span class="doc-space__bar" style="width:var(--space-240)"></span><span class="ds-ui ds-text-muted">240px</span></li></ul>
+      <ul class="doc-radii"><li class="doc-radius" data-copy-text="var(--radius-none)" role="button" tabindex="0"><span class="doc-radius__box" style="border-radius:var(--radius-none)"></span><span class="ds-label-s">radius-none</span><span class="ds-ui ds-text-muted">0</span></li>
+<li class="doc-radius" data-copy-text="var(--radius-sm)" role="button" tabindex="0"><span class="doc-radius__box" style="border-radius:var(--radius-sm)"></span><span class="ds-label-s">radius-sm</span><span class="ds-ui ds-text-muted">4px</span></li>
+<li class="doc-radius" data-copy-text="var(--radius-md)" role="button" tabindex="0"><span class="doc-radius__box" style="border-radius:var(--radius-md)"></span><span class="ds-label-s">radius-md</span><span class="ds-ui ds-text-muted">8px</span></li>
+<li class="doc-radius" data-copy-text="var(--radius-lg)" role="button" tabindex="0"><span class="doc-radius__box" style="border-radius:var(--radius-lg)"></span><span class="ds-label-s">radius-lg</span><span class="ds-ui ds-text-muted">16px</span></li>
+<li class="doc-radius" data-copy-text="var(--radius-xl)" role="button" tabindex="0"><span class="doc-radius__box" style="border-radius:var(--radius-xl)"></span><span class="ds-label-s">radius-xl</span><span class="ds-ui ds-text-muted">24px</span></li>
+<li class="doc-radius" data-copy-text="var(--radius-pill)" role="button" tabindex="0"><span class="doc-radius__box" style="border-radius:var(--radius-pill);width:160px"></span><span class="ds-label-s">radius-pill</span><span class="ds-ui ds-text-muted">Fully round</span></li></ul>
+    </section>
+
+    <section class="doc-sec" id="imagery">
+      <div class="doc-sec__head">
+        <p class="ds-label-s ds-text-muted">05</p>
+        <h2 class="ds-h1">Imagery and texture</h2>
+        <p class="ds-body-l ds-text-secondary">Light moving through fine strands, smoke and water. Warm sepia tones, soft focus, no hard edges. Use textures full-bleed behind heroes and as card images; only put type on them with the overlay nav, glass buttons and white text. People photography follows the same palette: natural light, eyes closed or looking away, calm.</p>
+      </div>
+      <div class="doc-images">
+        <figure><img src="images/ds/texture-strands-light-800.webp" alt="Light strands texture" loading="lazy" width="800" height="500"><figcaption class="ds-caption-m ds-text-secondary">Strands, light · <a href="images/ds/texture-strands-light.webp" download>1600px</a></figcaption></figure>
+        <figure><img src="images/ds/texture-strands-smoke-800.webp" alt="Smoke strands texture" loading="lazy" width="800" height="500"><figcaption class="ds-caption-m ds-text-secondary">Strands, smoke · <a href="images/ds/texture-strands-smoke.webp" download>1600px</a></figcaption></figure>
+        <figure><img src="images/ds/texture-water-800.webp" alt="Water caustics texture" loading="lazy" width="800" height="500"><figcaption class="ds-caption-m ds-text-secondary">Water caustics · <a href="images/ds/texture-water.webp" download>1600px</a></figcaption></figure>
+      </div>
+      <p class="ds-body-s ds-text-secondary">The full icon set and symbol marks are on the Brand page in Figma. Icons are 1.25px line drawings on a 24px grid, colored with text-secondary.</p>
+    </section>
+
+    <section class="doc-sec" id="components">
+      <div class="doc-sec__head">
+        <p class="ds-label-s ds-text-muted">06</p>
+        <h2 class="ds-h1">Components</h2>
+        <p class="ds-body-l ds-text-secondary">Each one matches a component on the Figma Components page. Toggle Dark in the sidebar to see every demo flip. Open the code to copy the markup.</p>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Button</h3><p class="ds-body-s ds-text-secondary">Primary for the one main action per view, Secondary beside it. Labels are short verbs. Add the arrow when the link leaves the page or opens a flow.</p></div>
+          <span class="doc-demo__figma">Figma: Button</span>
+        </div>
+        <div class="doc-demo__stage"><div class="ds-row">
+  <a class="ds-btn" href="#">Join the waitlist</a>
+  <a class="ds-btn ds-btn--secondary" href="#">Learn more <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+  <a class="ds-btn ds-btn--s" href="#">Request access</a>
+  <a class="ds-btn ds-btn--secondary ds-btn--s" href="#">Investor portal</a>
+</div></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;div class=&quot;ds-row&quot;&gt;
+  &lt;a class=&quot;ds-btn&quot; href=&quot;#&quot;&gt;Join the waitlist&lt;/a&gt;
+  &lt;a class=&quot;ds-btn ds-btn--secondary&quot; href=&quot;#&quot;&gt;Learn more &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;a class=&quot;ds-btn ds-btn--s&quot; href=&quot;#&quot;&gt;Request access&lt;/a&gt;
+  &lt;a class=&quot;ds-btn ds-btn--secondary ds-btn--s&quot; href=&quot;#&quot;&gt;Investor portal&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      <div class="doc-demo">
+        <div class="doc-demo__head"><div><h3 class="ds-h4">Glass button</h3><p class="ds-body-s ds-text-secondary">Only over imagery or video.</p></div><span class="doc-demo__figma">Figma: Button / Style=Glass</span></div>
+        <div class="doc-demo__stage doc-demo__stage--image"><div class="ds-row">
+  <a class="ds-btn ds-btn--glass" href="#">Request access <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+  <a class="ds-btn ds-btn--glass ds-btn--s" href="#">Watch the film</a>
+</div></div>
+        <details class="doc-code"><summary class="ds-label-s">Show code</summary><button class="doc-copy ds-label-s" type="button" data-copy>Copy</button><pre><code>&lt;div class=&quot;ds-row&quot;&gt;
+  &lt;a class=&quot;ds-btn ds-btn--glass&quot; href=&quot;#&quot;&gt;Request access &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;a class=&quot;ds-btn ds-btn--glass ds-btn--s&quot; href=&quot;#&quot;&gt;Watch the film&lt;/a&gt;
+&lt;/div&gt;</code></pre></details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Input</h3><p class="ds-body-s ds-text-secondary">Pill field for waitlist and contact forms. Placeholders are caps; typed values keep their case. Pair with a Primary button.</p></div>
+          <span class="doc-demo__figma">Figma: Input</span>
+        </div>
+        <div class="doc-demo__stage"><form class="ds-row" onsubmit="return false">
+  <div class="ds-field">
+    <label class="ds-label-s ds-text-secondary" for="ds-email">Email</label>
+    <input class="ds-input" id="ds-email" type="email" placeholder="Email address" autocomplete="email">
+  </div>
+  <button class="ds-btn" type="submit">Join the waitlist</button>
+</form></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;form class=&quot;ds-row&quot; onsubmit=&quot;return false&quot;&gt;
+  &lt;div class=&quot;ds-field&quot;&gt;
+    &lt;label class=&quot;ds-label-s ds-text-secondary&quot; for=&quot;ds-email&quot;&gt;Email&lt;/label&gt;
+    &lt;input class=&quot;ds-input&quot; id=&quot;ds-email&quot; type=&quot;email&quot; placeholder=&quot;Email address&quot; autocomplete=&quot;email&quot;&gt;
+  &lt;/div&gt;
+  &lt;button class=&quot;ds-btn&quot; type=&quot;submit&quot;&gt;Join the waitlist&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Chip</h3><p class="ds-body-s ds-text-secondary">Metadata for dates, places and categories. Not clickable.</p></div>
+          <span class="doc-demo__figma">Figma: Chip</span>
+        </div>
+        <div class="doc-demo__stage"><div class="ds-row">
+  <span class="ds-chip">Philadelphia · Nov 18</span>
+  <span class="ds-chip ds-chip--filled">Miami · Limited to 50</span>
+  <span class="ds-chip">Retreats · 2027</span>
+</div></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;div class=&quot;ds-row&quot;&gt;
+  &lt;span class=&quot;ds-chip&quot;&gt;Philadelphia · Nov 18&lt;/span&gt;
+  &lt;span class=&quot;ds-chip ds-chip--filled&quot;&gt;Miami · Limited to 50&lt;/span&gt;
+  &lt;span class=&quot;ds-chip&quot;&gt;Retreats · 2027&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Nav bar, solid</h3><p class="ds-body-s ds-text-secondary">Every cream page. Four links at most; links hide below 992px and the button stays.</p></div>
+          <span class="doc-demo__figma">Figma: Nav Bar / Solid</span>
+        </div>
+        <div class="doc-demo__stage doc-demo__stage--bare"><header class="ds-nav">
+  <a class="ds-nav__logo" href="/" aria-label="Adessa Mind home"><svg viewBox="0 0 975 345" role="img" aria-label="Adessa Mind"><use href="#adessa-mind"/></svg></a>
+  <div class="ds-nav__right">
+    <ul class="ds-nav__links">
+      <li><a href="#">Discovery</a></li>
+      <li><a href="#">Activation</a></li>
+      <li><a href="#">Locations</a></li>
+      <li><a href="#">Investors</a></li>
+    </ul>
+    <a class="ds-btn ds-btn--s" href="#">Request access</a>
+  </div>
+</header></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;header class=&quot;ds-nav&quot;&gt;
+  &lt;a class=&quot;ds-nav__logo&quot; href=&quot;/&quot; aria-label=&quot;Adessa Mind home&quot;&gt;&lt;svg viewBox=&quot;0 0 975 345&quot; role=&quot;img&quot; aria-label=&quot;Adessa Mind&quot;&gt;&lt;use href=&quot;#adessa-mind&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;div class=&quot;ds-nav__right&quot;&gt;
+    &lt;ul class=&quot;ds-nav__links&quot;&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Discovery&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Activation&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Locations&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Investors&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;a class=&quot;ds-btn ds-btn--s&quot; href=&quot;#&quot;&gt;Request access&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Hero with overlay nav</h3><p class="ds-body-s ds-text-secondary">Full-bleed texture or video, white type, glass button. The headline is the only Display XL on the page.</p></div>
+          <span class="doc-demo__figma">Figma: Nav Bar / Overlay</span>
+        </div>
+        <div class="doc-demo__stage doc-demo__stage--bare"><section class="ds-hero" style="background-image:url('images/ds/texture-strands-smoke.webp')">
+  <header class="ds-nav ds-nav--overlay">
+  <a class="ds-nav__logo" href="/" aria-label="Adessa Mind home"><svg viewBox="0 0 975 345" role="img" aria-label="Adessa Mind"><use href="#adessa-mind"/></svg></a>
+  <div class="ds-nav__right">
+    <ul class="ds-nav__links">
+      <li><a href="#">Discovery</a></li>
+      <li><a href="#">Activation</a></li>
+      <li><a href="#">Locations</a></li>
+      <li><a href="#">Investors</a></li>
+    </ul>
+    <a class="ds-btn ds-btn--glass ds-btn--s" href="#">Request access</a>
+  </div>
+</header>
+  <div class="ds-hero__content">
+    <p class="ds-label-s">Philadelphia · November 18 · Limited space</p>
+    <h1 class="ds-display-xl">You can change<br>your mind.</h1>
+    <a class="ds-btn ds-btn--glass" href="#">Request access <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+  </div>
+</section></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;section class=&quot;ds-hero&quot; style=&quot;background-image:url(&#x27;images/ds/texture-strands-smoke.webp&#x27;)&quot;&gt;
+  &lt;header class=&quot;ds-nav ds-nav--overlay&quot;&gt;
+  &lt;a class=&quot;ds-nav__logo&quot; href=&quot;/&quot; aria-label=&quot;Adessa Mind home&quot;&gt;&lt;svg viewBox=&quot;0 0 975 345&quot; role=&quot;img&quot; aria-label=&quot;Adessa Mind&quot;&gt;&lt;use href=&quot;#adessa-mind&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;div class=&quot;ds-nav__right&quot;&gt;
+    &lt;ul class=&quot;ds-nav__links&quot;&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Discovery&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Activation&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Locations&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Investors&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;a class=&quot;ds-btn ds-btn--glass ds-btn--s&quot; href=&quot;#&quot;&gt;Request access&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+  &lt;div class=&quot;ds-hero__content&quot;&gt;
+    &lt;p class=&quot;ds-label-s&quot;&gt;Philadelphia · November 18 · Limited space&lt;/p&gt;
+    &lt;h1 class=&quot;ds-display-xl&quot;&gt;You can change&lt;br&gt;your mind.&lt;/h1&gt;
+    &lt;a class=&quot;ds-btn ds-btn--glass&quot; href=&quot;#&quot;&gt;Request access &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Section header</h3><p class="ds-body-s ds-text-secondary">Opens a section: italic eyebrow, one heading, one or two sentences. Center it for statements, left-align it above grids.</p></div>
+          <span class="doc-demo__figma">Figma: Section Header</span>
+        </div>
+        <div class="doc-demo__stage"><div class="ds-section-header ds-section-header--center">
+  <p class="ds-section-header__eyebrow">Discovery</p>
+  <h2 class="ds-h2">Understand your mind’s potential. Then reach it.</h2>
+  <p class="ds-body-m ds-section-header__body">Cognitive and biometric assessments uncover your AQ, a single read on where your mind is today and what it can do tomorrow.</p>
+</div></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;div class=&quot;ds-section-header ds-section-header--center&quot;&gt;
+  &lt;p class=&quot;ds-section-header__eyebrow&quot;&gt;Discovery&lt;/p&gt;
+  &lt;h2 class=&quot;ds-h2&quot;&gt;Understand your mind’s potential. Then reach it.&lt;/h2&gt;
+  &lt;p class=&quot;ds-body-m ds-section-header__body&quot;&gt;Cognitive and biometric assessments uncover your AQ, a single read on where your mind is today and what it can do tomorrow.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Feature cards</h3><p class="ds-body-s ds-text-secondary">Image-led cards for services, locations and stories. Titles stay under two lines.</p></div>
+          <span class="doc-demo__figma">Figma: Feature Card</span>
+        </div>
+        <div class="doc-demo__stage"><div class="ds-grid">
+  <article class="ds-card">
+    <div class="ds-card__media"><img src="images/ds/texture-water-800.webp" alt="" loading="lazy" width="800" height="500"></div>
+    <div class="ds-card__content">
+      <p class="ds-caption-l ds-text-secondary">Discovery</p>
+      <h3 class="ds-h3">Learn your AQ in ninety minutes</h3>
+      <p class="ds-body-s ds-card__body">Cognitive and biometric assessments, read together into one quotient.</p>
+      <a class="ds-btn ds-btn--secondary ds-btn--s" href="#">Learn more <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+    </div>
+  </article>
+  <article class="ds-card">
+    <div class="ds-card__media"><img src="images/ds/texture-strands-light-800.webp" alt="" loading="lazy" width="800" height="500"></div>
+    <div class="ds-card__content">
+      <p class="ds-caption-l ds-text-secondary">Activation</p>
+      <h3 class="ds-h3">A guided sequence for a clearer state of mind</h3>
+      <p class="ds-body-s ds-card__body">Light, sound and gentle neuromodulation, tuned to what your AQ reveals.</p>
+      <a class="ds-btn ds-btn--secondary ds-btn--s" href="#">Learn more <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+    </div>
+  </article>
+  <article class="ds-card">
+    <div class="ds-card__media"><img src="images/ds/texture-strands-smoke-800.webp" alt="" loading="lazy" width="800" height="500"></div>
+    <div class="ds-card__content">
+      <p class="ds-caption-l ds-text-secondary">Retreats</p>
+      <h3 class="ds-h3">Mind spas, built for recovery</h3>
+      <p class="ds-body-s ds-card__body">Multi-day programs in quiet places, with your results as the map.</p>
+      <a class="ds-btn ds-btn--secondary ds-btn--s" href="#">Learn more <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+    </div>
+  </article>
+</div></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;div class=&quot;ds-grid&quot;&gt;
+  &lt;article class=&quot;ds-card&quot;&gt;
+    &lt;div class=&quot;ds-card__media&quot;&gt;&lt;img src=&quot;images/ds/texture-water-800.webp&quot; alt=&quot;&quot; loading=&quot;lazy&quot; width=&quot;800&quot; height=&quot;500&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;ds-card__content&quot;&gt;
+      &lt;p class=&quot;ds-caption-l ds-text-secondary&quot;&gt;Discovery&lt;/p&gt;
+      &lt;h3 class=&quot;ds-h3&quot;&gt;Learn your AQ in ninety minutes&lt;/h3&gt;
+      &lt;p class=&quot;ds-body-s ds-card__body&quot;&gt;Cognitive and biometric assessments, read together into one quotient.&lt;/p&gt;
+      &lt;a class=&quot;ds-btn ds-btn--secondary ds-btn--s&quot; href=&quot;#&quot;&gt;Learn more &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class=&quot;ds-card&quot;&gt;
+    &lt;div class=&quot;ds-card__media&quot;&gt;&lt;img src=&quot;images/ds/texture-strands-light-800.webp&quot; alt=&quot;&quot; loading=&quot;lazy&quot; width=&quot;800&quot; height=&quot;500&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;ds-card__content&quot;&gt;
+      &lt;p class=&quot;ds-caption-l ds-text-secondary&quot;&gt;Activation&lt;/p&gt;
+      &lt;h3 class=&quot;ds-h3&quot;&gt;A guided sequence for a clearer state of mind&lt;/h3&gt;
+      &lt;p class=&quot;ds-body-s ds-card__body&quot;&gt;Light, sound and gentle neuromodulation, tuned to what your AQ reveals.&lt;/p&gt;
+      &lt;a class=&quot;ds-btn ds-btn--secondary ds-btn--s&quot; href=&quot;#&quot;&gt;Learn more &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class=&quot;ds-card&quot;&gt;
+    &lt;div class=&quot;ds-card__media&quot;&gt;&lt;img src=&quot;images/ds/texture-strands-smoke-800.webp&quot; alt=&quot;&quot; loading=&quot;lazy&quot; width=&quot;800&quot; height=&quot;500&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;ds-card__content&quot;&gt;
+      &lt;p class=&quot;ds-caption-l ds-text-secondary&quot;&gt;Retreats&lt;/p&gt;
+      &lt;h3 class=&quot;ds-h3&quot;&gt;Mind spas, built for recovery&lt;/h3&gt;
+      &lt;p class=&quot;ds-body-s ds-card__body&quot;&gt;Multi-day programs in quiet places, with your results as the map.&lt;/p&gt;
+      &lt;a class=&quot;ds-btn ds-btn--secondary ds-btn--s&quot; href=&quot;#&quot;&gt;Learn more &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Stats</h3><p class="ds-body-s ds-text-secondary">One number, one tracked label, an optional italic note. Four per row at most.</p></div>
+          <span class="doc-demo__figma">Figma: Stat</span>
+        </div>
+        <div class="doc-demo__stage"><div class="ds-grid" style="--cols:4; --cols-sm:2">
+  <div class="ds-stat">
+    <p class="ds-stat__value">M.67</p>
+    <p class="ds-label-s ds-stat__label">Cognitive expression</p>
+    <p class="ds-caption-m ds-stat__note">Leading domain: memory</p>
+  </div>
+  <div class="ds-stat">
+    <p class="ds-stat__value">93rd</p>
+    <p class="ds-label-s ds-stat__label">Working memory</p>
+    <p class="ds-caption-m ds-stat__note">Percentile</p>
+  </div>
+  <div class="ds-stat">
+    <p class="ds-stat__value">48th</p>
+    <p class="ds-label-s ds-stat__label">Executive function</p>
+    <p class="ds-caption-m ds-stat__note">Room to grow</p>
+  </div>
+  <div class="ds-stat">
+    <p class="ds-stat__value">8</p>
+    <p class="ds-label-s ds-stat__label">Domains measured</p>
+    <p class="ds-caption-m ds-stat__note">Four cognitive, four affective</p>
+  </div>
+</div></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;div class=&quot;ds-grid&quot; style=&quot;--cols:4; --cols-sm:2&quot;&gt;
+  &lt;div class=&quot;ds-stat&quot;&gt;
+    &lt;p class=&quot;ds-stat__value&quot;&gt;M.67&lt;/p&gt;
+    &lt;p class=&quot;ds-label-s ds-stat__label&quot;&gt;Cognitive expression&lt;/p&gt;
+    &lt;p class=&quot;ds-caption-m ds-stat__note&quot;&gt;Leading domain: memory&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ds-stat&quot;&gt;
+    &lt;p class=&quot;ds-stat__value&quot;&gt;93rd&lt;/p&gt;
+    &lt;p class=&quot;ds-label-s ds-stat__label&quot;&gt;Working memory&lt;/p&gt;
+    &lt;p class=&quot;ds-caption-m ds-stat__note&quot;&gt;Percentile&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ds-stat&quot;&gt;
+    &lt;p class=&quot;ds-stat__value&quot;&gt;48th&lt;/p&gt;
+    &lt;p class=&quot;ds-label-s ds-stat__label&quot;&gt;Executive function&lt;/p&gt;
+    &lt;p class=&quot;ds-caption-m ds-stat__note&quot;&gt;Room to grow&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ds-stat&quot;&gt;
+    &lt;p class=&quot;ds-stat__value&quot;&gt;8&lt;/p&gt;
+    &lt;p class=&quot;ds-label-s ds-stat__label&quot;&gt;Domains measured&lt;/p&gt;
+    &lt;p class=&quot;ds-caption-m ds-stat__note&quot;&gt;Four cognitive, four affective&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Feature cards on dark</h3><p class="ds-body-s ds-text-secondary">Any block can flip with data-theme=&quot;dark&quot;.</p></div>
+          <span class="doc-demo__figma">Figma: Color mode: Dark</span>
+        </div>
+        <div class="doc-demo__stage" data-theme="dark"><div class="ds-stack" style="--stack-gap: var(--space-64)"><div class="ds-section-header ds-section-header--center">
+  <p class="ds-section-header__eyebrow">Discovery</p>
+  <h2 class="ds-h2">Understand your mind’s potential. Then reach it.</h2>
+  <p class="ds-body-m ds-section-header__body">Cognitive and biometric assessments uncover your AQ, a single read on where your mind is today and what it can do tomorrow.</p>
+</div>
+<div class="ds-grid">
+  <article class="ds-card">
+    <div class="ds-card__media"><img src="images/ds/texture-water-800.webp" alt="" loading="lazy" width="800" height="500"></div>
+    <div class="ds-card__content">
+      <p class="ds-caption-l ds-text-secondary">Discovery</p>
+      <h3 class="ds-h3">Learn your AQ in ninety minutes</h3>
+      <p class="ds-body-s ds-card__body">Cognitive and biometric assessments, read together into one quotient.</p>
+      <a class="ds-btn ds-btn--secondary ds-btn--s" href="#">Learn more <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+    </div>
+  </article>
+  <article class="ds-card">
+    <div class="ds-card__media"><img src="images/ds/texture-strands-light-800.webp" alt="" loading="lazy" width="800" height="500"></div>
+    <div class="ds-card__content">
+      <p class="ds-caption-l ds-text-secondary">Activation</p>
+      <h3 class="ds-h3">A guided sequence for a clearer state of mind</h3>
+      <p class="ds-body-s ds-card__body">Light, sound and gentle neuromodulation, tuned to what your AQ reveals.</p>
+      <a class="ds-btn ds-btn--secondary ds-btn--s" href="#">Learn more <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+    </div>
+  </article>
+  <article class="ds-card">
+    <div class="ds-card__media"><img src="images/ds/texture-strands-smoke-800.webp" alt="" loading="lazy" width="800" height="500"></div>
+    <div class="ds-card__content">
+      <p class="ds-caption-l ds-text-secondary">Retreats</p>
+      <h3 class="ds-h3">Mind spas, built for recovery</h3>
+      <p class="ds-body-s ds-card__body">Multi-day programs in quiet places, with your results as the map.</p>
+      <a class="ds-btn ds-btn--secondary ds-btn--s" href="#">Learn more <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+    </div>
+  </article>
+</div></div></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;div class=&quot;ds-stack&quot; style=&quot;--stack-gap: var(--space-64)&quot;&gt;&lt;div class=&quot;ds-section-header ds-section-header--center&quot;&gt;
+  &lt;p class=&quot;ds-section-header__eyebrow&quot;&gt;Discovery&lt;/p&gt;
+  &lt;h2 class=&quot;ds-h2&quot;&gt;Understand your mind’s potential. Then reach it.&lt;/h2&gt;
+  &lt;p class=&quot;ds-body-m ds-section-header__body&quot;&gt;Cognitive and biometric assessments uncover your AQ, a single read on where your mind is today and what it can do tomorrow.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ds-grid&quot;&gt;
+  &lt;article class=&quot;ds-card&quot;&gt;
+    &lt;div class=&quot;ds-card__media&quot;&gt;&lt;img src=&quot;images/ds/texture-water-800.webp&quot; alt=&quot;&quot; loading=&quot;lazy&quot; width=&quot;800&quot; height=&quot;500&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;ds-card__content&quot;&gt;
+      &lt;p class=&quot;ds-caption-l ds-text-secondary&quot;&gt;Discovery&lt;/p&gt;
+      &lt;h3 class=&quot;ds-h3&quot;&gt;Learn your AQ in ninety minutes&lt;/h3&gt;
+      &lt;p class=&quot;ds-body-s ds-card__body&quot;&gt;Cognitive and biometric assessments, read together into one quotient.&lt;/p&gt;
+      &lt;a class=&quot;ds-btn ds-btn--secondary ds-btn--s&quot; href=&quot;#&quot;&gt;Learn more &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class=&quot;ds-card&quot;&gt;
+    &lt;div class=&quot;ds-card__media&quot;&gt;&lt;img src=&quot;images/ds/texture-strands-light-800.webp&quot; alt=&quot;&quot; loading=&quot;lazy&quot; width=&quot;800&quot; height=&quot;500&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;ds-card__content&quot;&gt;
+      &lt;p class=&quot;ds-caption-l ds-text-secondary&quot;&gt;Activation&lt;/p&gt;
+      &lt;h3 class=&quot;ds-h3&quot;&gt;A guided sequence for a clearer state of mind&lt;/h3&gt;
+      &lt;p class=&quot;ds-body-s ds-card__body&quot;&gt;Light, sound and gentle neuromodulation, tuned to what your AQ reveals.&lt;/p&gt;
+      &lt;a class=&quot;ds-btn ds-btn--secondary ds-btn--s&quot; href=&quot;#&quot;&gt;Learn more &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class=&quot;ds-card&quot;&gt;
+    &lt;div class=&quot;ds-card__media&quot;&gt;&lt;img src=&quot;images/ds/texture-strands-smoke-800.webp&quot; alt=&quot;&quot; loading=&quot;lazy&quot; width=&quot;800&quot; height=&quot;500&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;ds-card__content&quot;&gt;
+      &lt;p class=&quot;ds-caption-l ds-text-secondary&quot;&gt;Retreats&lt;/p&gt;
+      &lt;h3 class=&quot;ds-h3&quot;&gt;Mind spas, built for recovery&lt;/h3&gt;
+      &lt;p class=&quot;ds-body-s ds-card__body&quot;&gt;Multi-day programs in quiet places, with your results as the map.&lt;/p&gt;
+      &lt;a class=&quot;ds-btn ds-btn--secondary ds-btn--s&quot; href=&quot;#&quot;&gt;Learn more &lt;svg class=&quot;ds-btn__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;use href=&quot;#ds-arrow&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+&lt;/div&gt;&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      
+      <div class="doc-demo">
+        <div class="doc-demo__head">
+          <div><h3 class="ds-h4">Footer</h3><p class="ds-body-s ds-text-secondary">Brand column with the waitlist button, three link columns, legal row.</p></div>
+          <span class="doc-demo__figma">Figma: Footer</span>
+        </div>
+        <div class="doc-demo__stage doc-demo__stage--bare"><footer class="ds-footer">
+  <div class="ds-container">
+    <div class="ds-footer__top">
+      <div class="ds-footer__brand">
+        <a class="ds-nav__logo" href="/" aria-label="Adessa home"><svg viewBox="0 0 975 261" role="img" aria-label="Adessa"><use href="#adessa-wordmark"/></svg></a>
+        <p class="ds-caption-l ds-text-secondary">Cognitive wellbeing for a brighter tomorrow.</p>
+        <a class="ds-btn" href="#">Join the waitlist</a>
+      </div>
+      <div class="ds-footer__cols">
+        <nav class="ds-footer__col" aria-label="Visit">
+          <p class="ds-label-s ds-text-muted">Visit</p>
+          <a href="#">Philadelphia</a><a href="#">Miami</a><a href="#">Retreats</a>
+        </nav>
+        <nav class="ds-footer__col" aria-label="Company">
+          <p class="ds-label-s ds-text-muted">Company</p>
+          <a href="/investors">Investors</a><a href="#">Team</a><a href="#">Press</a>
+        </nav>
+        <nav class="ds-footer__col" aria-label="Contact">
+          <p class="ds-label-s ds-text-muted">Contact</p>
+          <a href="mailto:inquire@adessamind.com">inquire@adessamind.com</a>
+          <a href="https://www.instagram.com/adessamind" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.linkedin.com/company/adessamind/" target="_blank" rel="noopener">LinkedIn</a>
+        </nav>
+      </div>
+    </div>
+    <div class="ds-footer__bottom ds-label-s">
+      <span>© 2026 Adessa Mind</span>
+      <a href="/privacy-policy">Privacy Policy</a>
+    </div>
+  </div>
+</footer></div>
+        <details class="doc-code">
+          <summary class="ds-label-s">Show code</summary>
+          <button class="doc-copy ds-label-s" type="button" data-copy>Copy</button>
+          <pre><code>&lt;footer class=&quot;ds-footer&quot;&gt;
+  &lt;div class=&quot;ds-container&quot;&gt;
+    &lt;div class=&quot;ds-footer__top&quot;&gt;
+      &lt;div class=&quot;ds-footer__brand&quot;&gt;
+        &lt;a class=&quot;ds-nav__logo&quot; href=&quot;/&quot; aria-label=&quot;Adessa home&quot;&gt;&lt;svg viewBox=&quot;0 0 975 261&quot; role=&quot;img&quot; aria-label=&quot;Adessa&quot;&gt;&lt;use href=&quot;#adessa-wordmark&quot;/&gt;&lt;/svg&gt;&lt;/a&gt;
+        &lt;p class=&quot;ds-caption-l ds-text-secondary&quot;&gt;Cognitive wellbeing for a brighter tomorrow.&lt;/p&gt;
+        &lt;a class=&quot;ds-btn&quot; href=&quot;#&quot;&gt;Join the waitlist&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;ds-footer__cols&quot;&gt;
+        &lt;nav class=&quot;ds-footer__col&quot; aria-label=&quot;Visit&quot;&gt;
+          &lt;p class=&quot;ds-label-s ds-text-muted&quot;&gt;Visit&lt;/p&gt;
+          &lt;a href=&quot;#&quot;&gt;Philadelphia&lt;/a&gt;&lt;a href=&quot;#&quot;&gt;Miami&lt;/a&gt;&lt;a href=&quot;#&quot;&gt;Retreats&lt;/a&gt;
+        &lt;/nav&gt;
+        &lt;nav class=&quot;ds-footer__col&quot; aria-label=&quot;Company&quot;&gt;
+          &lt;p class=&quot;ds-label-s ds-text-muted&quot;&gt;Company&lt;/p&gt;
+          &lt;a href=&quot;/investors&quot;&gt;Investors&lt;/a&gt;&lt;a href=&quot;#&quot;&gt;Team&lt;/a&gt;&lt;a href=&quot;#&quot;&gt;Press&lt;/a&gt;
+        &lt;/nav&gt;
+        &lt;nav class=&quot;ds-footer__col&quot; aria-label=&quot;Contact&quot;&gt;
+          &lt;p class=&quot;ds-label-s ds-text-muted&quot;&gt;Contact&lt;/p&gt;
+          &lt;a href=&quot;mailto:inquire@adessamind.com&quot;&gt;inquire@adessamind.com&lt;/a&gt;
+          &lt;a href=&quot;https://www.instagram.com/adessamind&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Instagram&lt;/a&gt;
+          &lt;a href=&quot;https://www.linkedin.com/company/adessamind/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;LinkedIn&lt;/a&gt;
+        &lt;/nav&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;ds-footer__bottom ds-label-s&quot;&gt;
+      &lt;span&gt;© 2026 Adessa Mind&lt;/span&gt;
+      &lt;a href=&quot;/privacy-policy&quot;&gt;Privacy Policy&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <section class="doc-sec" id="pages">
+      <div class="doc-sec__head">
+        <p class="ds-label-s ds-text-muted">07</p>
+        <h2 class="ds-h1">Building a page</h2>
+        <p class="ds-body-l ds-text-secondary">New pages start from the starter template, which uses every component above. Existing Webflow pages keep their own styles until they are rebuilt.</p>
+      </div>
+      <div class="doc-steps">
+        <div><h3 class="ds-h4">Design it in Figma</h3><p class="ds-body-s ds-text-secondary">Start from the Components page. Use the Color, Layout and text styles only; anything else is a sign the system needs a new token.</p></div>
+        <div><h3 class="ds-h4">Copy the starter</h3><p class="ds-body-s ds-text-secondary">Duplicate <code class="ds-ui">templates/starter.html</code> to the repo root, rename it, and swap the content block by block.</p></div>
+        <div><h3 class="ds-h4">Push to main</h3><p class="ds-body-s ds-text-secondary">Vercel deploys on every push. Use a branch for a preview link to share before it goes live.</p></div>
+      </div>
+      <div class="ds-row">
+        <a class="ds-btn" href="templates/starter.html" target="_blank" rel="noopener">Open the starter page <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+        <a class="ds-btn ds-btn--secondary" href="https://www.figma.com/design/AfqGfoDWyCsRQX1Z8z1A5e/Adessa?node-id=686-3" target="_blank" rel="noopener">Figma components <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+        <a class="ds-btn ds-btn--secondary" href="css/adessa-ds.css" target="_blank" rel="noopener">View the CSS <svg class="ds-btn__arrow" aria-hidden="true"><use href="#ds-arrow"/></svg></a>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="doc-toast ds-label-s" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  var root = document.documentElement;
+  var KEY = 'adessa-ds-theme';
+  function setTheme(t){
+    root.setAttribute('data-theme', t);
+    document.querySelectorAll('[data-set-theme]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-set-theme') === t)); });
+    try { localStorage.setItem(KEY, t); } catch(e) {}
+  }
+  var saved = 'light'; try { saved = localStorage.getItem(KEY) || 'light'; } catch(e) {}
+  setTheme(saved);
+  document.querySelectorAll('[data-set-theme]').forEach(function(b){ b.addEventListener('click', function(){ setTheme(b.getAttribute('data-set-theme')); }); });
+
+  var toast = document.querySelector('.doc-toast'); var tt;
+  function say(msg){ toast.textContent = msg; toast.classList.add('is-on'); clearTimeout(tt); tt = setTimeout(function(){ toast.classList.remove('is-on'); }, 1600); }
+  function copy(text){
+    function done(){ say('Copied ' + (text.length > 40 ? 'code' : text)); }
+    if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(done, fallback); } else { fallback(); }
+    function fallback(){ var t = document.createElement('textarea'); t.value = text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch(e) { say('Copy failed'); } t.remove(); }
+  }
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-copy-text]'); if (el) { copy(el.getAttribute('data-copy-text')); return; }
+    var b = e.target.closest('[data-copy]'); if (b) { copy(b.parentElement.querySelector('code').textContent); }
+  });
+  document.addEventListener('keydown', function(e){ if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-copy-text][role=button]')) { e.preventDefault(); copy(e.target.getAttribute('data-copy-text')); } });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.doc-side a[href^="#"]'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){ entries.forEach(function(en){ if (en.isIntersecting) { links.forEach(function(a){ a.classList.toggle('is-active', a.getAttribute('href') === '#' + en.target.id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('.doc-sec[id]').forEach(function(s){ io.observe(s); });
+    var rv = new IntersectionObserver(function(entries){ entries.forEach(function(en){ if (en.isIntersecting) { en.target.classList.add('is-visible'); rv.unobserve(en.target); } }); }, { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.ds-reveal').forEach(function(el){ rv.observe(el); });
+  } else { document.querySelectorAll('.ds-reveal').forEach(function(el){ el.classList.add('is-visible'); }); }
+})();
+</script>
+</body>
+</html>

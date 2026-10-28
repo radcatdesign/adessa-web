@@ -4,9 +4,16 @@ Static code export of the Adessa Webflow site (adessamind.com), served by Vercel
 
 ## Updating
 1. Publish in Webflow, then Export Code.
-2. Replace the pages, css/ and images/ with the export. Keep `vercel.json`, `.gitignore`, this README, `scripts/`, `js/vendor/` and `videos/Adessa-home.webm`.
+2. Copy the export over the repo (overwrite, don't delete first). Exported files replace their old copies; everything we added stays: `vercel.json`, `.gitignore`, this README, `scripts/`, `js/vendor/`, `videos/Adessa-home.webm`, `images/placeholder.svg`, and the design system files (`design-system.html`, `templates/`, `css/adessa-ds.css`, `images/ds/`).
 3. Run `python3 scripts/localize.py`.
 4. Commit and push to `main`. Vercel deploys production on every push to `main`; other branches get preview URLs.
+
+## Design system
+- `/design-system` is the internal reference (noindex, not linked from the site). It mirrors the Figma file's Design System and Components pages.
+- `css/adessa-ds.css` holds the tokens and components for every new page. Its custom properties match the Figma variables' code syntax one to one.
+- New pages start from `templates/starter.html`. Copy it to the root, fix the `../` paths, and drop the robots line when it goes live.
+- Brand textures live in `images/ds/`.
+- Existing Webflow pages keep their own CSS until they are rebuilt.
 
 ## Notes
 - `vercel.json` turns on clean URLs, so `/miami` serves `miami.html` and `/miami.html` redirects to `/miami`.
