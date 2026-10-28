@@ -68,8 +68,12 @@
     .mia-chap { display: none; }
     @media (max-width: 991px) {
       .mia-chap { display: block; position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 1000; font-family: var(--font-sans); }
-      .mia-chap__btn { width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(74,65,50,.14); background: rgba(255,250,240,.82); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(34,29,23,.18); display: grid; place-items: center; cursor: pointer; padding: 0; color: var(--charcoal); opacity: 0; transform: translateY(16px) scale(.9); pointer-events: none; transition: opacity .4s var(--ease), transform .4s var(--ease); }
+      .mia-chap__btn { position: relative; isolation: isolate; width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(74,65,50,.14); background: transparent; box-shadow: 0 10px 30px rgba(34,29,23,.18); display: grid; place-items: center; cursor: pointer; padding: 0; color: var(--charcoal); opacity: 0; transform: translateY(16px) scale(.9); pointer-events: none; transition: opacity .4s var(--ease), transform .4s var(--ease); }
       .mia-chap.is-shown .mia-chap__btn, .mia-chap.is-open .mia-chap__btn { opacity: 1; transform: none; pointer-events: auto; }
+      .mia-chap__btn::before, .mia-chap__panel::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: rgba(255,250,240,.86); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+      .ds-footer { padding-bottom: calc(var(--space-40) + 76px + env(safe-area-inset-bottom)); }
+      .ds-footer__bottom { flex-wrap: wrap; }
+      .ds-footer__bottom > * { white-space: nowrap; }
       .mia-chap__icon { position: relative; width: 20px; height: 12px; display: block; }
       .mia-chap__icon i { position: absolute; left: 0; height: 1.5px; border-radius: 2px; background: currentColor; transition: transform .35s var(--ease), opacity .25s, width .35s var(--ease), top .35s var(--ease); }
       .mia-chap__icon i:nth-child(1) { top: 0; width: 20px; }
@@ -78,7 +82,7 @@
       .mia-chap.is-open .mia-chap__icon i:nth-child(1) { top: 5.25px; transform: rotate(45deg); }
       .mia-chap.is-open .mia-chap__icon i:nth-child(2) { opacity: 0; }
       .mia-chap.is-open .mia-chap__icon i:nth-child(3) { top: 5.25px; transform: rotate(-45deg); }
-      .mia-chap__panel { position: absolute; right: 0; bottom: 70px; width: min(300px, calc(100vw - 40px)); padding: var(--space-24); border-radius: var(--radius-xl); background: rgba(255,250,240,.9); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border: 1px solid rgba(74,65,50,.12); box-shadow: 0 20px 50px rgba(34,29,23,.22); transform-origin: 100% 100%; transition: opacity .3s var(--ease), transform .3s var(--ease); }
+      .mia-chap__panel { position: absolute; right: 0; bottom: 70px; width: min(300px, calc(100vw - 40px)); padding: var(--space-24); border-radius: var(--radius-xl); background: transparent; isolation: isolate; border: 1px solid rgba(74,65,50,.12); box-shadow: 0 20px 50px rgba(34,29,23,.22); transform-origin: 100% 100%; transition: opacity .3s var(--ease), transform .3s var(--ease); }
       .mia-chap__panel[hidden] { display: block; opacity: 0; transform: translateY(10px) scale(.96); pointer-events: none; visibility: hidden; }
       .mia-chap__title { color: var(--taupe); margin: 0 0 var(--space-12); }
       .mia-chap ol { list-style: none; margin: 0; padding: 0; }
