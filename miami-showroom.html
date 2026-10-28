@@ -92,8 +92,13 @@
     .mia-steps li { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--space-24); align-items: baseline; padding: var(--space-24) 0; border-top: var(--stroke-hairline) solid var(--color-border-default); }
     .mia-steps li:last-child { border-bottom: var(--stroke-hairline) solid var(--color-border-default); }
     .mia-steps li p { color: var(--color-text-secondary); }
-    .mia-photo { margin: 0; border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.35); width: 100%; }
-    .mia-photo img { width: 100%; height: auto; }
+    .mia-aq { position: relative; isolation: isolate; overflow: hidden; min-height: min(100svh, 980px); display: flex; align-items: center; background: var(--espresso-900); }
+    .mia-aq__bg { position: absolute; inset: 0; z-index: -1; }
+    .mia-aq__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+    .mia-aq__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(34,29,23,.94) 0%, rgba(34,29,23,.86) 32%, rgba(34,29,23,.45) 52%, rgba(34,29,23,0) 70%), linear-gradient(180deg, rgba(34,29,23,.35) 0%, rgba(34,29,23,0) 25%, rgba(34,29,23,0) 75%, rgba(34,29,23,.35) 100%); }
+    .mia-aq__inner { width: 100%; }
+    .mia-aq__inner > .ds-stack { max-width: 560px; }
+    .mia-aq .mia-steps li { border-color: rgba(246,238,227,.18); }
     .mia-papers { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-24); }
     .mia-paper { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); overflow: hidden; }
     .mia-paper img { width: 100%; height: auto; }
@@ -147,6 +152,13 @@
       .mia-partner img { width: 160px; }
       .mia-paper:nth-child(2) { transform: none; }
       .mia-wide { aspect-ratio: 4 / 3; }
+    }
+    @media (max-width: 991px) {
+      .mia-aq { display: block; padding-top: 0; }
+      .mia-aq__bg { position: relative; inset: auto; height: 62vw; min-height: 260px; margin-bottom: calc(var(--space-48) * -1); }
+      .mia-aq__bg img { object-position: 60% 50%; }
+      .mia-aq__bg::after { background: linear-gradient(180deg, rgba(34,29,23,0) 55%, rgba(34,29,23,1) 100%); }
+      .mia-aq__inner > .ds-stack { max-width: none; }
     }
     @media (max-width: 767px) {
       .mia-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-12); }
@@ -233,8 +245,9 @@
   </section>
 
   <!-- 02 -->
-  <section class="ds-section" id="aq" data-theme="dark" style="background-color: var(--color-surface-subtle)">
-    <div class="ds-container mia-split">
+  <section class="ds-section mia-aq" id="aq" data-theme="dark">
+    <div class="mia-aq__bg" aria-hidden="true"><img src="images/mia/aq-report-desk.webp" alt="" loading="lazy" width="1536" height="1024"></div>
+    <div class="ds-container mia-aq__inner">
       <div class="ds-stack" data-show-delay="100" style="--stack-gap: var(--space-48)">
         <div class="mia-head">
           <p class="mia-eyebrow ds-label-s"><span>02</span><span>AQ, understand your mind</span></p>
@@ -248,7 +261,6 @@
           <li><span class="ds-label-m">Reassess</span><p class="ds-body-s">Repeat measurement to examine change over time and refine programming.</p></li>
         </ol>
       </div>
-      <figure class="mia-photo" data-show-delay="100"><img src="images/mia/aq-report-desk.webp" alt="A printed AQ report in a leather binder on a sunlit desk: A.82, greatest potential in working memory" loading="lazy" width="1536" height="1024"></figure>
     </div>
   </section>
 
