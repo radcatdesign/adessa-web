@@ -84,7 +84,7 @@
     .mia-panel--inverse .ds-label-s, .mia-panel--inverse p { color: var(--oat); }
     .mia-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-24); }
     .mia-stat { display: flex; flex-direction: column; gap: var(--space-8); }
-    .mia-stat__v { font-family: var(--font-serif); font-weight: 300; font-size: clamp(48px, 5.4vw, 76px); line-height: 1; letter-spacing: -0.01em; }
+    .mia-stat__v { font-variant-numeric: tabular-nums; font-family: var(--font-serif); font-weight: 300; font-size: clamp(48px, 5.4vw, 76px); line-height: 1; letter-spacing: -0.01em; }
     .mia-stat__l { color: var(--color-text-secondary); }
     .mia-panel--inverse .mia-stat__v { color: var(--ivory); font-size: clamp(56px, 6.4vw, 92px); }
 
@@ -432,7 +432,31 @@
       .to({}, { duration: 0.3 });
   }
 
-  function start() { textAnim(); showDelay(); videoReveal(); }
+  // Count numbers up from zero when they scroll into view
+  function countUp() {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target, d = el._count, o = { v: 0 };
+        gsap.to(o, { v: d.target, duration: 1.8, ease: 'power3.out', delay: 0.2,
+          onUpdate: function () { el.textContent = d.pre + fmt(o.v, d) + d.post; },
+          onComplete: function () { el.textContent = d.final; } });
+        io.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    function fmt(v, d) { var n = d.dec ? v.toFixed(d.dec) : String(Math.round(v)); return d.comma ? n.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : n; }
+    document.querySelectorAll('.mia-stat__v').forEach(function (el) {
+      var final = el.textContent.trim(), m = final.match(/^(\D*)([\d,.]+)(.*)$/);
+      if (!m) return;
+      var num = m[2].replace(/,/g, '');
+      el._count = { final: final, pre: m[1], post: m[3], target: parseFloat(num), dec: (num.split('.')[1] || '').length, comma: m[2].indexOf(',') > -1 };
+      el.setAttribute('aria-label', final);
+      el.textContent = m[1] + '0' + m[3];
+      io.observe(el);
+    });
+  }
+
+  function start() { textAnim(); showDelay(); videoReveal(); countUp(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
 </script>
