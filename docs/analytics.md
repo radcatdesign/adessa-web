@@ -20,7 +20,7 @@ First-party analytics for adessamind.com: a small tracking script on every publi
 
 | Name | What it does |
 |---|---|
-| `DATABASE_URL` | Postgres connection string. Added by the Neon integration (Storage, Create, Neon, connect to adessa-web). Without it the functions fall back to an in-memory database that forgets everything. |
+| `ADESSA_DATABASE_URL` (or `DATABASE_URL`) | Postgres connection string, added by the Neon integration (connected 2026-10-28 with the `ADESSA_` prefix). Without it the functions fall back to an in-memory database that forgets everything. |
 | `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY` | The "Adessa Website" Clerk app. Staff sign in with it. |
 | `ANALYTICS_STAFF_EMAILS` | Comma-separated emails allowed into the dashboard. A Clerk account with a verified email on this list gets in; nobody else does. |
 | `CRON_SECRET` | Any long random string. Vercel sends it to the daily job; other callers are refused. |
