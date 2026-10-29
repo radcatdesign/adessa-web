@@ -157,7 +157,7 @@ export async function collect(req, res) {
     else if (k === 'id') await identify(ctx);
     send(res, 204);
   } catch (e) {
-    console.error('analytics collect', e);
+    if (e.code !== 'NO_DB') console.error('analytics collect', e);
     send(res, 204); // never surface errors to the page
   }
 }
@@ -189,7 +189,7 @@ export async function presence(req, res) {
     );
     send(res, 204);
   } catch (e) {
-    console.error('analytics presence', e);
+    if (e.code !== 'NO_DB') console.error('analytics presence', e);
     send(res, 204);
   }
 }

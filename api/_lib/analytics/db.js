@@ -28,6 +28,8 @@ export function realDb() {
   if (!cache.real) {
     cache.real = (async () => {
       const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+      // On Vercel an in-memory store would silently lose data, so refuse instead.
+      if (!url && process.env.VERCEL) throw Object.assign(new Error('DATABASE_URL is not set'), { code: 'NO_DB' });
       const db = url ? await neonDb(url) : await pgliteDb();
       await migrate(db);
       return db;

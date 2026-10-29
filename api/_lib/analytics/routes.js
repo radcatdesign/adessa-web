@@ -230,6 +230,7 @@ export async function data(req, res) {
     const out = await route(db, q, req, ctx);
     return send(res, 200, { ...out, sample });
   } catch (e) {
+    if (e.code === 'NO_DB') return send(res, 503, { error: 'The analytics database isn\u2019t connected yet. Turn on Sample data to look around.' });
     console.error('analytics data', q.r, e);
     return send(res, 500, { error: 'Something went wrong loading this report.' });
   }
