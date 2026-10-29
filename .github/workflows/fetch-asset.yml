@@ -1,0 +1,26 @@
+name: fetch-asset
+on:
+  push:
+    branches: [asset-fetch]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the Return photo from Google Drive
+        run: |
+          mkdir -p incoming
+          curl -sSL -o incoming/BC4A6265.jpg "https://drive.usercontent.google.com/download?id=1oCD07JiHhe7DxTMvLv7JVtb9P1L7Nwoh&export=download&confirm=t"
+          file incoming/BC4A6265.jpg
+          ls -la incoming
+          file incoming/BC4A6265.jpg | grep -q JPEG
+      - name: Commit it to this branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git rm -q .github/workflows/fetch-asset.yml
+          git add incoming
+          git commit -m "Fetched Return photo from Drive"
+          git push
