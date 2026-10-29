@@ -125,6 +125,8 @@
   @media (prefers-reduced-motion: reduce) { .hq-acc__panel, .hq-acc__panel p, .hq-acc__btn::after { transition: none; } }
 
   .hu-quote { position: relative; isolation: isolate; overflow: hidden; margin: 0 max(40px, calc((100% - 1360px) / 2)) 40px; border-radius: 24px; padding: 140px 24px; background: #221d17 url('images/ds/texture-strands-smoke.webp') center / cover; color: #fffaf0; text-align: center; }
+  .hu-quote__video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.6s ease; }
+  .hu-quote__video.is-ready { opacity: 1; }
   .hu-quote::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(34, 29, 23, .55); }
   .hu-quote__fig { margin: 0 auto; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
   .hu-quote__text { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 44px; line-height: 1.25; border: 0; padding: 0; }
@@ -295,6 +297,10 @@
         <script type="application/json" id="hq-data">[{"letter": "A", "lead": "att", "aq": 82, "potential": "Executive Function", "leadName": "Attention", "att": 95, "wm": 78, "ps": 80, "ef": 75, "mind": 80, "mood": 85, "comp": 78, "res": 84}, {"letter": "M", "lead": "wm", "aq": 74, "potential": "Processing Speed", "leadName": "Working Memory", "att": 72, "wm": 92, "ps": 66, "ef": 67, "mind": 76, "mood": 70, "comp": 72, "res": 68}, {"letter": "P", "lead": "ps", "aq": 79, "potential": "Working Memory", "leadName": "Processing Speed", "att": 78, "wm": 70, "ps": 93, "ef": 76, "mind": 74, "mood": 82, "comp": 79, "res": 77}, {"letter": "E", "lead": "ef", "aq": 81, "potential": "Working Memory", "leadName": "Executive Function", "att": 80, "wm": 74, "ps": 76, "ef": 94, "mind": 83, "mood": 77, "comp": 80, "res": 79}]</script>
       </section>
       <section class="hu-quote">
+        <video class="hu-quote__video" autoplay muted loop playsinline preload="metadata" poster="images/mia/cta-poster.jpg" aria-hidden="true" onloadedmetadata="this.defaultPlaybackRate=0.5;this.playbackRate=0.5" oncanplay="this.playbackRate=0.5;this.classList.add('is-ready')">
+          <source src="videos/adessa-texture-loop.webm" type="video/webm">
+          <source src="videos/adessa-texture-loop.mp4" type="video/mp4">
+        </video>
         <figure class="hu-quote__fig">
           <blockquote data-text-anim="" class="hu-quote__text">“It felt very informed, unlike anything I’ve done before, and gave me insights I never thought were possible.”</blockquote>
           <figcaption data-show-delay="400" class="hu-quote__by">Miami guest</figcaption>
@@ -723,6 +729,18 @@
     if (!t) return;
     if (sm) sm.scrollTo(sm.offset(t, 'top top'), true); else t.scrollIntoView({ behavior: 'smooth' });
   });
+
+  // Step photos open like a curtain from the bottom while the image settles from a slight zoom (same as /miami-showroom)
+  if (window.gsap && window.ScrollTrigger && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.hu-row .ph__sec-2__right').forEach(function (frame) {
+      var media = frame.querySelectorAll('.ph__sec-2__img, .ph__sec-2__video');
+      gsap.set(frame, { clipPath: 'inset(100% 0% 0% 0% round 24px)' });
+      gsap.set(media, { scale: 1.25, transformOrigin: '50% 60%' });
+      gsap.timeline({ scrollTrigger: { trigger: frame, start: 'top bottom-=60', once: true } })
+        .to(frame, { clipPath: 'inset(0% 0% 0% 0% round 24px)', duration: 1.5, ease: 'power4.inOut' }, 0)
+        .to(media, { scale: 1, duration: 2.4, ease: 'power3.out' }, 0.1);
+    });
+  }
 
   // AQ visual: draw in on scroll, cycle A, M, P, E
   var root = document.querySelector('.hq'); if (!root) return;
