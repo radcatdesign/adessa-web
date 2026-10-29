@@ -95,10 +95,25 @@
   .hq-dot:focus-visible { outline: 2px solid #8e9ba4; outline-offset: 2px; border-radius: 8px; }
   .hq__caption { margin: 0; font-family: Fraunces, serif; font-style: italic; font-weight: 300; font-size: 16px; color: #515355; opacity: .8; }
   .hq__list { margin: 0; display: flex; flex-direction: column; }
-  .hq__list > div { padding: 22px 0; border-top: 1px solid rgba(81, 83, 85, .18); }
-  .hq__list > div:last-child { border-bottom: 1px solid rgba(81, 83, 85, .18); }
-  .hq__list dt { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #38393b; margin-bottom: 8px; }
-  .hq__list dd { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 18px; line-height: 1.5; color: #515355; }
+  .hq-acc__item { position: relative; border-top: 1px solid rgba(81, 83, 85, .18); }
+  .hq-acc__item:last-child { border-bottom: 1px solid rgba(81, 83, 85, .18); }
+  .hq-acc__h { margin: 0; font: inherit; }
+  .hq-acc__btn { all: unset; box-sizing: border-box; position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 24px 0; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #38393b; opacity: .5; transition: opacity .4s ease; }
+  .hq-acc__btn::after { content: ""; width: 9px; height: 9px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: translateY(-3px) rotate(45deg); transition: transform .4s ease; margin-right: 4px; flex: none; }
+  .hq-acc__btn:hover, .hq-acc__item.is-open .hq-acc__btn { opacity: 1; }
+  .hq-acc__item.is-open .hq-acc__btn::after { transform: translateY(2px) rotate(225deg); }
+  .hq-acc__btn:focus-visible { outline: 2px solid #8e9ba4; outline-offset: 4px; border-radius: 4px; }
+  .hq-acc__bar { position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: #38393b; transform: scaleX(0); transform-origin: left center; pointer-events: none; }
+  .hq-acc.is-auto .hq-acc__item.is-open .hq-acc__bar { animation: hqFill var(--hq-dur, 7s) linear forwards; }
+  .hq-acc.is-paused .hq-acc__bar { animation-play-state: paused !important; }
+  @keyframes hqFill { to { transform: scaleX(1); } }
+  .hq-acc__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s cubic-bezier(.65, 0, .35, 1); }
+  .hq-acc__panel > div { overflow: hidden; min-height: 0; }
+  .hq-acc__item.is-open .hq-acc__panel { grid-template-rows: 1fr; }
+  .hq-acc__panel p { margin: 0; padding: 0 0 28px; font-family: Fraunces, serif; font-weight: 300; font-size: 20px; line-height: 1.5; color: #515355; opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .6s ease; }
+  .hq-acc__item.is-open .hq-acc__panel p { opacity: 1; transform: none; transition-delay: .2s; }
+  @media (min-width: 992px) { .hq__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); } .hq__list { order: -1; } }
+  @media (prefers-reduced-motion: reduce) { .hq-acc__panel, .hq-acc__panel p, .hq-acc__btn::after { transition: none; } }
 
   .hu-quote { position: relative; isolation: isolate; overflow: hidden; padding: 160px 24px; background: #221d17 url('images/ds/texture-strands-smoke.webp') center / cover; color: #fffaf0; text-align: center; }
   .hu-quote::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(34, 29, 23, .55); }
@@ -122,7 +137,7 @@
     .hu-row .ph__sec-2__right { min-height: 420px; order: -1; }
     .hu-row .ph__sec-2__left { padding: 72px 20px; }
     .hu-step__title { font-size: 30px; }
-    .hq__list dd { font-size: 17px; }
+    .hq-acc__panel p { font-size: 18px; }
     .hu-quote { padding: 110px 20px; }
     .hu-quote__text { font-size: 28px; }
     .hu-hero-sub { font-size: 18px; }
@@ -239,13 +254,28 @@
             <div class="hq__dots" role="group" aria-label="Example AQs"><button type="button" class="hq-dot is-active" data-i="0" aria-label="Show an example AQ led by Attention" aria-pressed="true"><span class="hq-dot__mark"></span><span class="hq-dot__l">A</span></button><button type="button" class="hq-dot" data-i="1" aria-label="Show an example AQ led by Working Memory" aria-pressed="false"><span class="hq-dot__mark"></span><span class="hq-dot__l">M</span></button><button type="button" class="hq-dot" data-i="2" aria-label="Show an example AQ led by Processing Speed" aria-pressed="false"><span class="hq-dot__mark"></span><span class="hq-dot__l">P</span></button><button type="button" class="hq-dot" data-i="3" aria-label="Show an example AQ led by Executive Function" aria-pressed="false"><span class="hq-dot__mark"></span><span class="hq-dot__l">E</span></button></div>
             <p class="hq__caption" aria-live="polite">Example AQ led by <span data-lead>Attention</span></p>
           </div>
-          <dl class="hq__list">
-            <div data-show-delay="100"><dt>Cognitive Domains</dt><dd>Four functional areas of your brain: Attention, Working Memory, Processing Speed, and Executive Function.</dd></div>
-            <div data-show-delay="200"><dt>Affective Domains</dt><dd>Four physiological states underneath: Mood, Mindfulness, Composure, and Resilience.</dd></div>
-            <div data-show-delay="300"><dt>Your AQ</dt><dd>See your strongest cognitive domain (leading letter) and how much of your cognitive potential you’re using (digit).</dd></div>
-            <div data-show-delay="400"><dt>Personal to You</dt><dd>Your results are measured against your own cognitive capacity. There are no “low” or “high” scores, only potential.</dd></div>
-            <div data-show-delay="500"><dt>Untapped Potential</dt><dd>Unfilled segments aren’t a deficit, they reveal where you have unused cognitive capacity and steer your Activation Sessions.</dd></div>
-          </dl>
+          <div class="hq__list hq-acc">
+            <div class="hq-acc__item is-open" data-show-delay="100">
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b0" aria-expanded="true" aria-controls="hq-acc-p0">Cognitive Domains<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <div class="hq-acc__panel" id="hq-acc-p0" role="region" aria-labelledby="hq-acc-b0"><div><p>Four functional areas of your brain: Attention, Working Memory, Processing Speed, and Executive Function.</p></div></div>
+            </div>
+            <div class="hq-acc__item" data-show-delay="200">
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b1" aria-expanded="false" aria-controls="hq-acc-p1">Affective Domains<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <div class="hq-acc__panel" id="hq-acc-p1" role="region" aria-labelledby="hq-acc-b1"><div><p>Four physiological states underneath: Mood, Mindfulness, Composure, and Resilience.</p></div></div>
+            </div>
+            <div class="hq-acc__item" data-show-delay="300">
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b2" aria-expanded="false" aria-controls="hq-acc-p2">Your AQ<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <div class="hq-acc__panel" id="hq-acc-p2" role="region" aria-labelledby="hq-acc-b2"><div><p>See your strongest cognitive domain (leading letter) and how much of your cognitive potential you’re using (digit).</p></div></div>
+            </div>
+            <div class="hq-acc__item" data-show-delay="400">
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b3" aria-expanded="false" aria-controls="hq-acc-p3">Personal to You<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <div class="hq-acc__panel" id="hq-acc-p3" role="region" aria-labelledby="hq-acc-b3"><div><p>Your results are measured against your own cognitive capacity. There are no “low” or “high” scores, only potential.</p></div></div>
+            </div>
+            <div class="hq-acc__item" data-show-delay="500">
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b4" aria-expanded="false" aria-controls="hq-acc-p4">Untapped Potential<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <div class="hq-acc__panel" id="hq-acc-p4" role="region" aria-labelledby="hq-acc-b4"><div><p>Unfilled segments aren’t a deficit, they reveal where you have unused cognitive capacity and steer your Activation Sessions.</p></div></div>
+            </div>
+          </div>
         </div>
         <script type="application/json" id="hq-data">[{"letter": "A", "lead": "att", "aq": 82, "potential": "Executive Function", "leadName": "Attention", "att": 95, "wm": 78, "ps": 80, "ef": 75, "mind": 80, "mood": 85, "comp": 78, "res": 84}, {"letter": "M", "lead": "wm", "aq": 74, "potential": "Processing Speed", "leadName": "Working Memory", "att": 72, "wm": 92, "ps": 66, "ef": 67, "mind": 76, "mood": 70, "comp": 72, "res": 68}, {"letter": "P", "lead": "ps", "aq": 79, "potential": "Working Memory", "leadName": "Processing Speed", "att": 78, "wm": 70, "ps": 93, "ef": 76, "mind": 74, "mood": 82, "comp": 79, "res": 77}, {"letter": "E", "lead": "ef", "aq": 81, "potential": "Working Memory", "leadName": "Executive Function", "att": 80, "wm": 74, "ps": 76, "ef": 94, "mind": 83, "mood": 77, "comp": 80, "res": 79}]</script>
       </section>
@@ -717,6 +747,36 @@
     if (inView && !drawn) { drawn = true; show(0, true); if (!reduce) timer = setInterval(tick, 5000); }
   }, { threshold: 0.35 });
   io.observe(root.querySelector('.hq__visual'));
+
+  // AQ definitions: one open at a time, auto-advance with a progress line, click to open
+  (function () {
+    var acc = root.querySelector('.hq-acc'); if (!acc) return;
+    var items = acc.querySelectorAll('.hq-acc__item'), open = 0, auto = !reduce;
+    function openItem(i) {
+      items.forEach(function (it, j) {
+        var on = j === i;
+        it.classList.toggle('is-open', on);
+        it.querySelector('.hq-acc__btn').setAttribute('aria-expanded', String(on));
+        var bar = it.querySelector('.hq-acc__bar'); bar.style.animation = 'none'; bar.offsetWidth; bar.style.animation = '';
+      });
+      open = i;
+    }
+    items.forEach(function (it, i) {
+      it.querySelector('.hq-acc__btn').addEventListener('click', function () {
+        if (auto) { auto = false; acc.classList.remove('is-auto'); }
+        openItem(i);
+      });
+      it.querySelector('.hq-acc__bar').addEventListener('animationend', function () {
+        if (auto && i === open) openItem((open + 1) % items.length);
+      });
+    });
+    if (auto) {
+      acc.classList.add('is-auto', 'is-paused');
+      var seen = false, sync = function () { acc.classList.toggle('is-paused', !seen || document.hidden); };
+      new IntersectionObserver(function (es) { seen = es[0].isIntersecting; sync(); }, { threshold: 0.5 }).observe(acc);
+      document.addEventListener('visibilitychange', sync);
+    }
+  })();
 })();
 </script>
 </body>
