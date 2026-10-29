@@ -49,6 +49,86 @@
     will-change: transform;
   }
 </style>
+
+<style>
+  /* Oct 2026 web update */
+  .hu-hero-title { margin: 0; font-weight: 300; }
+  .hu-hero-sub { max-width: 560px; margin: 0 auto; line-height: 1.35; }
+  .hu-intro { padding-bottom: 40px; gap: 24px; text-align: center; padding-left: 24px; padding-right: 24px; }
+  .hu-intro .p-la__sec__headline { margin: 0; }
+  .hu-intro__body { max-width: 640px; margin: 0; color: var(--dusk); }
+  .hu-step { gap: 20px; }
+  .hu-step__eyebrow { display: flex; align-items: baseline; gap: 10px; justify-content: center; }
+  .hu-num { font-family: 'Plus Jakarta Sans', sans-serif; font-style: normal; font-size: 11px; letter-spacing: .3em; font-weight: 600; opacity: .7; }
+  .hu-step__title { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 38px; line-height: 1.15; max-width: 480px; }
+  .hu-step__body { margin: 0; }
+
+  .hq { max-width: 1240px; margin: 0 auto; padding: 140px 24px 120px; }
+  .hq__head { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; max-width: 760px; margin: 0 auto 72px; }
+  .hq__head .p-la__sec__headline { margin: 0; }
+  .hq__intro { margin: 0; }
+  .hq__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 72px; align-items: center; }
+  .hq__visual { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .hq-svg { width: 100%; max-width: 520px; height: auto; overflow: visible; }
+  .hq-svg defs path { fill: none; }
+  .hq-track { fill: none; stroke: rgba(81, 83, 85, .08); stroke-linecap: round; }
+  .hq-track--out, .hq-seg--out { stroke-width: 18; }
+  .hq-track--in, .hq-seg--in { stroke-width: 11; }
+  .hq-seg { fill: none; stroke-linecap: round; transition: stroke .6s ease; }
+  .hq-seg--out { stroke: #515355; }
+  .hq-seg--in { stroke: #8e9ba4; }
+  .hq[data-letter="A"] .hq-seg.is-lead { stroke: #d89048; }
+  .hq[data-letter="M"] .hq-seg.is-lead { stroke: #3a8278; }
+  .hq[data-letter="P"] .hq-seg.is-lead { stroke: #c8645a; }
+  .hq[data-letter="E"] .hq-seg.is-lead { stroke: #5f6da3; }
+  .hq-lab { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; fill: #515355; letter-spacing: .18em; }
+  .hq-lab--out { font-size: 8.5px; }
+  .hq-lab--in { font-size: 6.5px; fill: #7f8c95; }
+  .hq-aq { font-family: Fraunces, serif; font-weight: 300; font-size: 54px; fill: #38393b; letter-spacing: .01em; }
+  .hq-sub { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 6.5px; letter-spacing: .24em; fill: #7f8c95; }
+  .hq__dots { display: flex; gap: 22px; }
+  .hq-dot { all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px; }
+  .hq-dot__mark { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #515355; transition: background .3s ease, transform .3s ease; }
+  .hq-dot.is-active .hq-dot__mark { background: #515355; transform: scale(1.15); }
+  .hq-dot__l { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 10px; letter-spacing: .2em; font-weight: 600; color: #515355; opacity: .55; }
+  .hq-dot.is-active .hq-dot__l { opacity: 1; }
+  .hq-dot:focus-visible { outline: 2px solid #8e9ba4; outline-offset: 2px; border-radius: 8px; }
+  .hq__caption { margin: 0; font-family: Fraunces, serif; font-style: italic; font-weight: 300; font-size: 16px; color: #515355; opacity: .8; }
+  .hq__list { margin: 0; display: flex; flex-direction: column; }
+  .hq__list > div { padding: 22px 0; border-top: 1px solid rgba(81, 83, 85, .18); }
+  .hq__list > div:last-child { border-bottom: 1px solid rgba(81, 83, 85, .18); }
+  .hq__list dt { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #38393b; margin-bottom: 8px; }
+  .hq__list dd { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 18px; line-height: 1.5; color: #515355; }
+
+  .hu-quote { position: relative; isolation: isolate; overflow: hidden; padding: 160px 24px; background: #221d17 url('images/ds/texture-strands-smoke.webp') center / cover; color: #fffaf0; text-align: center; }
+  .hu-quote::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(34, 29, 23, .55); }
+  .hu-quote__fig { margin: 0 auto; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .hu-quote__text { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 44px; line-height: 1.25; }
+  .hu-quote__by { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; opacity: .85; }
+
+  .hu-foot-head { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+  .hu-foot-head .h4 { margin: 0; }
+  .hu-foot-head .t-m { margin: 0; }
+
+  @media (max-width: 991px) {
+    .hq { padding: 100px 20px 90px; }
+    .hq__head { margin-bottom: 48px; }
+    .hq__grid { grid-template-columns: minmax(0, 1fr); gap: 56px; }
+    .hu-step__title { font-size: 32px; }
+    .hu-quote__text { font-size: 34px; }
+  }
+  @media (max-width: 767px) {
+    .hu-row.ph__sec-2 { height: auto; }
+    .hu-row .ph__sec-2__right { min-height: 420px; }
+    .hu-row .ph__sec-2__left { padding: 72px 20px; }
+    .hu-step__title { font-size: 30px; }
+    .hq__list dd { font-size: 17px; }
+    .hu-quote { padding: 110px 20px; }
+    .hu-quote__text { font-size: 28px; }
+    .hu-hero-sub { font-size: 18px; }
+    .footer-wrapper, .footer, .footer__bg { height: 520px; }
+  }
+</style>
 </head>
 <body>
   <div id="smooth-wrapper" class="smooth-wrapper">
@@ -60,10 +140,10 @@
         </div>
         <div class="p-la__hero__content">
           <div class="ph__hero__content__block v--full">
-            <h4 data-text-anim="" class="h4">You can change<br>your mind.</h4>
-            <div data-text-anim="" data-text-anim-delay="0.8" class="t-m">Philadelphia | November 18 | Limited Space</div>
+            <h1 data-text-anim="" class="h4 hu-hero-title">Give your mind<br>a place to go.</h1>
+            <p data-text-anim="" data-text-anim-delay="0.8" class="t-m hu-hero-sub">See, stimulate, and track functional areas of your brain. Get early access to the first Adessa Mind Spa.</p>
             <div class="ph__hero__content__btn-w v--side">
-              <a data-btn-waitlist-h="" data-show-delay="1800" href="phl.html" class="ph__hero__content__btn">request access</a>
+              <a data-btn-waitlist="" data-show-delay="1800" href="#request-access" role="button" class="ph__hero__content__btn">request access</a>
             </div>
           </div>
           <div data-show-delay="1800" class="ph__hero__slide-anim">
@@ -109,36 +189,81 @@
           </div>
         </div>
       </div>
-      <div class="p-la__sec">
-        <div data-text-anim="" class="p-la__sec__headline">Understand your mind’s potential.<br>Then reach it.</div>
-      </div>
-      <div class="ph__sec-2">
-        <div class="ph__sec-2__left v--no-bg">
-          <div data-text-anim="" class="t-18-i">Discovery</div>
+      <section class="p-la__sec hu-intro" id="how-it-works">
+        <h2 data-text-anim="" class="p-la__sec__headline">You can change your mind.</h2>
+        <p data-show-delay="200" class="t-l hu-intro__body">Understand how your mind is working today, support specific functional areas of your brain, and see how your cognition changes over time.</p>
+      </section>
+      <div class="ph__sec-2 hu-row">
+        <div class="ph__sec-2__left v--no-bg hu-step">
+          <div data-text-anim="" class="t-18-i hu-step__eyebrow"><span class="hu-num">01</span> Discovery</div>
+          <h3 data-text-anim="" data-text-anim-delay="0.2" class="hu-step__title">See your cognitive fingerprint.</h3>
           <div class="h__w-450">
-            <div data-text-anim-delay="0.4" data-text-anim="" class="t-l">Cognitive and biometric assessments uncover your AQ, or Adessa Quotient. Your AQ combines your brain data and biomarkers to show what your mind state is today, and what you&#x27;re capable of tomorrow.<br>‍</div>
+            <p data-show-delay="300" class="t-l hu-step__body">Using EEG, heart rate variability, and short cognitive exercises, your Discovery Session maps your mind across eight domains of how you think and feel. This reveals your AQ, the Adessa Quotient.</p>
           </div>
         </div>
-        <div class="ph__sec-2__right"><img src="images/section-a-min.jpg" loading="lazy" sizes="100vw" srcset="images/section-a-min-p-500.jpg 500w, images/section-a-min-p-800.jpg 800w, images/section-a-min.jpg 1134w" alt="" class="ph__sec-2__img"></div>
+        <div class="ph__sec-2__right"><img src="images/section-a-min.jpg" loading="lazy" sizes="(max-width: 991px) 100vw, 50vw" srcset="images/section-a-min-p-500.jpg 500w, images/section-a-min-p-800.jpg 800w, images/section-a-min.jpg 1134w" alt="A guest wearing an EEG headset during a Discovery Session" class="ph__sec-2__img"></div>
       </div>
-      <div class="ph__sec-2">
-        <div id="w-node-_0fbf5a15-cb18-3423-1e2d-b5bea52aa27e-d84fdd0c" class="ph__sec-2__right v--last"><img src="images/woman-eye-mask.webp" loading="lazy" sizes="100vw" srcset="images/woman-eye-mask-p-500.webp 500w, images/woman-eye-mask-p-800.webp 800w, images/woman-eye-mask.webp 1000w" alt="" class="ph__sec-2__img"></div>
-        <div class="ph__sec-2__left v--no-bg">
-          <div data-text-anim="" class="t-18-i">Activation</div>
-          <div class="h__w-450">
-            <div data-text-anim-delay="0.4" data-text-anim="" class="t-l">A custom sequence of stimuli designed to unlock a sharper, clearer, and more focused state of mind. A guided journey to reach the personal cognitive potential revealed by your AQ.<br>‍<br>‍</div>
-          </div>
-          <div data-poster-url="videos/pulseloop_poster.0000000.jpg" data-video-urls="videos/pulseloop_mp4.mp4,videos/pulseloop_webm.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="ph__sec-2__video v--light w-background-video w-background-video-atom"><video id="0fbf5a15-cb18-3423-1e2d-b5bea52aa27c-video" autoplay="" loop="" style="background-image:url(&quot;videos/pulseloop_poster.0000000.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+      <div class="ph__sec-2 hu-row">
+        <div class="ph__sec-2__right v--last"><img src="images/woman-eye-mask.webp" loading="lazy" sizes="(max-width: 991px) 100vw, 50vw" srcset="images/woman-eye-mask-p-500.webp 500w, images/woman-eye-mask-p-800.webp 800w, images/woman-eye-mask.webp 1000w" alt="A guest relaxing during an Activation Session" class="ph__sec-2__img">
+          <div data-poster-url="videos/pulseloop_poster.0000000.jpg" data-video-urls="videos/pulseloop_mp4.mp4,videos/pulseloop_webm.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="ph__sec-2__video v--light w-background-video w-background-video-atom"><video autoplay="" loop="" style="background-image:url(&quot;videos/pulseloop_poster.0000000.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
               <source src="videos/pulseloop_mp4.mp4" data-wf-ignore="true">
               <source src="videos/pulseloop_webm.webm" data-wf-ignore="true">
-            </video></div>
+            </video></div></div>
+        <div class="ph__sec-2__left v--no-bg hu-step">
+          <div data-text-anim="" class="t-18-i hu-step__eyebrow"><span class="hu-num">02</span> Activation</div>
+          <h3 data-text-anim="" data-text-anim-delay="0.2" class="hu-step__title">Build your personalized plan.</h3>
+          <div class="h__w-450">
+            <p data-show-delay="300" class="t-l hu-step__body">Activation Sessions turn your AQ into a plan. Non-invasive brain stimuli are sequenced and tuned to what you want to support, whether that’s sharper focus, faster processing, or a steadier mood.</p>
+          </div>
         </div>
       </div>
+      <div class="ph__sec-2 hu-row">
+        <div class="ph__sec-2__left v--no-bg hu-step">
+          <div data-text-anim="" class="t-18-i hu-step__eyebrow"><span class="hu-num">03</span> Return</div>
+          <h3 data-text-anim="" data-text-anim-delay="0.2" class="hu-step__title">Create a new routine.</h3>
+          <div class="h__w-450">
+            <p data-show-delay="300" class="t-l hu-step__body">Your body has the gym. Now, you have a place to go to support your mind. Return on a rhythm that fits your life, see how your cognition changes, and adjust your sessions as you go.</p>
+          </div>
+        </div>
+        <div class="ph__sec-2__right"><img src="images/IMG_8149.webp" loading="lazy" sizes="(max-width: 991px) 100vw, 50vw" srcset="images/IMG_8149-p-500.webp 500w, images/IMG_8149-p-800.webp 800w, images/IMG_8149-p-1600.webp 1600w, images/IMG_8149-p-2600.webp 2600w, images/IMG_8149.webp 4160w" alt="Sunlit interior of an Adessa Mind Spa" class="ph__sec-2__img"></div>
+      </div>
+      <section class="hq" id="aq">
+        <div class="hq__head">
+          <div data-text-anim="" class="t-18-i">The Adessa Quotient</div>
+          <h2 data-text-anim="" data-text-anim-delay="0.2" class="p-la__sec__headline">See your mind in a new way.</h2>
+          <p data-show-delay="200" class="t-l hq__intro">Your AQ brings eight cognitive domains into one view. Each segment shows how your mind is working today, based on your own cognitive potential. The gaps reveal your untapped potential in every area.</p>
+        </div>
+        <div class="hq__grid">
+          <div class="hq__visual">
+            <svg class="hq-svg" viewBox="0 0 400 400" role="img" aria-labelledby="hq-svg-title"><title id="hq-svg-title">Example AQ</title><defs><path id="hq-lp-att" d="M96.57 67.61 A168 168 0 0 1 303.43 67.61"/><path id="hq-lp-wm" d="M332.39 96.57 A168 168 0 0 1 332.39 303.43"/><path id="hq-lp-ps" d="M91.03 339.48 A177 177 0 0 0 308.97 339.48"/><path id="hq-lp-ef" d="M67.61 303.43 A168 168 0 0 1 67.61 96.57"/><path id="hq-lp-mind" d="M109.89 187.34 A91 91 0 0 1 187.34 109.89"/><path id="hq-lp-mood" d="M212.66 109.89 A91 91 0 0 1 290.11 187.34"/><path id="hq-lp-comp" d="M213.78 298.04 A99 99 0 0 0 298.04 213.78"/><path id="hq-lp-res" d="M101.96 213.78 A99 99 0 0 0 186.22 298.04"/></defs><path class="hq-track hq-track--out" d="M107.65 81.80 A150 150 0 0 1 292.35 81.80"/><path class="hq-seg hq-seg--out is-lead" data-k="att" d="M107.65 81.80 A150 150 0 0 1 292.35 81.80" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="5"/><path class="hq-track hq-track--out" d="M318.20 107.65 A150 150 0 0 1 318.20 292.35"/><path class="hq-seg hq-seg--out" data-k="wm" d="M318.20 107.65 A150 150 0 0 1 318.20 292.35" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="22"/><path class="hq-track hq-track--out" d="M292.35 318.20 A150 150 0 0 1 107.65 318.20"/><path class="hq-seg hq-seg--out" data-k="ps" d="M292.35 318.20 A150 150 0 0 1 107.65 318.20" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="20"/><path class="hq-track hq-track--out" d="M81.80 292.35 A150 150 0 0 1 81.80 107.65"/><path class="hq-seg hq-seg--out" data-k="ef" d="M81.80 292.35 A150 150 0 0 1 81.80 107.65" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="25"/><path class="hq-track hq-track--in" d="M93.05 184.97 A108 108 0 0 1 184.97 93.05"/><path class="hq-seg hq-seg--in" data-k="mind" d="M93.05 184.97 A108 108 0 0 1 184.97 93.05" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="20"/><path class="hq-track hq-track--in" d="M215.03 93.05 A108 108 0 0 1 306.95 184.97"/><path class="hq-seg hq-seg--in" data-k="mood" d="M215.03 93.05 A108 108 0 0 1 306.95 184.97" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="15"/><path class="hq-track hq-track--in" d="M306.95 215.03 A108 108 0 0 1 215.03 306.95"/><path class="hq-seg hq-seg--in" data-k="comp" d="M306.95 215.03 A108 108 0 0 1 215.03 306.95" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="22"/><path class="hq-track hq-track--in" d="M184.97 306.95 A108 108 0 0 1 93.05 215.03"/><path class="hq-seg hq-seg--in" data-k="res" d="M184.97 306.95 A108 108 0 0 1 93.05 215.03" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="16"/><text class="hq-lab hq-lab--out"><textPath href="#hq-lp-att" startOffset="50%" text-anchor="middle">ATTENTION · <tspan data-pct="att">95%</tspan></textPath></text><text class="hq-lab hq-lab--out"><textPath href="#hq-lp-wm" startOffset="50%" text-anchor="middle">WORKING MEMORY · <tspan data-pct="wm">78%</tspan></textPath></text><text class="hq-lab hq-lab--out"><textPath href="#hq-lp-ps" startOffset="50%" text-anchor="middle">PROCESSING SPEED · <tspan data-pct="ps">80%</tspan></textPath></text><text class="hq-lab hq-lab--out"><textPath href="#hq-lp-ef" startOffset="50%" text-anchor="middle">EXECUTIVE FUNCTION · <tspan data-pct="ef">75%</tspan></textPath></text><text class="hq-lab hq-lab--in"><textPath href="#hq-lp-mind" startOffset="50%" text-anchor="middle">MINDFULNESS · <tspan data-pct="mind">80%</tspan></textPath></text><text class="hq-lab hq-lab--in"><textPath href="#hq-lp-mood" startOffset="50%" text-anchor="middle">MOOD · <tspan data-pct="mood">85%</tspan></textPath></text><text class="hq-lab hq-lab--in"><textPath href="#hq-lp-comp" startOffset="50%" text-anchor="middle">COMPOSURE · <tspan data-pct="comp">78%</tspan></textPath></text><text class="hq-lab hq-lab--in"><textPath href="#hq-lp-res" startOffset="50%" text-anchor="middle">RESILIENCE · <tspan data-pct="res">84%</tspan></textPath></text><text class="hq-aq" x="200" y="206" text-anchor="middle" data-aq>A.82</text><text class="hq-sub" x="200" y="230" text-anchor="middle">GREATEST POTENTIAL IN</text><text class="hq-sub" x="200" y="244" text-anchor="middle" data-pot>EXECUTIVE FUNCTION</text></svg>
+            <div class="hq__dots" role="group" aria-label="Example AQs"><button type="button" class="hq-dot is-active" data-i="0" aria-label="Show an example AQ led by Attention" aria-pressed="true"><span class="hq-dot__mark"></span><span class="hq-dot__l">A</span></button><button type="button" class="hq-dot" data-i="1" aria-label="Show an example AQ led by Working Memory" aria-pressed="false"><span class="hq-dot__mark"></span><span class="hq-dot__l">M</span></button><button type="button" class="hq-dot" data-i="2" aria-label="Show an example AQ led by Processing Speed" aria-pressed="false"><span class="hq-dot__mark"></span><span class="hq-dot__l">P</span></button><button type="button" class="hq-dot" data-i="3" aria-label="Show an example AQ led by Executive Function" aria-pressed="false"><span class="hq-dot__mark"></span><span class="hq-dot__l">E</span></button></div>
+            <p class="hq__caption" aria-live="polite">Example AQ led by <span data-lead>Attention</span></p>
+          </div>
+          <dl class="hq__list">
+            <div data-show-delay="100"><dt>Cognitive Domains</dt><dd>Four functional areas of your brain: Attention, Working Memory, Processing Speed, and Executive Function.</dd></div>
+            <div data-show-delay="200"><dt>Affective Domains</dt><dd>Four physiological states underneath: Mood, Mindfulness, Composure, and Resilience.</dd></div>
+            <div data-show-delay="300"><dt>Your AQ</dt><dd>See your strongest cognitive domain (leading letter) and how much of your cognitive potential you’re using (digit).</dd></div>
+            <div data-show-delay="400"><dt>Personal to You</dt><dd>Your results are measured against your own cognitive capacity. There are no “low” or “high” scores, only potential.</dd></div>
+            <div data-show-delay="500"><dt>Untapped Potential</dt><dd>Unfilled segments aren’t a deficit, they reveal where you have unused cognitive capacity and steer your Activation Sessions.</dd></div>
+          </dl>
+        </div>
+        <script type="application/json" id="hq-data">[{"letter": "A", "lead": "att", "aq": 82, "potential": "Executive Function", "leadName": "Attention", "att": 95, "wm": 78, "ps": 80, "ef": 75, "mind": 80, "mood": 85, "comp": 78, "res": 84}, {"letter": "M", "lead": "wm", "aq": 74, "potential": "Processing Speed", "leadName": "Working Memory", "att": 72, "wm": 92, "ps": 66, "ef": 67, "mind": 76, "mood": 70, "comp": 72, "res": 68}, {"letter": "P", "lead": "ps", "aq": 79, "potential": "Working Memory", "leadName": "Processing Speed", "att": 78, "wm": 70, "ps": 93, "ef": 76, "mind": 74, "mood": 82, "comp": 79, "res": 77}, {"letter": "E", "lead": "ef", "aq": 81, "potential": "Working Memory", "leadName": "Executive Function", "att": 80, "wm": 74, "ps": 76, "ef": 94, "mind": 83, "mood": 77, "comp": 80, "res": 79}]</script>
+      </section>
+      <section class="hu-quote">
+        <figure class="hu-quote__fig">
+          <blockquote data-text-anim="" class="hu-quote__text">“It felt very informed, unlike anything I’ve done before, and gave me insights I never thought were possible.”</blockquote>
+          <figcaption data-show-delay="400" class="hu-quote__by">Miami guest</figcaption>
+        </figure>
+      </section>
       <div class="footer-wrapper">
         <div class="footer__content">
           <div class="footer__content__items">
+            <div class="hu-foot-head">
+              <h2 data-text-anim="" class="h4">Stay top of mind.</h2>
+              <p data-show-delay="100" class="t-m">Join the list to attend our next in-person activation.</p>
+            </div>
             <div class="footer__content__btn">
-              <div data-btn="bottom" data-btn-waitlist="" data-show-delay="200" class="footer__content__btn__el">Join Waitlist</div>
+              <div data-btn="bottom" data-btn-waitlist="" data-show-delay="200" role="button" tabindex="0" class="footer__content__btn__el">Request Access</div>
             </div>
             <div data-show-delay="300">
               <div class="t-s"><strong class="h__bold">Questions? </strong>
@@ -538,5 +663,61 @@
   <script src="https://hubspotv2.use1-marketplace-1p-apps-prod-red.if.webflow.services/static/loader.js" type="text/javascript" async="" defer=""></script>
   <script src="https://hubspotv2.use1-marketplace-1p-apps-prod-red.if.webflow.services/static/disable-hubspot-chatbot.js" type="text/javascript" async="" defer=""></script>
   <script src="https://js.hs-scripts.com/245494320.js" type="text/javascript" async="" defer=""></script>
+
+<script>
+(function () {
+  // Waitlist triggers that are links or divs: no jump, keyboard friendly
+  document.querySelectorAll('[data-btn-waitlist]').forEach(function (el) {
+    el.addEventListener('click', function (e) { if (el.tagName === 'A') e.preventDefault(); });
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
+  });
+
+  // AQ visual: draw in on scroll, cycle A, M, P, E
+  var root = document.querySelector('.hq'); if (!root) return;
+  var data = JSON.parse(document.getElementById('hq-data').textContent);
+  var segs = root.querySelectorAll('.hq-seg'), pcts = root.querySelectorAll('[data-pct]');
+  var aqEl = root.querySelector('[data-aq]'), potEl = root.querySelector('[data-pot]'), leadEl = root.querySelector('[data-lead]');
+  var dots = root.querySelectorAll('.hq-dot');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasG = !!window.gsap && !reduce;
+  var cur = 0, timer = null, userPicked = false, inView = false, drawn = false;
+  root.dataset.letter = data[0].letter;
+
+  function setText(p) {
+    pcts.forEach(function (t) { t.textContent = p[t.dataset.pct] + '%'; });
+    aqEl.textContent = p.letter + '.' + p.aq;
+    potEl.textContent = p.potential.toUpperCase();
+    leadEl.textContent = p.leadName;
+  }
+  function show(i, first) {
+    var p = data[i]; cur = i;
+    root.dataset.letter = p.letter;
+    segs.forEach(function (sg) {
+      sg.classList.toggle('is-lead', sg.dataset.k === p.lead);
+      var off = 100 - p[sg.dataset.k];
+      if (hasG) gsap.to(sg, { attr: { 'stroke-dashoffset': off }, duration: first ? 1.6 : 1.1, ease: 'power3.inOut', delay: first ? 0.1 : 0 });
+      else sg.setAttribute('stroke-dashoffset', off);
+    });
+    dots.forEach(function (d, j) { d.classList.toggle('is-active', j === i); d.setAttribute('aria-pressed', String(j === i)); });
+    var txt = root.querySelectorAll('.hq-lab, .hq-aq, .hq-sub');
+    if (hasG && !first) {
+      gsap.to(txt, { opacity: 0, duration: 0.25, onComplete: function () { setText(p); gsap.to(txt, { opacity: 1, duration: 0.5 }); } });
+    } else {
+      setText(p);
+      if (hasG && first) gsap.fromTo(txt, { opacity: 0 }, { opacity: 1, duration: 0.9, stagger: 0.04, delay: 0.5 });
+    }
+  }
+  function tick() { if (!userPicked && inView && !document.hidden) show((cur + 1) % data.length); }
+  dots.forEach(function (d) {
+    d.addEventListener('click', function () { userPicked = true; clearInterval(timer); if (+d.dataset.i !== cur) show(+d.dataset.i); });
+  });
+  if (hasG) segs.forEach(function (sg) { sg.setAttribute('stroke-dashoffset', 100); });
+  var io = new IntersectionObserver(function (es) {
+    inView = es[0].isIntersecting;
+    if (inView && !drawn) { drawn = true; show(0, true); if (!reduce) timer = setInterval(tick, 5000); }
+  }, { threshold: 0.35 });
+  io.observe(root.querySelector('.hq__visual'));
+})();
+</script>
 </body>
 </html>

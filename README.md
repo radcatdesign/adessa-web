@@ -3,6 +3,8 @@
 Static code export of the Adessa Webflow site (adessamind.com), served by Vercel.
 
 ## Updating
+**The homepage (`index.html`) is now edited in this repo** (October 2026 copy and sections: How it works, the Adessa Quotient, the testimonial, the footer heading). A Webflow export would overwrite it. Either update Webflow to match first, or skip `index.html` when copying an export over.
+
 1. Publish in Webflow, then Export Code.
 2. Copy the export over the repo (overwrite, don't delete first). Exported files replace their old copies; everything we added stays: `vercel.json`, `.gitignore`, this README, `scripts/`, `js/vendor/`, `videos/Adessa-home.webm`, `images/placeholder.svg`, and the design system files (`design-system.html`, `templates/`, `css/adessa-ds.css`, `images/ds/`).
 3. Run `python3 scripts/localize.py`.
