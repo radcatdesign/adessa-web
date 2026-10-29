@@ -73,6 +73,7 @@ export const SCHEMA = [
     actions integer NOT NULL DEFAULT 0,
     returning_visits integer NOT NULL DEFAULT 0,
     known_visits integer NOT NULL DEFAULT 0,
+    action_visits integer NOT NULL DEFAULT 0,
     PRIMARY KEY (day, dim, key)
   )`,
   `CREATE TABLE IF NOT EXISTS analytics_rollups (day date PRIMARY KEY, rolled_at timestamptz NOT NULL DEFAULT now())`,

@@ -49,6 +49,13 @@ async function ctx(browser, opts, init) {
   const phoneBid = await page.evaluate(() => localStorage.getItem('a_bid'));
   await page.close();
 
+  // 2b. A desktop in Berlin: counted, but no browser ID (consent zone).
+  const eu = await ctx(browser, { viewport: { width: 1280, height: 800 }, userAgent: CHROME_UA, timezoneId: 'Europe/Berlin' });
+  page = await eu.newPage(); watch(page);
+  await page.goto(`${BASE}/miami`); await page.waitForTimeout(1500);
+  const euBid = await page.evaluate(() => localStorage.getItem('a_bid'));
+  await page.close();
+
   // 3. A headless browser that admits it: dropped and counted as a bot.
   const bot = await browser.newContext({ viewport: { width: 1280, height: 800 }, userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/130.0.0.0 Safari/537.36' });
   await bot.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
@@ -82,6 +89,8 @@ async function ctx(browser, opts, init) {
   assert(actions.some((a) => a.name === 'Outbound link' && a.label === 'example.com/some/page'), 'outbound link stored');
   const ph = views.filter((v) => v.device === 'phone');
   assert(ph.length === 1 && ph[0].browser_id === null && phoneBid === null, 'GPC phone: view stored without a browser ID');
+  const euView = views.find((v) => v.path === '/miami');
+  assert(euView && euView.browser_id === null && euBid === null, 'EU time zone: view stored without a browser ID');
   assert(!views.some((v) => v.path === '/investors'), 'headless bot dropped');
   assert(bots.length && bots[0].views >= 1, 'bot counted');
   assert(sent.length === 0 && !views.some((v) => v.path === '/phl'), 'team browser sends nothing');
