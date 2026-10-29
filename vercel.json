@@ -39,7 +39,7 @@
       ]
     },
     {
-      "source": "/miami-showroom",
+      "source": "/investors",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -48,7 +48,7 @@
       ]
     },
     {
-      "source": "/miami-showroom.html",
+      "source": "/investors.html",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -125,6 +125,16 @@
     }
   },
   "redirects": [
+    {
+      "source": "/miami-showroom",
+      "destination": "/investors",
+      "permanent": true
+    },
+    {
+      "source": "/miami-showroom.html",
+      "destination": "/investors",
+      "permanent": true
+    },
     {
       "source": "/docs/:path*",
       "destination": "/",

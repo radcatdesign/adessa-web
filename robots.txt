@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /investors
+Disallow: /investors.html
+Disallow: /documents/Adessa-MIA-Showroom-Investment-Brief.pdf
+Disallow: /admin/
+Disallow: /api/
+Disallow: /design-system
+Disallow: /templates/

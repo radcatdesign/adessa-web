@@ -120,3 +120,16 @@ def add_tracker():
 
 
 add_tracker()
+
+
+# --- /investors is the hand-built investment brief, not the Webflow page (2026-10-29) ---
+def check_investors():
+    try:
+        text = open('investors.html', encoding='utf-8').read()
+    except FileNotFoundError:
+        return
+    if 'data-wf-page' in text:
+        print('WARNING: the Webflow export replaced investors.html. Restore the brief with: git checkout HEAD -- investors.html')
+
+
+check_investors()
