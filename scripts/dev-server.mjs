@@ -25,7 +25,7 @@ http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     if (process.env.ANALYTICS_DEV === '1' && url.pathname === '/__dev/sql') {
       // Test hook: run a read query against the local store. Never available on Vercel.
-      const { realDb } = await import('../lib/analytics/db.js');
+      const { realDb } = await import('../api/_lib/analytics/db.js');
       const db = await realDb();
       const rows = await db.q(url.searchParams.get('q'));
       res.setHeader('Content-Type', 'application/json');
@@ -42,7 +42,7 @@ http.createServer(async (req, res) => {
       return await mod.default(req, res);
     }
     let p = decodeURIComponent(url.pathname);
-    if (p.includes('..') || p.startsWith('/node_modules') || p.startsWith('/lib/') || p.startsWith('/api/')) { res.statusCode = 404; return res.end(); }
+    if (p.includes('..') || p.startsWith('/node_modules') || p.startsWith('/api/')) { res.statusCode = 404; return res.end(); }
     let file = path.join(root, p);
     if (p.endsWith('/')) file = path.join(file, 'index.html');
     else if (!(await exists(file)) && (await exists(file + '.html'))) file += '.html';
