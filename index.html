@@ -62,6 +62,8 @@
   .hu-num { font-family: 'Plus Jakarta Sans', sans-serif; font-style: normal; font-size: 11px; letter-spacing: .3em; font-weight: 600; opacity: .7; }
   .hu-step__title { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 38px; line-height: 1.15; max-width: 480px; }
   .hu-step__body { margin: 0; }
+  .hu-row.ph__sec-2 { padding: 0 40px 40px; box-sizing: border-box; }
+  .hu-row .ph__sec-2__right { border-radius: 24px; overflow: hidden; isolation: isolate; }
 
   .hq { max-width: 1240px; margin: 0 auto; padding: 140px 24px 120px; }
   .hq__head { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; max-width: 760px; margin: 0 auto 72px; }
@@ -115,7 +117,7 @@
   @media (min-width: 992px) { .hq__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); } .hq__list { order: -1; } }
   @media (prefers-reduced-motion: reduce) { .hq-acc__panel, .hq-acc__panel p, .hq-acc__btn::after { transition: none; } }
 
-  .hu-quote { position: relative; isolation: isolate; overflow: hidden; padding: 160px 24px; background: #221d17 url('images/ds/texture-strands-smoke.webp') center / cover; color: #fffaf0; text-align: center; }
+  .hu-quote { position: relative; isolation: isolate; overflow: hidden; margin: 0 40px 40px; border-radius: 24px; padding: 140px 24px; background: #221d17 url('images/ds/texture-strands-smoke.webp') center / cover; color: #fffaf0; text-align: center; }
   .hu-quote::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(34, 29, 23, .55); }
   .hu-quote__fig { margin: 0 auto; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
   .hu-quote__text { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 44px; line-height: 1.25; border: 0; padding: 0; }
@@ -131,14 +133,17 @@
     .hq__grid { grid-template-columns: minmax(0, 1fr); gap: 56px; }
     .hu-step__title { font-size: 32px; }
     .hu-quote__text { font-size: 34px; }
+    .hu-row.ph__sec-2 { height: auto; }
+    .hu-row .ph__sec-2__right { min-height: 560px; order: -1; }
+    .hu-row .ph__sec-2__left { padding: 72px 24px; }
   }
   @media (max-width: 767px) {
-    .hu-row.ph__sec-2 { height: auto; }
-    .hu-row .ph__sec-2__right { min-height: 420px; order: -1; }
-    .hu-row .ph__sec-2__left { padding: 72px 20px; }
+    .hu-row .ph__sec-2__right { min-height: 420px; }
+    .hu-row.ph__sec-2 { padding: 0 20px 20px; }
+    .hu-row .ph__sec-2__left { padding: 56px 4px; }
     .hu-step__title { font-size: 30px; }
     .hq-acc__panel p { font-size: 18px; }
-    .hu-quote { padding: 110px 20px; }
+    .hu-quote { padding: 96px 24px; margin: 0 20px 20px; }
     .hu-quote__text { font-size: 28px; }
     .hu-hero-sub { font-size: 18px; }
     .footer-wrapper, .footer, .footer__bg { height: 520px; }
