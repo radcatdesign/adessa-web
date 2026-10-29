@@ -100,3 +100,23 @@ def patch_home_video(path='index.html'):
 
 
 patch_home_video()
+
+
+# --- First-party analytics: the tracking script on every public page (added 2026-10-28) ---
+TRACKER_TAG = '<script defer src="/js/a.js"></script>'
+NO_TRACKER = {'401.html', 'design-system.html'}
+
+
+def add_tracker():
+    import glob
+    for path in sorted(glob.glob('*.html')):
+        if path in NO_TRACKER:
+            continue
+        text = open(path, encoding='utf-8').read()
+        if TRACKER_TAG in text or '</head>' not in text:
+            continue
+        open(path, 'w', encoding='utf-8').write(text.replace('</head>', '  ' + TRACKER_TAG + '\n</head>', 1))
+        print('added analytics to', path)
+
+
+add_tracker()
