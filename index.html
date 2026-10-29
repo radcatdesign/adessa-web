@@ -54,7 +54,7 @@
   /* Oct 2026 web update */
   .hu-hero-title { margin: 0; font-weight: 300; }
   .hu-hero-sub { max-width: 560px; margin: 0 auto; line-height: 1.35; }
-  .hu-intro { padding-bottom: 40px; gap: 24px; text-align: center; padding-left: 24px; padding-right: 24px; }
+  .hu-intro { padding-bottom: 120px; gap: 24px; text-align: center; padding-left: 24px; padding-right: 24px; }
   .hu-intro .p-la__sec__headline { margin: 0; }
   .hu-intro__body { max-width: 640px; margin: 0; color: var(--dusk); }
   .hu-step { gap: 20px; }
@@ -62,7 +62,14 @@
   .hu-num { font-family: 'Plus Jakarta Sans', sans-serif; font-style: normal; font-size: 11px; letter-spacing: .3em; font-weight: 600; opacity: .7; }
   .hu-step__title { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 38px; line-height: 1.15; max-width: 480px; }
   .hu-step__body { margin: 0; }
-  .hu-row.ph__sec-2 { padding: 0 40px 40px; box-sizing: border-box; }
+  .hu-row.ph__sec-2 { padding: 0 40px 40px; box-sizing: border-box; max-width: 1440px; margin: 0 auto; }
+  .hu-scroll { all: unset; cursor: pointer; position: relative; display: block; width: 32px; height: 112px; margin-top: 64px; overflow: hidden; }
+  .hu-scroll::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(81, 83, 85, .18); }
+  .hu-scroll:focus-visible { outline: 2px solid #8e9ba4; outline-offset: 4px; border-radius: 4px; }
+  .hu-scroll span { position: absolute; left: 50%; top: 0; width: 1px; height: 45%; background: #515355; animation: huScroll 2.6s cubic-bezier(.65, 0, .35, 1) infinite; }
+  @keyframes huScroll { 0% { transform: translateY(-100%); } 100% { transform: translateY(230%); } }
+  @media (prefers-reduced-motion: reduce) { .hu-scroll span { animation: none; height: 100%; opacity: .5; } }
+  .footer__bg { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 45%); mask-image: linear-gradient(to bottom, transparent 0, #000 45%); }
   .hu-row .ph__sec-2__right { border-radius: 24px; overflow: hidden; isolation: isolate; }
 
   .hq { max-width: 1240px; margin: 0 auto; padding: 140px 24px 120px; }
@@ -117,7 +124,7 @@
   @media (min-width: 992px) { .hq__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); } .hq__list { order: -1; } }
   @media (prefers-reduced-motion: reduce) { .hq-acc__panel, .hq-acc__panel p, .hq-acc__btn::after { transition: none; } }
 
-  .hu-quote { position: relative; isolation: isolate; overflow: hidden; margin: 0 40px 40px; border-radius: 24px; padding: 140px 24px; background: #221d17 url('images/ds/texture-strands-smoke.webp') center / cover; color: #fffaf0; text-align: center; }
+  .hu-quote { position: relative; isolation: isolate; overflow: hidden; margin: 0 max(40px, calc((100% - 1360px) / 2)) 40px; border-radius: 24px; padding: 140px 24px; background: #221d17 url('images/ds/texture-strands-smoke.webp') center / cover; color: #fffaf0; text-align: center; }
   .hu-quote::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(34, 29, 23, .55); }
   .hu-quote__fig { margin: 0 auto; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
   .hu-quote__text { margin: 0; font-family: Fraunces, serif; font-weight: 300; font-size: 44px; line-height: 1.25; border: 0; padding: 0; }
@@ -144,6 +151,8 @@
     .hu-step__title { font-size: 30px; }
     .hq-acc__panel p { font-size: 18px; }
     .hu-quote { padding: 96px 24px; margin: 0 20px 20px; }
+    .hu-intro { padding-bottom: 88px; }
+    .hu-scroll { height: 88px; margin-top: 48px; }
     .hu-quote__text { font-size: 28px; }
     .hu-hero-sub { font-size: 18px; }
     .footer-wrapper, .footer, .footer__bg { height: 520px; }
@@ -212,8 +221,9 @@
       <section class="p-la__sec hu-intro" id="how-it-works">
         <h2 data-text-anim="" class="p-la__sec__headline">You can change your mind.</h2>
         <p data-show-delay="200" class="t-l hu-intro__body">Understand how your mind is working today, support specific functional areas of your brain, and see how your cognition changes over time.</p>
+        <button type="button" class="hu-scroll" aria-label="Scroll to the steps"><span></span></button>
       </section>
-      <div class="ph__sec-2 hu-row">
+      <div class="ph__sec-2 hu-row" id="how-it-works-steps">
         <div class="ph__sec-2__left v--no-bg hu-step">
           <div data-text-anim="" class="t-18-i hu-step__eyebrow"><span class="hu-num">01</span> Discovery</div>
           <h3 data-text-anim="" data-text-anim-delay="0.2" class="hu-step__title">See your cognitive fingerprint.</h3>
@@ -705,6 +715,13 @@
   document.querySelectorAll('[data-btn-waitlist]').forEach(function (el) {
     el.addEventListener('click', function (e) { if (el.tagName === 'A') e.preventDefault(); });
     el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
+  });
+
+  var hs = document.querySelector('.hu-scroll');
+  if (hs) hs.addEventListener('click', function (e) {
+    var t = document.getElementById('how-it-works-steps'), sm = window.ScrollSmoother && ScrollSmoother.get();
+    if (!t) return;
+    if (sm) sm.scrollTo(sm.offset(t, 'top top'), true); else t.scrollIntoView({ behavior: 'smooth' });
   });
 
   // AQ visual: draw in on scroll, cycle A, M, P, E
