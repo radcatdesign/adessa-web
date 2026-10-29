@@ -31,3 +31,72 @@ for path in glob.glob('*.html'):
             left.add((path, host))
 for path, host in sorted(left):
     print(f'still points at {host}: {path} (new asset? add it to REPLACE)')
+
+
+# --- Homepage video section: keep the line together over the video (added 2026-10-28) ---
+HOME_VIDEO_MARK = 'adessa-web patch: single-line video caption'
+HOME_VIDEO_EDITS = [
+    # one line instead of two halves around a spacer
+    ("""              <div data-text-anim="" class="text-left split-text">Your destination for </div>
+              <div class="video-spacer"></div>
+              <div data-text-anim-delay="0.6" data-text-anim="" class="text-right split-text">cognitive wellbeing.</div>""",
+     """              <p data-text-anim="" class="split-text">Your destination for cognitive wellbeing.</p>"""),
+    # the mobile !important width would override the scroll animation
+    ("""      z-index: 5;
+      @media (max-width: 768px) {
+        width: 100vw !important;
+      }""", """      z-index: 5;"""),
+    # styles for the single line, light text and a soft shade over the video
+    ("""      object-fit: cover;
+    }
+  </style>""", """      object-fit: cover;
+    }
+    /* adessa-web patch: single-line video caption */
+    .p-la__video .text-wrapper { white-space: normal; flex-direction: row; padding: 0 24px; text-align: center; color: #1a1a1a; }
+    .p-la__video .split-text { margin: 0; color: inherit; line-height: 1.2; text-wrap: balance; }
+    .video-container::after { content: ""; position: absolute; inset: 0; background: rgb(34 29 23 / var(--shade, 0)); pointer-events: none; }
+    .video-container video { height: 100lvh; min-height: 100vh; }
+    @media (max-width: 768px) {
+      .p-la__video .text-wrapper { flex-direction: row; }
+      .p-la__video .split-text { font-size: 30px; }
+    }
+  </style>"""),
+    # grow to the section's own size and fade the text to cream instead of pushing the halves apart
+    ("""        width: '100vw',
+        height: '100svh',
+        borderRadius: '0px',""", """        width: '100%',
+        height: '100%',
+        borderRadius: '0px',"""),
+    ("""      .to(
+        '.video-spacer',
+        {
+          width: '110vw',
+          height: '110svh',
+          // margin: '0px 60px',
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        0.5,
+      )""", """      .to('.p-la__video .text-wrapper', { color: '#fffaf0', textShadow: '0 1px 24px rgba(34,29,23,0.45)', duration: 0.5, ease: 'power1.inOut' }, 0.65)
+      .to('.video-container', { '--shade': 0.3, duration: 0.6, ease: 'none' }, 0.7)"""),
+]
+
+
+def patch_home_video(path='index.html'):
+    try:
+        text = open(path, encoding='utf-8').read()
+    except FileNotFoundError:
+        return
+    if HOME_VIDEO_MARK in text:
+        return
+    missing = [old[:60] for old, _ in HOME_VIDEO_EDITS if old not in text]
+    if missing:
+        print('homepage video patch skipped; Webflow markup changed near:', missing)
+        return
+    for old, new in HOME_VIDEO_EDITS:
+        text = text.replace(old, new, 1)
+    open(path, 'w', encoding='utf-8').write(text)
+    print('patched', path, '(single-line video caption)')
+
+
+patch_home_video()

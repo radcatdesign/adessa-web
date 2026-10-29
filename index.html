@@ -103,9 +103,7 @@
         <div class="animation-container">
           <div class="animation-content">
             <div class="text-wrapper">
-              <div data-text-anim="" class="text-left split-text">Your destination for </div>
-              <div class="video-spacer"></div>
-              <div data-text-anim-delay="0.6" data-text-anim="" class="text-right split-text">cognitive wellbeing.</div>
+              <p data-text-anim="" class="split-text">Your destination for cognitive wellbeing.</p>
             </div>
             <div class="w-embed video-container"><video autoplay="" loop="" muted="" playsinline="" src="videos/Adessa-home.webm"></video></div>
           </div>
@@ -353,9 +351,6 @@
       border-radius: 4px;
       overflow: hidden;
       z-index: 5;
-      @media (max-width: 768px) {
-        width: 100vw !important;
-      }
     }
     .video-container video {
       position: absolute;
@@ -365,6 +360,15 @@
       width: 100vw;
       height: 100vh;
       object-fit: cover;
+    }
+    /* adessa-web patch: single-line video caption */
+    .p-la__video .text-wrapper { white-space: normal; flex-direction: row; padding: 0 24px; text-align: center; color: #1a1a1a; }
+    .p-la__video .split-text { margin: 0; color: inherit; line-height: 1.2; text-wrap: balance; }
+    .video-container::after { content: ""; position: absolute; inset: 0; background: rgb(34 29 23 / var(--shade, 0)); pointer-events: none; }
+    .video-container video { height: 100lvh; min-height: 100vh; }
+    @media (max-width: 768px) {
+      .p-la__video .text-wrapper { flex-direction: row; }
+      .p-la__video .split-text { font-size: 30px; }
     }
   </style>
   </div>
@@ -518,25 +522,16 @@
     tl.to(
       '.video-container',
       {
-        width: '100vw',
-        height: '100svh',
+        width: '100%',
+        height: '100%',
         borderRadius: '0px',
         duration: 1,
         ease: 'power2.inOut',
       },
       0.5,
     )
-      .to(
-        '.video-spacer',
-        {
-          width: '110vw',
-          height: '110svh',
-          // margin: '0px 60px',
-          duration: 1,
-          ease: 'power2.inOut',
-        },
-        0.5,
-      )
+      .to('.p-la__video .text-wrapper', { color: '#fffaf0', textShadow: '0 1px 24px rgba(34,29,23,0.45)', duration: 0.5, ease: 'power1.inOut' }, 0.65)
+      .to('.video-container', { '--shade': 0.3, duration: 0.6, ease: 'none' }, 0.7)
     tl.to({}, { duration: 0.3 });
   });
 </script>
