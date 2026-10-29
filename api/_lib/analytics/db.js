@@ -18,9 +18,22 @@ async function pgliteDb() {
   return { kind: 'pglite', q: async (text, params = []) => (await pg.query(text, params)).rows, pg };
 }
 
+// Bump when SCHEMA changes so existing databases run the statements again.
+const SCHEMA_VERSION = '2026-10-29.1';
+// Errors that only mean another cold start created the same thing a moment earlier.
+const RACE = new Set(['23505', '42P07', '42710', '42P16']);
+
 async function migrate(db) {
-  for (const stmt of SCHEMA) await db.q(stmt);
-  await ensurePartitions(db, new Date());
+  let current = null;
+  try { current = (await db.q(`SELECT value FROM analytics_settings WHERE key = '__schema'`))[0]?.value; } catch { /* first run */ }
+  if (current !== SCHEMA_VERSION) {
+    for (const stmt of SCHEMA) {
+      try { await db.q(stmt); } catch (e) { if (!RACE.has(e.code)) throw e; }
+    }
+    await db.q(`INSERT INTO analytics_settings (key, value) VALUES ('__schema', $1::jsonb)
+      ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now()`, [JSON.stringify(SCHEMA_VERSION)]);
+  }
+  try { await ensurePartitions(db, new Date()); } catch (e) { if (!RACE.has(e.code)) throw e; }
 }
 
 // The real store. Without DATABASE_URL (local development) it falls back to one shared PGlite instance.

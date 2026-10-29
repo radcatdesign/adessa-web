@@ -13,7 +13,7 @@ export async function getSettings(db, fresh = false) {
   if (!fresh && settingsCache.db === db && Date.now() - settingsCache.at < 60_000) return settingsCache.value;
   const rows = await db.q(`SELECT key, value FROM analytics_settings`);
   const value = { ...DEFAULT_SETTINGS };
-  for (const r of rows) value[r.key] = typeof r.value === 'string' ? JSON.parse(r.value) : r.value;
+  for (const r of rows) if (!r.key.startsWith('__')) value[r.key] = typeof r.value === 'string' ? JSON.parse(r.value) : r.value;
   settingsCache = { at: Date.now(), value, db };
   return value;
 }
