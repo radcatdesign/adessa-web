@@ -133,3 +133,36 @@ def check_investors():
 
 
 check_investors()
+
+
+# --- No large "Adessa" wordmark in the footer (removed 2026-10-29) ---
+def remove_footer_wordmark():
+    import glob, re
+    for path in sorted(glob.glob('*.html')):
+        text = open(path, encoding='utf-8').read()
+        new = re.sub(r'<img [^>]*class="footer__logo"[^>]*>', '', text)
+        if new != text:
+            open(path, 'w', encoding='utf-8').write(new)
+            print('removed footer wordmark from', path)
+
+
+remove_footer_wordmark()
+
+
+# --- Footer button hover: white with darker sand text (2026-10-29) ---
+FOOTER_HOVER_MARK = '/* adessa-web patch: footer button hover (2026-10-29) */'
+
+
+def patch_footer_hover(path='css/adessa.css'):
+    try:
+        text = open(path, encoding='utf-8').read()
+    except FileNotFoundError:
+        return
+    if FOOTER_HOVER_MARK in text:
+        return
+    text += '\n' + FOOTER_HOVER_MARK + '\n.footer__content__btn__el:hover {\n  background-color: #fff;\n  color: #a38e79;\n  border-color: #fff;\n}\n'
+    open(path, 'w', encoding='utf-8').write(text)
+    print('patched', path, '(footer button hover)')
+
+
+patch_footer_hover()

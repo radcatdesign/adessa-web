@@ -2257,3 +2257,10 @@ a {
 }
 
 
+
+/* adessa-web patch: footer button hover (2026-10-29) */
+.footer__content__btn__el:hover {
+  background-color: #fff;
+  color: #a38e79;
+  border-color: #fff;
+}
