@@ -72,7 +72,7 @@
   .footer__bg { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 45%); mask-image: linear-gradient(to bottom, transparent 0, #000 45%); }
   .hu-row .ph__sec-2__right { border-radius: 24px; overflow: hidden; isolation: isolate; }
   .hu-row .ph__sec-2__img { object-fit: cover; object-position: 50% 50%; }
-  .hu-row .ph__sec-2__img.hu-img--low { top: auto; bottom: 0; height: 118%; object-position: 50% 100%; } /* skip the ceiling fixtures at the top of IMG_8149 */
+  .hu-row .ph__sec-2__img.hu-img--return { object-position: 56% 50%; } /* keep both guests and the practitioner in frame */
 
   .hq { max-width: 1240px; margin: 0 auto; padding: 140px 24px 120px; }
   .hq__head { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; max-width: 760px; margin: 0 auto 72px; }
@@ -95,7 +95,7 @@
   .hq-lab { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; fill: #515355; letter-spacing: .18em; }
   .hq-lab--out { font-size: 8.5px; }
   .hq-lab--in { font-size: 6.5px; fill: #7f8c95; }
-  .hq-aq { font-family: Fraunces, serif; font-weight: 300; font-size: 54px; fill: #38393b; letter-spacing: .01em; }
+  .hq-aq { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; font-size: 50px; fill: #38393b; letter-spacing: -.01em; } /* matches the AQ platform report */
   .hq-sub { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 6.5px; letter-spacing: .24em; fill: #7f8c95; }
   .hq__dots { display: flex; gap: 22px; }
   .hq-dot { all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px; }
@@ -112,6 +112,7 @@
   .hq-acc__btn { all: unset; box-sizing: border-box; position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 24px 0; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #38393b; opacity: .5; transition: opacity .4s ease; }
   .hq-acc__btn::after { content: ""; width: 9px; height: 9px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: translateY(-3px) rotate(45deg); transition: transform .4s ease; margin-right: 4px; flex: none; }
   .hq-acc__btn:hover, .hq-acc__item.is-open .hq-acc__btn { opacity: 1; }
+  .hq-acc__hint { margin-left: 4px; font-family: Fraunces, serif; font-style: italic; font-weight: 300; font-size: 15px; letter-spacing: 0; text-transform: none; color: #7f8c95; }
   .hq-acc__item.is-open .hq-acc__btn::after { transform: translateY(2px) rotate(225deg); }
   .hq-acc__btn:focus-visible { outline: 2px solid #8e9ba4; outline-offset: 4px; border-radius: 4px; }
   .hq-acc__bar { position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: #38393b; transform: scaleX(0); transform-origin: left center; pointer-events: none; }
@@ -174,7 +175,7 @@
         <div class="p-la__hero__content">
           <div class="ph__hero__content__block v--full">
             <h1 data-text-anim="" class="h4 hu-hero-title">Give your mind<br>a place to go.</h1>
-            <p data-text-anim="" data-text-anim-delay="0.8" class="t-m hu-hero-sub">See, stimulate, and track functional areas of your brain. Get early access to the first Adessa Mind Spa.</p>
+            <p data-text-anim="" data-text-anim-delay="0.8" class="t-m hu-hero-sub">Understand, stimulate, and track functional areas of your brain. Get early access to the first Adessa Mind Spa.</p>
             <div class="ph__hero__content__btn-w v--side">
               <a data-btn-waitlist="" data-show-delay="1800" href="#request-access" role="button" class="ph__hero__content__btn">request access</a>
             </div>
@@ -259,7 +260,7 @@
             <p data-show-delay="300" class="t-l hu-step__body">Your body has the gym. Now, you have a place to go to support your mind. Return on a rhythm that fits your life, see how your cognition changes, and adjust your sessions as you go.</p>
           </div>
         </div>
-        <div class="ph__sec-2__right"><img src="images/IMG_8149.webp" loading="lazy" sizes="(max-width: 991px) 100vw, 50vw" srcset="images/IMG_8149-p-500.webp 500w, images/IMG_8149-p-800.webp 800w, images/IMG_8149-p-1600.webp 1600w, images/IMG_8149-p-2600.webp 2600w, images/IMG_8149.webp 4160w" alt="Sunlit interior of an Adessa Mind Spa" class="ph__sec-2__img hu-img--low"></div>
+        <div class="ph__sec-2__right"><img src="images/adessa-spa-return.webp" loading="lazy" sizes="(max-width: 991px) 100vw, 50vw" srcset="images/adessa-spa-return-p-500.webp 500w, images/adessa-spa-return-p-800.webp 800w, images/adessa-spa-return-p-1600.webp 1600w, images/adessa-spa-return.webp 2400w" alt="Guests resting in reclining chairs between paper screens in the Adessa Mind Spa" class="ph__sec-2__img hu-img--return"></div>
       </div>
       <section class="hq" id="aq">
         <div class="hq__head">
@@ -275,15 +276,15 @@
           </div>
           <div class="hq__list hq-acc">
             <div class="hq-acc__item is-open" data-show-delay="100">
-              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b0" aria-expanded="true" aria-controls="hq-acc-p0">Cognitive Domains<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b0" aria-expanded="true" aria-controls="hq-acc-p0"><span class="hq-acc__t">Cognitive Domains <span class="hq-acc__hint">(outer ring)</span></span><span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
               <div class="hq-acc__panel" id="hq-acc-p0" role="region" aria-labelledby="hq-acc-b0"><div><p>Four functional areas of your brain: Attention, Working Memory, Processing Speed, and Executive Function.</p></div></div>
             </div>
             <div class="hq-acc__item" data-show-delay="200">
-              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b1" aria-expanded="false" aria-controls="hq-acc-p1">Affective Domains<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b1" aria-expanded="false" aria-controls="hq-acc-p1"><span class="hq-acc__t">Affective Domains <span class="hq-acc__hint">(inner ring)</span></span><span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
               <div class="hq-acc__panel" id="hq-acc-p1" role="region" aria-labelledby="hq-acc-b1"><div><p>Four physiological states underneath: Mood, Mindfulness, Composure, and Resilience.</p></div></div>
             </div>
             <div class="hq-acc__item" data-show-delay="300">
-              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b2" aria-expanded="false" aria-controls="hq-acc-p2">Your AQ<span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
+              <h3 class="hq-acc__h"><button type="button" class="hq-acc__btn" id="hq-acc-b2" aria-expanded="false" aria-controls="hq-acc-p2"><span class="hq-acc__t">Your AQ <span class="hq-acc__hint">(center)</span></span><span class="hq-acc__bar" aria-hidden="true"></span></button></h3>
               <div class="hq-acc__panel" id="hq-acc-p2" role="region" aria-labelledby="hq-acc-b2"><div><p>See your strongest cognitive domain (leading letter) and how much of your cognitive potential you’re using (digit).</p></div></div>
             </div>
             <div class="hq-acc__item" data-show-delay="400">
