@@ -21,6 +21,9 @@ export default async function cron(req, res) {
     const cutoff = new Date(Date.now() - RETENTION_DAYS * 864e5);
     await dropOldPartitions(db, cutoff);
     await db.q(`DELETE FROM analytics_heat WHERE day < $1`, [cutoff.toISOString().slice(0, 10)]);
+    // Email links go when their browser's events are gone or they are past retention.
+    out.identities_removed = (await db.q(`DELETE FROM analytics_identities i WHERE i.updated_at < $1
+      OR NOT EXISTS (SELECT 1 FROM analytics_events e WHERE e.browser_id = i.browser_id) RETURNING 1`, [cutoff.toISOString()])).length;
     send(res, 200, out);
   } catch (e) {
     console.error('analytics cron', e);

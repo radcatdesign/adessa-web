@@ -99,6 +99,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/js/:path*",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
     }
   ],
   "crons": [

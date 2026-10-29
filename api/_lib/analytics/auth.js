@@ -7,8 +7,10 @@ const staffList = () => (process.env.ANALYTICS_STAFF_EMAILS || '').split(',').ma
 
 export async function staffUser(req) {
   // Local development and tests only.
-  if (process.env.ANALYTICS_DEV_AUTH === '1' && header(req, 'x-dev-staff')) {
-    return { email: header(req, 'x-dev-staff').toLowerCase(), dev: true };
+  if (process.env.ANALYTICS_DEV_AUTH === '1' && !process.env.VERCEL && header(req, 'x-dev-staff')) {
+    const email = header(req, 'x-dev-staff').toLowerCase();
+    const list = staffList();
+    return list.length && !list.includes(email) ? { denied: true, email } : { email, dev: true };
   }
   const auth = header(req, 'authorization');
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';

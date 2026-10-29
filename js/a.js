@@ -11,8 +11,8 @@
     var ls = store('localStorage'), ss = store('sessionStorage');
     // Browsers that have signed in to the dashboard are the team's: send nothing.
     if (ls && ls.getItem('a_staff') === '1') return;
-    // The dashboard's heatmap preview loads pages with ?a_preview=1: never count those.
-    if (/[?&]a_preview=1/.test(location.search)) return;
+    // The dashboard's heatmap preview loads pages with ?a_preview=1: never count those, just draw the heat layer.
+    if (/[?&]a_preview=1/.test(location.search)) { var pv = d.createElement('script'); pv.src = '/js/a-preview.js'; d.head.appendChild(pv); return; }
 
     var rid = function () {
       var a = new Uint8Array(12), s = '', c = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -25,7 +25,7 @@
     // No browser ID with Global Privacy Control or Do Not Track, or in the EU, EEA, UK or Switzerland
     // (all Europe/* time zones, plus Atlantic islands that belong to them).
     var optOut = n.globalPrivacyControl === true || n.doNotTrack === '1' || w.doNotTrack === '1';
-    var consentZone = /^Europe\/|^Atlantic\/(Reykjavik|Canary|Madeira|Azores|Faroe)|^Arctic\//.test(tz);
+    var consentZone = /^Europe\/|^Atlantic\/(Reykjavik|Canary|Madeira|Azores|Faroe)|^Arctic\/|^Asia\/(Nicosia|Famagusta)|^Africa\/Ceuta|^America\/(Guadeloupe|Martinique|Cayenne|Marigot|St_Barthelemy)|^Indian\/(Reunion|Mayotte)/.test(tz);
     var bid = null, ret = false, YEARISH = 395 * 864e5;
     if (!optOut && !consentZone && ls) {
       var saved = null;
@@ -39,11 +39,20 @@
     var visitId = function () {
       var v = null;
       try { v = JSON.parse((ss && ss.getItem('a_vid')) || 'null'); } catch (e) {}
-      if (!v || now() - v.t > 18e5) v = { id: rid(), t: now() };
+      var fresh = !v || now() - v.t > 18e5;
+      if (fresh) v = { id: rid(), t: now() };
       v.t = now();
       if (ss) ss.setItem('a_vid', JSON.stringify(v));
+      // A new visit started while this page stayed open (30 minutes idle): close the old view and
+      // count the page again under the new visit, so later actions have a visit to belong to.
+      if (fresh && page && !starting) {
+        post('collect', { k: 'leave', id: page.id, a: page.active, s: page.scroll, v: v.id });
+        page.id = rid(); page.active = 0;
+        post('collect', { k: 'view', id: page.id, p: page.path, r: '', u: {}, dv: device, l: (n.language || '').slice(0, 12), tz: tz, v: v.id, b: bid, ret: bid ? true : false });
+      }
       return v.id;
     };
+    var starting = false;
     var vw = Math.min(screen.width || 0, screen.height || 0) || w.innerWidth;
     var touch = 'ontouchstart' in w || n.maxTouchPoints > 0;
     var device = vw < 600 ? 'phone' : (touch && vw < 1100 ? 'tablet' : 'desktop');
@@ -66,11 +75,13 @@
     var startPage = function () {
       var params = {}, q = new URLSearchParams(location.search), keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'ref'];
       for (var i = 0; i < keys.length; i++) if (q.get(keys[i])) params[keys[i]] = q.get(keys[i]).slice(0, 150);
+      starting = true;
       page = { id: rid(), path: location.pathname, active: 0, scroll: scrollPct(), started: now(), sentScroll: false };
       lastInput = now();
       heat = { c: {}, m: {}, e: {}, n: 0 };
       var ref = views++ ? '' : d.referrer;
       post('collect', { k: 'view', id: page.id, p: page.path, r: ref, u: params, dv: device, l: (n.language || '').slice(0, 12), tz: tz, v: visitId(), b: bid, ret: ret });
+      starting = false;
       beat();
     };
     var leave = function () {

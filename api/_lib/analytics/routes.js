@@ -194,7 +194,7 @@ export async function data(req, res) {
   const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
   try {
     if (q.r === 'config') {
-      return send(res, 200, { clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY || null, tz: TZ, devAuth: process.env.ANALYTICS_DEV_AUTH === '1' });
+      return send(res, 200, { clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY || null, tz: TZ, devAuth: process.env.ANALYTICS_DEV_AUTH === '1' && !process.env.VERCEL });
     }
     const user = await staffUser(req);
     if (!user) return send(res, 401, { error: 'Sign in to see analytics.' });
@@ -209,15 +209,15 @@ export async function data(req, res) {
     if (req.method === 'POST') {
       if (sample) return send(res, 409, { error: 'Sample data is on. Nothing is saved.' });
       const body = await readJson(req, 16 * 1024);
-      const fn = WRITES[body.op];
+      const fn = Object.hasOwn(WRITES, body.op) ? WRITES[body.op] : null;
       if (!fn) return send(res, 400, { error: 'Unknown action' });
       return send(res, 200, await fn(db, body, req));
     }
     if (q.r === 'export') {
-      const sql = EXPORTS[q.table];
+      const sql = Object.hasOwn(EXPORTS, q.table) ? EXPORTS[q.table] : null;
       if (!sql) return send(res, 400, { error: 'Unknown table' });
       const range = parseRange(q);
-      const rows = q.table === 'heat' ? await db.q(sql, [range.from || localDay(range.start), range.to ? localDayAfter(range.to) : localDay(range.end)])
+      const rows = q.table === 'heat' ? await db.q(sql, [range.from || localDay(range.start), localDayAfter(range.to || localDay(range.end))])
         : await db.q(sql, [range.start.toISOString(), range.end.toISOString()]);
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/csv; charset=utf-8');
@@ -225,7 +225,7 @@ export async function data(req, res) {
       res.setHeader('Cache-Control', 'no-store');
       return res.end(csv(rows));
     }
-    const route = ROUTES[q.r];
+    const route = Object.hasOwn(ROUTES, q.r) ? ROUTES[q.r] : null;
     if (!route) return send(res, 404, { error: 'Unknown report' });
     const out = await route(db, q, req, ctx);
     return send(res, 200, { ...out, sample });

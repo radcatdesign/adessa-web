@@ -1,6 +1,6 @@
 // Dashboard queries. Every number is defined once, in aggregate(), and the nightly rollup stores the same
 // numbers per day in analytics_daily, so long ranges read a few small rows instead of raw events.
-import { TZ } from './util.js';
+import { TZ, localDay } from './util.js';
 
 const DAY = 864e5;
 
@@ -19,7 +19,7 @@ export function localMidnight(day, tz = TZ) {
   t = guess - tzOffset(t, tz);
   return new Date(t);
 }
-export const localDay = (date = new Date(), tz = TZ) => new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+export { localDay };
 export const addDays = (day, n) => new Date(Date.parse(day + 'T12:00:00Z') + n * DAY).toISOString().slice(0, 10);
 const daysBetween = (a, b) => Math.round((Date.parse(b + 'T12:00:00Z') - Date.parse(a + 'T12:00:00Z')) / DAY);
 
@@ -76,7 +76,8 @@ export async function aggregate(db, start, end, bucket = 'day', tz = TZ) {
     : bucket === 'day' ? `to_char(started AT TIME ZONE $3, 'YYYY-MM-DD')` : `'all'`;
   const sql = `
   WITH ev AS (
-    SELECT * FROM analytics_events WHERE created_at >= ($1::timestamptz - interval '1 day') AND created_at < $2::timestamptz
+    -- Read a day past the end too, so a visit that starts before the end keeps its later pages.
+    SELECT * FROM analytics_events WHERE created_at >= ($1::timestamptz - interval '1 day') AND created_at < ($2::timestamptz + interval '1 day')
   ), w AS (
     -- One pass with window functions: every event carries its visit's facts, no joins needed.
     SELECT ev.*,

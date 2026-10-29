@@ -48,6 +48,7 @@ http.createServer(async (req, res) => {
     else if (!(await exists(file)) && (await exists(file + '.html'))) file += '.html';
     if (!(await exists(file))) { res.statusCode = 404; return res.end(await readFile(path.join(root, '404.html'))); }
     res.setHeader('Content-Type', TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream');
+    if (p.startsWith('/js/')) res.setHeader('Access-Control-Allow-Origin', '*'); // same as vercel.json, for the sandboxed heatmap preview
     res.end(await readFile(file));
   } catch (e) {
     console.error(e);

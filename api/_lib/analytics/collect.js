@@ -4,7 +4,7 @@ import { realDb } from './db.js';
 import { getSettings, todaysSalt, countBot } from './store.js';
 import {
   header, clientIp, geo, readJson, sameOrigin, rateLimited, send, isBotUa, parseUa,
-  sourceFor, clip, normPath, sha, ipKey, utcDay,
+  sourceFor, clip, normPath, sha, ipKey, localDay, CONSENT_COUNTRIES,
 } from './util.js';
 
 const DEVICES = new Set(['phone', 'tablet', 'desktop']);
@@ -28,6 +28,8 @@ async function guard(req, res, maxBytes, perMinute) {
   if (settings.excluded_ips.some((x) => x.key === key)) { send(res, 204); return null; }
   // Global Privacy Control sent as a header: never keep a browser ID.
   if (header(req, 'sec-gpc') === '1') body.b = null;
+  // Visitors located in the EU, EEA, UK or Switzerland never keep a browser ID, whatever their time zone says.
+  if (CONSENT_COUNTRIES.has(header(req, 'x-vercel-ip-country'))) { body.b = null; body.ret = false; }
   return { db, body, ua, ip, settings };
 }
 
@@ -111,7 +113,7 @@ async function addHeat(ctx) {
   const pages = settings.heat_pages;
   if (pages !== '*' && !(Array.isArray(pages) && pages.includes(page))) return;
   const device = DEVICES.has(body.dv) ? body.dv : 'desktop';
-  const day = utcDay();
+  const day = localDay();
   const rows = [];
   const take = (obj, kind, re, limit) => {
     if (!obj || typeof obj !== 'object') return;

@@ -54,7 +54,8 @@ Open `http://127.0.0.1:8790/admin/analytics` and continue with any email.
 - **Bounce:** a visit that saw one page, did no action and left within 10 seconds of active time.
 - **Active time:** counts only while the page is visible and the person scrolled, clicked, tapped, typed or moved the mouse in the last 2 minutes. Opening a page counts as an interaction.
 - **Average visit:** active time per visit, added up across its pages.
-- **Visitors:** counted once per day from a daily hash; ranges add up the days.
+- **Visitors:** counted once per day from a daily hash; ranges add up the days. The salt behind the hash turns over at midnight in the report time zone, so a day in the reports is a day for the hash too.
+- **No browser ID:** with Global Privacy Control or Do Not Track, with a time zone in the EU, EEA, UK or Switzerland (including Cyprus, Ceuta and France's overseas regions), or when Vercel places the request in one of those countries.
 - **Returning:** a visit from a browser with a browser ID that was set on an earlier visit. Browsers without an ID are "not identifiable".
 - **Likely bots:** visits that never sent a leave signal and never did an action, once they are 30 minutes old. They are left out of every report and counted in Settings.
 - **Source:** `utm_source`, then `?ref=`, then the referring site (search engines and social sites get friendly names), else "Direct".
@@ -86,7 +87,7 @@ The daily job creates next month's partition, rotates the salt (deleting the old
 
 ## Heatmap previews
 
-Vercel can't run a headless browser cheaply, so heatmaps paint over the live page loaded in a frame at 1440, 820 or 390 px wide (with `?a_preview=1`, which the script never counts). Scroll inside the preview to see the whole page. A scheduled screenshot job could fill `analytics_shots` later.
+Vercel can't run a headless browser cheaply, so heatmaps paint over the live page loaded in a sandboxed frame at 1440, 820 or 390 px wide (with `?a_preview=1`, which the script never counts). The frame gets its own opaque origin, so scripts on the page can't reach the dashboard; `js/a-preview.js` inside the page receives the heat data by `postMessage` and draws it. Only paths on this site can be previewed. Scroll inside the preview to see the whole page. A scheduled screenshot job could fill `analytics_shots` later.
 
 ## Notes
 

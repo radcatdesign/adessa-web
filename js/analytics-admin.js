@@ -827,13 +827,17 @@
     });
     draw();
   };
-  // The page loads live in a frame at the device's width and viewport height. The heat layer is drawn
-  // inside the page itself, at page coordinates, so it lines up while you scroll the preview.
+  // The page loads live in a sandboxed frame (its own opaque origin, so its scripts can't reach the dashboard)
+  // at the device's width and viewport height. js/a-preview.js inside the page asks for the heat data and draws it
+  // at page coordinates, so it lines up while you scroll the preview.
   const VIEWPORT = { desktop: 900, tablet: 1180, phone: 844 };
   function heatView(d, st) {
     const W = WIDTHS[st.device], VH = VIEWPORT[st.device];
     const box = h('div', { class: 'an-heat' });
-    const iframe = h('iframe', { class: 'an-heat__frame', title: 'Page preview with heatmap. Scroll inside it to see the whole page.', src: d.page + '?a_preview=1', width: W, height: VH });
+    let src = null;
+    try { const u = new URL(d.page, location.origin); if (u.origin === location.origin) { u.search = '?a_preview=1'; u.hash = ''; src = u.href; } } catch (e) { /* bad path */ }
+    if (!src) return h('p', { class: 'an-empty', text: 'This page can’t be previewed.' });
+    const iframe = h('iframe', { class: 'an-heat__frame', title: 'Page preview with heatmap. Scroll inside it to see the whole page.', src, width: W, height: VH, sandbox: 'allow-scripts', referrerpolicy: 'no-referrer' });
     iframe.style.pointerEvents = 'auto';
     box.append(iframe);
     const fit = () => {
@@ -844,56 +848,12 @@
     };
     const pts = st.mode === 'move' ? d.moves : d.clicks;
     const ink = getComputedStyle(document.documentElement).getPropertyValue('--an-heat').trim() || '196, 82, 30';
-    const paint = () => {
-      let doc;
-      try { doc = iframe.contentDocument; } catch (e) { return; }
-      if (!doc || !doc.body) return;
-      // Links in the preview don't navigate.
-      if (!doc.__aHeat) { doc.__aHeat = 1; doc.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); }, true); }
-      const old = doc.getElementById('__a_heat'); if (old) old.remove();
-      const pageW = Math.max(doc.documentElement.scrollWidth, W), pageH = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
-      const layer = doc.createElement('div');
-      layer.id = '__a_heat';
-      layer.style.cssText = 'position:absolute;left:0;top:0;width:' + pageW + 'px;height:' + pageH + 'px;pointer-events:none;z-index:2147483000;';
-      const canvas = doc.createElement('canvas');
-      const dpr = 1;
-      canvas.width = pageW * dpr; canvas.height = Math.min(pageH, 30000) * dpr;
-      canvas.style.cssText = 'position:absolute;left:0;top:0;width:' + pageW + 'px;height:' + Math.min(pageH, 30000) + 'px;';
-      layer.appendChild(canvas);
-      const ctx = canvas.getContext('2d');
-      if (st.mode === 'scroll') {
-        for (const [depth, share] of d.scroll.reach) {
-          const y0 = depth / 100 * pageH, y1 = Math.min(pageH, (depth + 5) / 100 * pageH);
-          ctx.fillStyle = 'rgba(34, 29, 23,' + (0.62 * (1 - share)).toFixed(3) + ')';
-          ctx.fillRect(0, y0, pageW, y1 - y0);
-        }
-        for (const m of [25, 50, 75, 100]) {
-          const reached = d.scroll.reach.find(([dp]) => dp === m);
-          const mark = doc.createElement('div');
-          mark.style.cssText = 'position:absolute;left:0;right:0;top:' + (m / 100 * pageH - (m === 100 ? 2 : 0)) + 'px;border-top:2px dashed rgba(34,29,23,.6);';
-          const tag = doc.createElement('span');
-          tag.textContent = m + '% of page · ' + pct(reached ? reached[1] : 0) + ' reached';
-          tag.style.cssText = 'position:absolute;right:16px;top:' + (m === 100 ? '-34px' : '6px') + ';padding:6px 12px;border-radius:999px;background:rgba(34,29,23,.82);color:#fffaf0;font:600 ' + (st.device === 'phone' ? 12 : 14) + 'px/1.2 "Plus Jakarta Sans",Arial,sans-serif;letter-spacing:.06em;';
-          mark.appendChild(tag);
-          layer.appendChild(mark);
-        }
-      } else {
-        const max = Math.max(1, ...pts.map((p) => p[2]));
-        const colW = pageW / 50;
-        for (const [x, y, c] of pts) {
-          const cx = (x + 0.5) * colW, cy = (y + 0.5) * 20;
-          const a = 0.3 + 0.7 * Math.sqrt(c / max);
-          const r = Math.max(30, colW * 1.7);
-          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-          g.addColorStop(0, 'rgba(' + ink + ',' + a.toFixed(3) + ')');
-          g.addColorStop(1, 'rgba(' + ink + ',0)');
-          ctx.fillStyle = g;
-          ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
-        }
-      }
-      doc.body.appendChild(layer);
+    const onMsg = (e) => {
+      if (!iframe.isConnected) { removeEventListener('message', onMsg); return; }
+      if (e.source !== iframe.contentWindow || !e.data || e.data.type !== 'a-ready') return;
+      iframe.contentWindow.postMessage({ type: 'a-heat', mode: st.mode === 'scroll' ? 'scroll' : 'points', device: st.device, ink, points: pts, reach: d.scroll.reach }, '*');
     };
-    iframe.addEventListener('load', () => { setTimeout(paint, 700); setTimeout(paint, 2500); });
+    addEventListener('message', onMsg);
     requestAnimationFrame(fit);
     onResize(box.parentElement || box, fit);
     const holder = h('div', { style: { width: '100%' } }, box);

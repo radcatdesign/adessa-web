@@ -126,6 +126,9 @@ export function normPath(p) {
   if (typeof p !== 'string' || !p) return '/';
   let path = p.split(/[?#]/)[0];
   try { path = decodeURI(path); } catch { /* keep as is */ }
+  // Never a protocol-relative or absolute URL: "//host/x" and "\\host" become "/host/x".
+  path = path.replace(/^[\/\\]+/, '/').replace(/\\/g, '/');
+  if (/^[a-z][a-z0-9+.-]*:/i.test(path)) path = '/' + path.replace(/^[a-z][a-z0-9+.-]*:\/*/i, '');
   path = path.replace(/\/index(\.html)?$/, '/').replace(/\.html$/, '');
   if (path.length > 1) path = path.replace(/\/+$/, '');
   if (!path.startsWith('/')) path = '/' + path;
@@ -154,3 +157,9 @@ export function ipKey(ip) {
 
 // ---------- dates ----------
 export const utcDay = (d = new Date()) => d.toISOString().slice(0, 10);
+// A YYYY-MM-DD date in the site's time zone.
+export const localDay = (date = new Date(), tz = TZ) => new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+
+// EU, EEA, UK and Switzerland: no browser ID without consent.
+export const CONSENT_COUNTRIES = new Set(['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE',
+  'IS', 'LI', 'NO', 'GB', 'CH', 'GF', 'GP', 'MQ', 'RE', 'YT', 'MF', 'GI', 'AX', 'IM', 'JE', 'GG']);
