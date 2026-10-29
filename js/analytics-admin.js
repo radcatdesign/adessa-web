@@ -240,17 +240,30 @@
     ['overview', 'Overview'], ['live', 'Live'], ['pages', 'Pages'], ['heatmaps', 'Heatmaps'], ['audience', 'Audience'],
     ['visitors', 'Visitors'], ['actions', 'Actions'], ['settings', 'Settings'],
   ];
+
+  // Line icons for the side nav, 24 x 24, drawn with the current text color.
+  const ICONS = {
+    overview: ['M4 4h7v7H4z', 'M13 4h7v4h-7z', 'M13 10h7v10h-7z', 'M4 13h7v7H4z'],
+    live: ['M3 12h4l2.5-6 5 12 2.5-6H21'],
+    pages: ['M7 3h7l5 5v13H7z', 'M14 3v5h5', 'M10 13h6', 'M10 17h6'],
+    heatmaps: ['M12 21a7 7 0 0 1-7-7c0-3 2-5 3.5-6.5.3 2 1.3 3 2.5 3.5C11 8 12 5 14.5 3c.5 3 4.5 5.5 4.5 11a7 7 0 0 1-7 7z', 'M12 21a3 3 0 0 1-3-3c0-1.6 1.2-2.6 2-3.5.4 1 1 1.5 1.6 1.7.5-1 1-1.8 1.9-2.4.3 1.6 1.5 2.4 1.5 4.2a3 3 0 0 1-3 3z'],
+    audience: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z', 'M3 12h18', 'M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9s1.2-6.4 3.7-9z'],
+    visitors: ['M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', 'M2 21c0-3.9 3.1-7 7-7s7 3.1 7 7', 'M16 3.5a4 4 0 0 1 0 7.5', 'M18 14.5c2.3.9 4 3.2 4 6.5'],
+    actions: ['M9 9l11 4.5-4.8 1.7L13.5 20z', 'M5 3.5l1 2.3', 'M2.5 8.5l2.4.6', 'M9.5 2.5l-.2 2.5', 'M3.3 13.4l2-1.4'],
+    settings: ['M4 6h9', 'M17 6h3', 'M4 12h3', 'M11 12h9', 'M4 18h11', 'M19 18h1', 'M15 4v4', 'M9 10v4', 'M17 16v4'],
+  };
+  function navIcon(id) {
+    return s('svg', { class: 'an-nav__icon', viewBox: '0 0 24 24', 'aria-hidden': 'true' }, (ICONS[id] || []).map((d) => s('path', { d })));
+  }
   let mainEl, sideEl, navEl, liveBadge;
   function shell() {
     navEl = h('ul', { class: 'an-nav' }, NAV.map(([id, label]) => h('li', null, h('a', { href: '#' + id, 'data-id': id, onclick: () => sideEl.classList.remove('is-open') },
-      h('span', { text: label }), id === 'live' ? (liveBadge = h('span', { class: 'an-nav__live', hidden: true }, h('i', { class: 'an-dot' }), h('span', { text: '0' }))) : null))));
+      h('span', { class: 'an-nav__label' }, navIcon(id), label), id === 'live' ? (liveBadge = h('span', { class: 'an-nav__live', hidden: true }, h('i', { class: 'an-dot' }), h('span', { text: '0' }))) : null))));
     const themeBtn = h('button', { type: 'button', class: 'an-linkbtn', text: themeLabel(), onclick: () => { toggleTheme(); themeBtn.textContent = themeLabel(); } });
-    const sampleSwitch = h('button', { type: 'button', role: 'switch', class: 'an-switch', 'aria-checked': String(state.sample), 'aria-label': 'Sample data', onclick: () => setSample(!state.sample) });
     sideEl = h('aside', { class: 'an-side', 'aria-label': 'Analytics' },
       h('a', { class: 'an-brand', href: '#overview' }, logo(), h('span', { class: 'ds-caption-m ds-text-secondary', text: 'Analytics' })),
       h('nav', { 'aria-label': 'Reports' }, navEl),
       h('div', { class: 'an-side__foot' },
-        h('label', { class: 'an-label' }, h('span', { text: 'Sample data' }), sampleSwitch),
         h('div', { class: 'an-who', text: state.user.email }),
         h('div', { class: 'ds-row', style: { '--row-gap': '20px' } }, themeBtn, h('button', { type: 'button', class: 'an-linkbtn', text: 'Sign out', onclick: signOut }))));
     const menuBtn = h('button', { type: 'button', class: 'ds-btn ds-btn--secondary ds-btn--s', 'aria-expanded': 'false', text: 'Menu', onclick: () => {

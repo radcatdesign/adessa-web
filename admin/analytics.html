@@ -12,8 +12,8 @@
   <link href="/css/adessa-ds.css" rel="stylesheet">
   <link href="/css/analytics-admin.css" rel="stylesheet">
   <script>
-    // Theme before paint: saved choice, else the system setting.
-    (function () { try { var t = localStorage.getItem('a_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
+    // Theme before paint: light unless this browser chose dark.
+    (function () { try { document.documentElement.setAttribute('data-theme', localStorage.getItem('a_theme') === 'dark' ? 'dark' : 'light'); } catch (e) {} })();
   </script>
 </head>
 <body class="ds an">
