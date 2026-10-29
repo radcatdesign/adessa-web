@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Miami Showroom Investment Brief | Adessa Mind</title>
-  <meta name="description" content="AQ validation and go-to-market. A $250K early close to activate Adessa’s Miami showroom and prove what cognitive wellbeing can do.">
+  <meta name="description" content="Creating the standard for cognitive wellbeing. A $250K early close to validate our core product and set the course for go-to-market at scale.">
   <meta property="og:title" content="Miami Showroom Investment Brief | Adessa Mind">
-  <meta property="og:description" content="AQ validation and go-to-market. $250K early close, November 2026.">
+  <meta property="og:description" content="Creating the standard for cognitive wellbeing. $250K early close, November 2026.">
   <meta property="og:image" content="https://adessamind.com/images/mia/og.jpg">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -36,8 +36,9 @@
     .mia-hero__top-btn { position: absolute; right: 20px; top: 54px; }
     .mia-hero__content { position: absolute; inset: 0 0 2svh; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 30px; padding: calc(50svh - 120px) var(--space-24) 0; }
     .mia-hero__block { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; max-width: 760px; }
-    .mia-hero__title { font-family: var(--font-serif); font-weight: 300; font-size: clamp(40px, 4.6vw, 64px); line-height: 1.1; margin: 0; }
-    .mia-hero__sub { font-family: var(--font-serif); font-weight: 300; font-size: 20px; line-height: 1.2; margin: 0; }
+    .mia-hero__title { font-family: var(--font-serif); font-weight: 300; font-size: clamp(40px, 4.6vw, 64px); line-height: 1.1; margin: 0; text-wrap: balance; }
+    .mia-hero__sub { font-family: var(--font-serif); font-weight: 300; font-size: 20px; line-height: 1.3; margin: 0; max-width: 560px; text-wrap: balance; }
+    .mia-hero__meta { margin: 4px 0 0; color: var(--ivory); opacity: .85; }
     .mia-hero__btns { padding-top: 8px; display: flex; gap: 10px; }
     .mia-scroll-line { width: 1px; height: 60px; margin: 0 auto; overflow: hidden; background: rgba(255,255,255,.2); position: relative; }
     .mia-scroll-line::after { content: ""; position: absolute; left: 0; right: 0; top: -100%; height: 50%; background: var(--white); animation: miaScroll 2s cubic-bezier(.76,0,.3,1) infinite; }
@@ -116,7 +117,7 @@
     .mia-panel { border: var(--stroke-hairline) solid var(--color-border-default); border-radius: var(--radius-xl); padding: var(--space-40); display: flex; flex-direction: column; gap: var(--space-32); background: var(--color-surface-subtle); }
     .mia-panel--inverse { background: var(--color-surface-inverse); border-color: transparent; color: var(--color-text-inverse); justify-content: space-between; }
     .mia-panel--inverse .ds-label-s, .mia-panel--inverse p { color: var(--oat); }
-    .mia-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-24); }
+    .mia-stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: var(--space-24); }
     .mia-stat { display: flex; flex-direction: column; gap: var(--space-8); }
     .mia-stat__v { font-variant-numeric: tabular-nums; font-family: var(--font-serif); font-weight: 300; font-size: clamp(48px, 5.4vw, 76px); line-height: 1; letter-spacing: -0.01em; }
     .mia-stat__l { color: var(--color-text-secondary); }
@@ -200,7 +201,7 @@
       .mia-aq__inner > .ds-stack { max-width: none; }
     }
     @media (max-width: 767px) {
-      .mia-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-12); }
+      .mia-stats { grid-template-columns: repeat(3, auto); gap: var(--space-12); }
       .mia-stat__v { font-size: 40px; }
       .mia-panel { padding: var(--space-32) var(--space-24); }
       .mia-steps li { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); }
@@ -213,7 +214,7 @@
       .mia-hero__btns .ds-btn, main .ds-btn { width: 100%; }
       .mia-cta .ds-row { flex-direction: column; align-items: stretch; width: 100%; }
     }
-    @media (max-width: 479px) { .mia-stats { grid-template-columns: minmax(0, 1fr); } }
+    @media (max-width: 479px) { .mia-stats { grid-template-columns: minmax(0, 1fr); } .mia-hero__title { font-size: 36px; } }
   </style>
 </head>
 <body class="ds">
@@ -230,8 +231,9 @@
   </header>
   <div class="mia-hero__content">
     <div class="mia-hero__block">
-      <h1 class="mia-hero__title" data-text-anim>AQ validation<br>and go&#8209;to&#8209;market.</h1>
-      <p class="mia-hero__sub" data-text-anim data-text-anim-delay="0.8">$250K early close | November 2026</p>
+      <h1 class="mia-hero__title" data-text-anim>Creating the standard for cognitive wellbeing.</h1>
+      <p class="mia-hero__sub" data-text-anim data-text-anim-delay="0.8">An opportunity to validate our core product and set the course for go&#8209;to&#8209;market at scale.</p>
+      <p class="mia-hero__meta ds-label-s" data-show-delay="1400">$250K early close | November 2026</p>
       <div class="mia-hero__btns">
         <a class="ds-btn ds-btn--glass" data-show-delay="1800" data-scroll-to href="#opportunity">Read the brief</a>
       </div>
@@ -244,7 +246,7 @@
   <div class="animation-container">
     <div class="animation-content">
       <div class="text-wrapper">
-        <p data-text-anim class="split-text">From proven demand to proven outcomes.</p>
+        <p data-text-anim class="split-text">Give your mind a place to go.</p>
       </div>
       <div class="video-container"><video autoplay loop muted playsinline preload="metadata" src="videos/Adessa-home.webm"></video></div>
     </div>
@@ -266,8 +268,8 @@
           <div class="mia-mask"><img src="images/mia/phone.webp" alt="A guest photographing the experience" loading="lazy" width="900" height="1350"></div>
         </div>
         <div class="mia-prose">
-          <p class="ds-body-l mia-lead"><strong>Adessa is building the premium destination for cognitive wellbeing,</strong> combining objective measurement, personalized noninvasive technologies and a luxury wellness experience.</p>
-          <p class="ds-body-m">Following its oversubscribed Miami debut and the development of its AQ assessment platform, Adessa is <strong class="mia-bold">seeking a $250K early financing close by November 30, 2026</strong> to activate its Miami showroom and advance scientific and commercial validation.</p>
+          <p class="ds-body-l mia-lead"><strong>Adessa is building the Mind Spa, the premium destination for cognitive wellbeing.</strong> Combining objective brain measurement and noninvasive neuromodulation technologies in a luxury wellness experience.</p>
+          <p class="ds-body-m">Following our oversubscribed Miami debut and development of the AQ assessment platform, Adessa is <strong class="mia-bold">seeking a $250K early financing close by November 30, 2026</strong> to activate our Miami showroom and advance scientific and commercial validation.</p>
         </div>
       </div>
       <div class="mia-proof">
@@ -293,12 +295,12 @@
     <div class="ds-container mia-aq__inner">
       <div class="ds-stack" style="--stack-gap: var(--space-48)">
         <div class="mia-head">
-          <p class="mia-eyebrow ds-label-s"><span>02</span><span>AQ, understand your mind</span></p>
+          <p class="mia-eyebrow ds-label-s"><span>02</span><span>AQ: The Adessa Quotient</span></p>
           <h2 class="ds-h1" data-text-anim>For the first time, an actionable baseline for cognitive wellbeing.</h2>
-          <p class="ds-body-l ds-text-secondary">AQ doesn’t just describe how your mind is performing today. It is designed to inform what you do next, and measure what changes.</p>
+          <p class="ds-body-l ds-text-secondary">Your Adessa Quotient (AQ) doesn’t just reveal how your mind is performing today. It uncovers where your potential lies, informs what you do next, and measures your progress.</p>
         </div>
         <ol class="mia-steps">
-          <li><span class="ds-label-m">Measure</span><p class="ds-body-s">EEG, HRV, rapid cognitive testing and check-in inputs.</p></li>
+          <li><span class="ds-label-m">Measure</span><p class="ds-body-s">EEG, HRV, rapid cognitive testing, and check-in inputs.</p></li>
           <li><span class="ds-label-m">Interpret</span><p class="ds-body-s">A weighted, traceable AQ across eight cognitive and affective domains.</p></li>
           <li><span class="ds-label-m">Activate</span><p class="ds-body-s">A personalized intervention plan matching measured patterns to relevant modalities.</p></li>
           <li><span class="ds-label-m">Reassess</span><p class="ds-body-s">Repeat measurement to examine change over time and refine programming.</p></li>
@@ -323,7 +325,7 @@
         <div class="mia-card"><h3 class="ds-h3">Test</h3><p class="ds-body-s">Evaluate candidate interventions with consistent pre/post measurement.</p></div>
         <div class="mia-card"><h3 class="ds-h3">Determine</h3><p class="ds-body-s">Identify measurable responses and inform inclusion in Adessa’s protocols.</p></div>
       </div>
-      <p class="ds-body-m ds-text-secondary" style="max-width: 880px"><span style="color:var(--color-text-primary)">The study measures more than guest enjoyment.</span> The proposed battery includes EEG, HRV, cognitive performance, self-reported mood and other psychological measures. Technology response profiles are judged against a common benchmark, with a go/no-go recommendation.</p>
+      <p class="ds-body-m ds-text-secondary" style="max-width: 880px"><span style="color:var(--color-text-primary)">The study measures more than guest enjoyment.</span> The proposed battery includes EEG, HRV, cognitive performance, self-reported mood, and other psychological measures. Technology response profiles are judged against a common benchmark, with a go/no-go recommendation.</p>
       <div class="ds-stack" style="--stack-gap: var(--space-32)">
         <p class="ds-label-l ds-text-secondary">Validation questions</p>
         <div class="mia-questions">
@@ -352,8 +354,8 @@
         <figure class="mia-plan"><img src="images/mia/floorplan.webp" alt="Floor plan of the Miami showroom with assessment pods and lounge" loading="lazy" width="1600" height="1408"></figure>
         <div class="mia-vals">
           <div><h3 class="ds-h3">Scientific</h3><p class="ds-body-s">Can AQ and Activation protocols generate interpretable, reproducible responses?</p></div>
-          <div><h3 class="ds-h3">Service</h3><p class="ds-body-s">Can guests understand the results, trust recommendations and experience measurable value?</p></div>
-          <div><h3 class="ds-h3">Commercial</h3><p class="ds-body-s">Will guests pay, return, convert into programs and recommend Adessa?</p></div>
+          <div><h3 class="ds-h3">Service</h3><p class="ds-body-s">Can guests understand the results, trust recommendations, and experience measurable value?</p></div>
+          <div><h3 class="ds-h3">Commercial</h3><p class="ds-body-s">Will guests pay, return, convert into programs, and recommend Adessa?</p></div>
         </div>
       </div>
       <div class="ds-stack" style="--stack-gap: var(--space-32)">
@@ -389,7 +391,7 @@
         <p class="ds-label-s">The immediate investment opportunity</p>
         <p class="mia-stat__v">$250K</p>
         <p class="ds-h3">Early close. Target: November 30, 2026.</p>
-        <p class="ds-body-m" style="max-width: 560px">Fund the Miami showroom, scientific evaluation and commercialization proof points.</p>
+        <p class="ds-body-m" style="max-width: 560px">Fund the Miami showroom, scientific evaluation, and commercialization proof points.</p>
         <div class="mia-cta__terms">
           <span class="ds-chip">Part of a $2.0M seed financing</span>
           <span class="ds-chip">$10M post-money SAFE cap</span>
@@ -411,7 +413,7 @@
     <div class="ds-footer__top">
       <div class="ds-footer__brand">
         <a class="ds-nav__logo mia-foot-logo" href="/" aria-label="Adessa Mind home"><svg viewBox="0 0 120 43" fill="currentColor" role="img" aria-label="Adessa Mind"><path d="M21.9487 31.6718H24.5333L12.9641 0H12.718L11.0359 2.99483L0 31.6718H2.1744L5.82566 21.3333H18.2154L21.9487 31.6718ZM11.8974 4.22558H12.0615L17.7231 19.9385H6.31798L11.8974 4.22558Z" /><path d="M40.5333 31.0154C41.7641 30.3589 42.4205 29.7846 42.9949 29.2513V31.959L45.1692 31.7128V0.246105L42.9539 0.615322V12.8C42.3795 12.5538 40.2052 12.1846 39.0564 12.1846C33.3949 12.1846 28.1846 16 28.1846 22.7282C28.1846 27.9795 31.7949 32.082 36.3077 32.082C37.7436 32.082 39.5077 31.5898 40.5333 31.0154ZM30.5641 21.6206C30.5641 16.6974 33.7231 13.3744 37.8257 13.0051C39.3846 13.0462 41.6 14.0307 42.9539 14.523V28.718C41.4769 29.5385 39.5897 30.2359 37.4564 30.2359C32.9025 30.2359 30.5641 26.3795 30.5641 21.6206Z" /><path d="M66.5025 29.4564C66.5846 28.9231 66.6666 28.5539 66.7077 28.1435C65.7641 29.0872 63.5487 30.3179 60.3076 30.3179C56.1641 30.3179 53.4564 27.3231 53.4564 22.5231C53.4564 21.4974 53.5384 20.5538 53.7025 19.6923H66.7897C66.8307 19.4052 66.8718 19.1179 66.8718 18.8307C66.9128 13.8256 63.8769 12.1846 59.9384 12.1846C58.7487 12.1846 56.9436 12.8 55.5897 13.7436C53.0871 15.4257 51.1179 18.7897 51.1179 23.0154C51.1179 28.5129 54.8923 32.082 59.5282 32.082C62.9334 32.082 65.2308 31.0154 66.5025 29.4564ZM59.282 12.9641C63.1795 13.0462 64.6153 14.9334 64.6153 18.4205L53.8667 18.9538C54.8923 15.0154 57.4769 13.0462 59.282 12.9641Z" /><path d="M83.0769 13.2923C81.6 12.759 80.082 12.1846 78.523 12.1846C76.9641 12.1846 75.5282 12.759 74.3384 13.5385C73.0667 14.4 72.1641 15.8359 72.1641 17.2718C72.1641 20.759 74.2563 21.3333 77.5385 22.7692C81.1488 24.3693 82.1744 24.7385 82.1744 27.5692C82.1744 29.8256 80.041 30.9334 78.6871 31.1385C76.759 31.1385 74.1743 29.9897 72.2462 29.2103L71.6307 30.9334C73.7641 31.7128 75.6102 32.082 76.8 32.082C79.3436 32.082 80.5333 31.2205 81.7641 30.2769C82.9538 29.3333 83.8154 27.8154 83.8154 26.1743C83.8154 23.0564 81.6 22.1949 78.441 20.759C74.9539 19.2 73.7641 18.7487 73.7641 16.4102C73.7641 14.3589 75.5282 13.2923 76.8411 13.1282C78.6871 13.1282 80.7794 14.1538 82.4205 14.9334L83.0769 13.2923Z" /><path d="M99.1999 13.2923C97.7231 12.759 96.2051 12.1846 94.6461 12.1846C93.0872 12.1846 91.6513 12.759 90.4616 13.5385C89.1897 14.4 88.2872 15.8359 88.2872 17.2718C88.2872 20.759 90.3794 21.3333 93.6615 22.7692C97.2718 24.3693 98.2974 24.7385 98.2974 27.5692C98.2974 29.8256 96.1641 30.9334 94.8102 31.1385C92.8821 31.1385 90.2975 29.9897 88.3693 29.2103L87.7538 30.9334C89.8871 31.7128 91.7333 32.082 92.9231 32.082C95.4667 32.082 96.6564 31.2205 97.8872 30.2769C99.0769 29.3333 99.9385 27.8154 99.9385 26.1743C99.9385 23.0564 97.7231 22.1949 94.5641 20.759C91.0769 19.2 89.8871 18.7487 89.8871 16.4102C89.8871 14.3589 91.6513 13.2923 92.9641 13.1282C94.8102 13.1282 96.9025 14.1538 98.5436 14.9334L99.1999 13.2923Z" /><path d="M106.913 13.0462C106.626 13.4564 106.01 14.4 105.231 15.4667L105.313 15.5487C106.79 14.6871 108.759 13.9077 110.605 13.9077C113.682 13.9077 115.118 15.1795 115.118 17.4359V21.2512L105.026 25.0256C104.779 25.8871 104.574 26.7077 104.574 27.4051C104.574 30.1948 106.338 32.082 109.128 32.082C110.769 32.082 112.287 31.5487 113.395 30.6051C114.092 30.0307 114.749 29.3744 115.118 28.759H115.159V28.9641C115.159 31.1795 116.759 32.082 118.195 32.082C118.564 32.082 119.138 32 119.262 31.9179L120 30.2359C119.795 30.3179 119.344 30.3589 119.138 30.3589C117.99 30.3589 117.333 29.7436 117.333 28.3076V16.7794C117.333 13.9897 115.036 12.1846 111.303 12.1846C109.497 12.1846 107.897 12.6358 106.913 13.0462ZM106.79 26.9539C106.79 26.4616 106.913 25.682 107.118 25.2308L115.118 21.7025V28.1435C113.969 29.8256 112.123 30.8102 110.031 30.8102C107.774 30.8102 106.79 29.1692 106.79 26.9539Z" /><path d="M87.7538 42.3399V36.655H88.1735L90.2949 39.8141H90.0888L92.2178 36.655H92.6375V42.3399H92.1415V37.3837L92.2636 37.4524L90.2071 40.5238H90.1842L88.1239 37.4524L88.2498 37.3837V42.3399H87.7538Z" /><path d="M99.1639 36.655H98.6679V42.3399H99.1639V36.655Z" /><path d="M105.194 42.3399V36.655H105.614L109.059 41.5921H108.895V36.655H109.391V42.3399H108.971L105.515 37.3723H105.69V42.3399H105.194Z" /><path d="M115.421 42.3399V36.655H117.264C117.821 36.655 118.305 36.7707 118.714 37.0022C119.124 37.2337 119.44 37.5618 119.664 37.9866C119.888 38.4113 120 38.9137 120 39.4936C120 40.0685 119.888 40.5696 119.664 40.9969C119.44 41.4242 119.124 41.7549 118.714 41.9889C118.305 42.2229 117.821 42.3399 117.264 42.3399H115.421ZM115.917 41.8821H117.257C117.707 41.8821 118.099 41.7835 118.434 41.5863C118.768 41.3893 119.028 41.1114 119.212 40.7527C119.397 40.3941 119.489 39.9744 119.489 39.4936C119.489 39.0129 119.396 38.5944 119.21 38.2384C119.024 37.8823 118.764 37.6056 118.43 37.4086C118.095 37.2114 117.704 37.1128 117.257 37.1128H115.917V41.8821Z" /></svg></a>
-        <p class="ds-caption-l ds-text-secondary">Cognitive wellbeing for a brighter tomorrow.</p>
+        <p class="ds-caption-l ds-text-secondary">Give your mind a place to go.</p>
       </div>
       <div class="ds-footer__cols">
         <nav class="ds-footer__col" aria-label="Brief">
