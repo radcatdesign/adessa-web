@@ -71,6 +71,7 @@
   @media (prefers-reduced-motion: reduce) { .hu-scroll span { animation: none; height: 100%; opacity: .5; } }
   .footer__bg { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 45%); mask-image: linear-gradient(to bottom, transparent 0, #000 45%); }
   .hu-row .ph__sec-2__right { border-radius: 24px; overflow: hidden; isolation: isolate; }
+  .hu-row .ph__sec-2__img { object-fit: cover; object-position: 50% 50%; }
 
   .hq { max-width: 1240px; margin: 0 auto; padding: 140px 24px 120px; }
   .hq__head { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; max-width: 760px; margin: 0 auto 72px; }
@@ -735,10 +736,16 @@
     document.querySelectorAll('.hu-row .ph__sec-2__right').forEach(function (frame) {
       var media = frame.querySelectorAll('.ph__sec-2__img, .ph__sec-2__video');
       gsap.set(frame, { clipPath: 'inset(100% 0% 0% 0% round 24px)' });
-      gsap.set(media, { scale: 1.25, transformOrigin: '50% 60%' });
-      gsap.timeline({ scrollTrigger: { trigger: frame, start: 'top bottom-=60', once: true } })
+      gsap.set(media, { scale: 1.25, transformOrigin: '50% 50%' });
+      var tl = gsap.timeline({ paused: true })
         .to(frame, { clipPath: 'inset(0% 0% 0% 0% round 24px)', duration: 1.5, ease: 'power4.inOut' }, 0)
         .to(media, { scale: 1, duration: 2.4, ease: 'power3.out' }, 0.1);
+      // IntersectionObserver instead of ScrollTrigger: on phones the pinned video above shifts trigger positions,
+      // so ScrollTrigger fired before the photos were on screen
+      var io = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { tl.play(); io.disconnect(); }
+      }, { threshold: 0, rootMargin: '0px 0px -15% 0px' });
+      io.observe(frame.parentNode); // the frame itself is clipped to nothing, which IntersectionObserver treats as not visible
     });
   }
 
