@@ -194,7 +194,7 @@ export async function data(req, res) {
   const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
   try {
     if (q.r === 'config') {
-      return send(res, 200, { signIn: authConfigured(), tz: TZ, devAuth: process.env.ANALYTICS_DEV_AUTH === '1' && !process.env.VERCEL });
+      return send(res, 200, { signIn: authConfigured(), tz: TZ, devAuth: process.env.ANALYTICS_DEV_AUTH === '1' && !process.env.VERCEL, build: (process.env.VERCEL_GIT_COMMIT_SHA || '').slice(0, 7) || null });
     }
     if (q.r === 'login' || q.r === 'logout') {
       if (req.method !== 'POST') return send(res, 405);

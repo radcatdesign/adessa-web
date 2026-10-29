@@ -87,7 +87,13 @@ The daily job creates next month's partition, rotates the salt (deleting the old
 
 ## Heatmap previews
 
-Vercel can't run a headless browser cheaply, so heatmaps paint over the live page loaded in a sandboxed frame at 1440, 820 or 390 px wide (with `?a_preview=1`, which the script never counts). The frame gets its own opaque origin, so scripts on the page can't reach the dashboard; `js/a-preview.js` inside the page receives the heat data by `postMessage` and draws it. Only paths on this site can be previewed. Scroll inside the preview to see the whole page. A scheduled screenshot job could fill `analytics_shots` later.
+Heatmaps paint on a still snapshot of each page, never the live page. `scripts/heat-snapshots.cjs` serves the site locally, opens every page at 1440 (desktop), 820 (tablet) and 390 px (phone, at 2x) with `?a_preview=1` (which the tracking script never counts), scrolls once so reveals run, turns off ScrollSmoother, and saves a full-length JPEG to `images/heat/<page>-<device>.jpg` plus `images/heat/index.json` (file, size, and when it was taken). Third-party scripts and embeds are blocked during capture; Google Fonts load.
+
+The GitHub workflow `.github/workflows/heat-snapshots.yml` reruns it after every push to `main` that changes a page, its CSS, JS or images, and commits the new snapshots (which deploys them). Run it by hand with `node scripts/heat-snapshots.cjs` (all pages) or `node scripts/heat-snapshots.cjs / /miami` (some). Pinned scroll sections are captured in their finished state, so heat inside a pinned section is approximate.
+
+## Version and update log
+
+The dashboard shows its version in the side nav, linked to `#updates`. To release a change: add an entry at the top of `UPDATES` in `js/analytics-admin.js`, and bump the `?v=` on the four CSS and JS tags in `admin/analytics.html` to match, so browsers load the new files right away. On Vercel the update log also shows the deployed commit.
 
 ## Notes
 

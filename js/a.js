@@ -11,8 +11,8 @@
     var ls = store('localStorage'), ss = store('sessionStorage');
     // Browsers that have signed in to the dashboard are the team's: send nothing.
     if (ls && ls.getItem('a_staff') === '1') return;
-    // The dashboard's heatmap preview loads pages with ?a_preview=1: never count those, just draw the heat layer.
-    if (/[?&]a_preview=1/.test(location.search)) { var pv = d.createElement('script'); pv.src = '/js/a-preview.js'; d.head.appendChild(pv); return; }
+    // Heatmap snapshots (scripts/heat-snapshots.cjs) load pages with ?a_preview=1: never count those.
+    if (/[?&]a_preview=1/.test(location.search)) return;
 
     var rid = function () {
       var a = new Uint8Array(12), s = '', c = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

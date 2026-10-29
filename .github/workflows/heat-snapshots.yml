@@ -1,0 +1,38 @@
+# Retakes the page snapshots the analytics heatmaps are drawn on, after the site changes.
+name: Heatmap snapshots
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - 'css/**'
+      - 'js/**'
+      - 'images/**'
+      - '!images/heat/**'
+      - 'videos/**'
+      - 'scripts/heat-snapshots.cjs'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: heat-snapshots
+  cancel-in-progress: true
+jobs:
+  snapshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit --no-fund
+      - run: npm i --no-save --no-audit --no-fund playwright@1.56.1 && npx playwright install --with-deps chromium
+      - run: node scripts/heat-snapshots.cjs
+      - name: Commit changed snapshots
+        run: |
+          git add images/heat
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git -c user.name="adessa-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Heatmap snapshots for ${GITHUB_SHA::7}"
+          git pull --rebase origin main
+          git push origin HEAD:main

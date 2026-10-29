@@ -2,6 +2,33 @@
 (function () {
   'use strict';
 
+  // ---------- version and update log ----------
+  // Newest first. Bump the version here and the ?v= on the CSS and JS tags in admin/analytics.html together.
+  const UPDATES = [
+    { v: '1.4.0', date: '2026-10-29', items: [
+      'Heatmaps are drawn on a snapshot of each page instead of loading the live page. Snapshots are retaken after every site update.',
+      'Version number and this update log.',
+      'Each release loads fresh, so a new version shows without a hard refresh.',
+    ] },
+    { v: '1.3.0', date: '2026-10-29', items: [
+      'Opens in light mode. Dark mode is still a click away and remembered per browser.',
+      'White pill for the active section, and icons in the side nav.',
+      'Sample data switch moved to Settings.',
+    ] },
+    { v: '1.2.0', date: '2026-10-29', items: [
+      'Sign in with a staff email and the team password. Clerk is gone.',
+      'Database setup is safe when two requests start at the same moment.',
+    ] },
+    { v: '1.1.0', date: '2026-10-28', items: [
+      'Connected to the Neon database.',
+      'Review fixes: European visitors never get a browser ID, visits that cross midnight keep all their pages, visitor counts follow the New York day, and saved identities are cleared on schedule.',
+    ] },
+    { v: '1.0.0', date: '2026-10-28', items: [
+      'First release: tracking script, Overview, Live, Pages, Heatmaps, Audience, Visitors, Actions, benchmarks, and Settings.',
+    ] },
+  ];
+  const VERSION = UPDATES[0].v;
+
   // ---------- tiny DOM helpers (text always goes in as text, never HTML) ----------
   const SVGNS = 'http://www.w3.org/2000/svg';
   function h(tag, attrs, ...kids) {
@@ -264,6 +291,8 @@
       h('a', { class: 'an-brand', href: '#overview' }, logo(), h('span', { class: 'ds-caption-m ds-text-secondary', text: 'Analytics' })),
       h('nav', { 'aria-label': 'Reports' }, navEl),
       h('div', { class: 'an-side__foot' },
+        h('a', { class: 'an-version', href: '#updates', onclick: () => sideEl.classList.remove('is-open') },
+          h('span', { text: 'v' + VERSION }), h('span', { class: 'an-version__link', text: 'Update log' })),
         h('div', { class: 'an-who', text: state.user.email }),
         h('div', { class: 'ds-row', style: { '--row-gap': '20px' } }, themeBtn, h('button', { type: 'button', class: 'an-linkbtn', text: 'Sign out', onclick: signOut }))));
     const menuBtn = h('button', { type: 'button', class: 'ds-btn ds-btn--secondary ds-btn--s', 'aria-expanded': 'false', text: 'Menu', onclick: () => {
@@ -322,7 +351,8 @@
     const arg = rest.join('/');
     const id = NAV.some(([k]) => k === page) ? page : page === 'visitor' ? 'visitors' : 'overview';
     navEl.querySelectorAll('a').forEach((a) => { if (a.dataset.id !== id) a.removeAttribute('aria-current'); else a.setAttribute('aria-current', 'page'); });
-    const fn = page === 'visitor' ? () => pageVisitor(arg) : PAGES[id];
+    const fn = page === 'visitor' ? () => pageVisitor(arg) : page === 'updates' ? pageUpdates : PAGES[id];
+    if (page === 'updates') navEl.querySelectorAll('a').forEach((a) => a.removeAttribute('aria-current'));
     const seq = ++renderSeq;
     fn(seq);
     window.scrollTo(0, 0);
@@ -802,6 +832,18 @@
     });
   }
 
+  // ---------- Update log ----------
+  function pageUpdates() {
+    const body = frame('Update log', 'What changed in this dashboard, newest first', { range: false });
+    const build = state.config && state.config.build;
+    body.append(
+      h('p', { class: 'an-card__note', text: 'You are on v' + VERSION + (build ? ', build ' + build : '') + '.' }),
+      h('ol', { class: 'an-updates' }, UPDATES.map((u) => h('li', { class: 'an-update' },
+        h('div', { class: 'an-update__head' }, h('span', { class: 'an-update__v', text: 'v' + u.v }), u === UPDATES[0] ? h('span', { class: 'an-chip an-chip--fill', text: 'Current' }) : null,
+          h('time', { class: 'an-meta', datetime: u.date, text: new Date(u.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) })),
+        h('ul', null, u.items.map((t) => h('li', { text: t })))))));
+  }
+
   // ---------- Heatmaps ----------
   const WIDTHS = { desktop: 1440, tablet: 820, phone: 390 };
   PAGES.heatmaps = (seq) => {
@@ -821,49 +863,98 @@
         h('div', { class: 'an-filters' }, pageSel, devSeg, modeSeg),
         h('div', { class: 'an-grid' },
           card(st.mode === 'scroll' ? 'Scroll depth' : st.mode === 'move' ? 'Cursor movement' : 'Clicks', st.mode === 'scroll' ? 'scrollmap' : 'heat', 8,
-            h('p', { class: 'an-card__note', text: n(views) + ' page views on ' + st.device + ' in this range. The page is shown live at ' + WIDTHS[st.device] + ' px wide.' }),
+            h('p', { class: 'an-card__note', text: n(views) + ' page views on ' + st.device + ' in this range, drawn on a ' + WIDTHS[st.device] + ' px wide snapshot of the page.' }),
             heatView(d, st)),
           card('Most clicked', 'heat', 4, bars(d.elements.map((e) => ({ label: e.selector, value: e.clicks })), { cols: ['Element', 'Clicks'] }),
             h('p', { class: 'an-meta', text: 'Elements are named by tag and class, never by their text.' }))));
     });
     draw();
   };
-  // The page loads live in a sandboxed frame (its own opaque origin, so its scripts can't reach the dashboard)
-  // at the device's width and viewport height. js/a-preview.js inside the page asks for the heat data and draws it
-  // at page coordinates, so it lines up while you scroll the preview.
-  const VIEWPORT = { desktop: 900, tablet: 1180, phone: 844 };
+  // Heat is drawn on a still snapshot of the page (images/heat, taken by scripts/heat-snapshots.cjs after every
+  // site update), never on the live page. Points are page coordinates at the device's width, so they line up.
+  let snapIndex = null;
+  async function snapshots() {
+    if (snapIndex) return snapIndex;
+    try { const r = await fetch('/images/heat/index.json?t=' + Date.now(), { cache: 'no-store' }); snapIndex = r.ok ? await r.json() : { pages: {} }; } catch (e) { snapIndex = { pages: {} }; }
+    return snapIndex;
+  }
+  function snapKey(p) {
+    let k = String(p || '/').split(/[?#]/)[0].replace(/\.html$/, '').replace(/\/index$/, '/');
+    if (k.length > 1) k = k.replace(/\/+$/, '');
+    return k || '/';
+  }
   function heatView(d, st) {
-    const W = WIDTHS[st.device], VH = VIEWPORT[st.device];
-    const box = h('div', { class: 'an-heat' });
-    let src = null;
-    try { const u = new URL(d.page, location.origin); if (u.origin === location.origin) { u.search = '?a_preview=1'; u.hash = ''; src = u.href; } } catch (e) { /* bad path */ }
-    if (!src) return h('p', { class: 'an-empty', text: 'This page can’t be previewed.' });
-    const iframe = h('iframe', { class: 'an-heat__frame', title: 'Page preview with heatmap. Scroll inside it to see the whole page.', src, width: W, height: VH, sandbox: 'allow-scripts', referrerpolicy: 'no-referrer' });
-    iframe.style.pointerEvents = 'auto';
-    box.append(iframe);
-    const fit = () => {
-      const scale = Math.min(1, box.parentElement ? box.parentElement.clientWidth / W : 1);
-      iframe.style.transform = 'scale(' + scale + ')';
-      box.style.width = Math.round(W * scale) + 'px';
-      box.style.height = Math.round(VH * scale) + 'px';
-    };
+    const W = WIDTHS[st.device];
     const pts = st.mode === 'move' ? d.moves : d.clicks;
-    const ink = getComputedStyle(document.documentElement).getPropertyValue('--an-heat').trim() || '196, 82, 30';
-    const onMsg = (e) => {
-      if (!iframe.isConnected) { removeEventListener('message', onMsg); return; }
-      if (e.source !== iframe.contentWindow || !e.data || e.data.type !== 'a-ready') return;
-      iframe.contentWindow.postMessage({ type: 'a-heat', mode: st.mode === 'scroll' ? 'scroll' : 'points', device: st.device, ink, points: pts, reach: d.scroll.reach }, '*');
-    };
-    addEventListener('message', onMsg);
-    requestAnimationFrame(fit);
-    onResize(box.parentElement || box, fit);
-    const holder = h('div', { style: { width: '100%' } }, box);
-    onResize(holder, fit);
     const empty = st.mode === 'scroll' ? !d.scroll.views : !pts.length;
-    return h('div', { class: 'ds-stack', style: { '--stack-gap': '16px' } },
+    const stage = h('div', { class: 'an-heat__stage' });
+    const box = h('div', { class: 'an-heat', tabindex: '0', 'aria-label': 'Page snapshot with heatmap. Scroll to see the whole page.' }, stage);
+    const note = h('p', { class: 'an-meta' });
+    const out = h('div', { class: 'ds-stack', style: { '--stack-gap': '16px' } },
       empty ? h('p', { class: 'an-empty', text: 'No ' + (st.mode === 'scroll' ? 'scroll' : st.mode === 'move' ? 'cursor' : 'click') + ' data for this page and device in this range.' }) : null,
       st.mode !== 'scroll' ? h('div', { class: 'an-scale' }, 'Fewer', h('i'), 'More') : h('p', { class: 'an-meta', text: 'Darker means fewer people scrolled that far.' }),
-      holder);
+      box, note);
+    snapshots().then((idx) => {
+      const snap = idx.pages && idx.pages[snapKey(d.page)] && idx.pages[snapKey(d.page)][st.device];
+      if (!snap) { box.replaceWith(h('p', { class: 'an-empty', text: 'There’s no snapshot of ' + d.page + ' yet. Snapshots are taken after each site update.' })); return; }
+      note.textContent = 'Snapshot taken ' + new Date(snap.taken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + '. Scroll inside the frame to see the whole page.';
+      const img = h('img', { src: '/images/heat/' + snap.file + '?v=' + encodeURIComponent(snap.taken), alt: '', width: snap.w, height: snap.h, decoding: 'async' });
+      const canvas = h('canvas', { 'aria-hidden': 'true' });
+      const marks = h('div', { class: 'an-heat__marks' });
+      stage.append(img, canvas, marks);
+      const ink = getComputedStyle(document.documentElement).getPropertyValue('--an-heat').trim() || '196, 82, 30';
+      let lastW = 0;
+      const paint = () => {
+        const outW = out.clientWidth;
+        if (!outW || outW === lastW) return;
+        lastW = outW;
+        // Fit the snapshot (never wider than the device) inside the frame, leaving room for its scrollbar.
+        stage.style.width = Math.min(W, outW) + 'px';
+        stage.style.height = snap.h * Math.min(W, outW) / snap.w + 'px';
+        box.style.width = '';
+        const sb = box.offsetWidth - box.clientWidth;
+        const dispW = Math.min(W, outW - sb);
+        const k = dispW / snap.w, dispH = snap.h * k;
+        stage.style.width = dispW + 'px';
+        stage.style.height = dispH + 'px';
+        box.style.width = dispW + sb + 'px';
+        // Keep the canvas under ~16M pixels (Safari's limit) on long pages.
+        const dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(16e6 / (dispW * dispH)));
+        canvas.width = Math.round(dispW * dpr); canvas.height = Math.round(dispH * dpr);
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr * k, 0, 0, dpr * k, 0, 0);
+        clear(marks);
+        if (st.mode === 'scroll') {
+          d.scroll.reach.forEach((r) => {
+            const y0 = r[0] / 100 * snap.h, y1 = Math.min(snap.h, (r[0] + 5) / 100 * snap.h);
+            ctx.fillStyle = 'rgba(34,29,23,' + (0.62 * (1 - r[1])).toFixed(3) + ')';
+            ctx.fillRect(0, y0, snap.w, y1 - y0);
+          });
+          [25, 50, 75, 100].forEach((m) => {
+            const hit = d.scroll.reach.find((r) => r[0] === m);
+            marks.append(h('div', { class: 'an-heat__mark', style: { top: (m / 100 * dispH - (m === 100 ? 2 : 0)) + 'px' } },
+              h('span', { style: m === 100 ? { top: '-30px' } : null, text: m + '% of page · ' + Math.round((hit ? hit[1] : 0) * 100) + '% reached' })));
+          });
+        } else {
+          let max = 1;
+          pts.forEach((p) => { if (p[2] > max) max = p[2]; });
+          const colW = snap.w / 50;
+          pts.forEach((p) => {
+            const cx = (p[0] + 0.5) * colW, cy = (p[1] + 0.5) * 20;
+            if (cy > snap.h) return;
+            const a = 0.3 + 0.7 * Math.sqrt(p[2] / max), r = Math.max(30, colW * 1.7);
+            const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+            g.addColorStop(0, 'rgba(' + ink + ',' + a.toFixed(3) + ')');
+            g.addColorStop(1, 'rgba(' + ink + ',0)');
+            ctx.fillStyle = g;
+            ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+          });
+        }
+      };
+      requestAnimationFrame(paint);
+      onResize(out, paint);
+    });
+    return out;
   }
 
   // ---------- Settings ----------
