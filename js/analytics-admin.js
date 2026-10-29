@@ -152,14 +152,11 @@
     range: store.get('a_range') || '30d', from: store.get('a_from') || '', to: store.get('a_to') || '',
     sample: store.get('a_sample') === '1', user: null, config: null, devStaff: store.get('a_dev_staff') || '',
   };
-  let getToken = async () => null;
 
   async function api(r, params, opts) {
     const qs = new URLSearchParams(Object.assign({ r }, params || {}));
     if (state.sample) qs.set('sample', '1');
     const headers = {};
-    const token = await getToken();
-    if (token) headers.Authorization = 'Bearer ' + token;
     if (state.devStaff) headers['x-dev-staff'] = state.devStaff;
     const init = { headers, credentials: 'same-origin' };
     if (opts && opts.body) { init.method = 'POST'; init.body = JSON.stringify(opts.body); headers['Content-Type'] = 'application/json'; }
@@ -181,16 +178,31 @@
     stopTimers();
     const box = h('div', { class: 'an-gate__box' }, logo());
     if (kind === 'signin') {
-      box.append(h('h1', { class: 'ds-h3', text: 'Analytics' }), h('p', { class: 'ds-body-s ds-text-secondary', text: 'For the Adessa team. Sign in with your staff email.' }));
-      if (window.Clerk && state.config && state.config.clerkPublishableKey) {
-        const mount = h('div');
-        box.append(mount);
-        window.Clerk.mountSignIn(mount, { forceRedirectUrl: location.href, signUpUrl: location.href });
+      box.append(h('h1', { class: 'ds-h3', text: 'Analytics' }), h('p', { class: 'ds-body-s ds-text-secondary', text: 'For the Adessa team. Sign in with your staff email and the team password.' }));
+      if (state.config && state.config.signIn) {
+        const emailIn = h('input', { class: 'ds-input', type: 'email', name: 'email', autocomplete: 'username', placeholder: 'Staff email', 'aria-label': 'Staff email', required: true, value: store.get('a_last_email') || '' });
+        const pwIn = h('input', { class: 'ds-input', type: 'password', name: 'password', autocomplete: 'current-password', placeholder: 'Team password', 'aria-label': 'Team password', required: true });
+        const msg = h('p', { class: 'ds-body-s ds-text-secondary', role: 'alert' });
+        const btn = h('button', { class: 'ds-btn', type: 'submit', text: 'Sign in' });
+        const form = h('form', { class: 'ds-stack', style: { '--stack-gap': '12px', width: '100%', alignItems: 'center' } }, emailIn, pwIn, btn, msg);
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          btn.disabled = true; msg.textContent = '';
+          try {
+            const res = await fetch('/api/analytics/data?r=login', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: emailIn.value, password: pwIn.value }) });
+            const d = await res.json().catch(() => ({}));
+            if (!res.ok) { msg.textContent = d.error || 'Sign-in failed.'; btn.disabled = false; return; }
+            store.set('a_last_email', emailIn.value.trim());
+            start();
+          } catch (err) { msg.textContent = 'Sign-in failed. Check your connection.'; btn.disabled = false; }
+        });
+        box.append(form);
+        setTimeout(() => (emailIn.value ? pwIn : emailIn).focus(), 50);
       } else if (state.config && state.config.devAuth) {
         const input = h('input', { class: 'ds-input', type: 'email', placeholder: 'Staff email', 'aria-label': 'Staff email', value: state.devStaff || '' });
         box.append(input, h('button', { class: 'ds-btn', type: 'button', text: 'Continue (local only)', onclick: () => { state.devStaff = input.value.trim(); store.set('a_dev_staff', state.devStaff); start(); } }));
       } else {
-        box.append(h('p', { class: 'ds-body-s ds-text-secondary', text: 'Sign-in isn’t set up yet. Add CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY to this project in Vercel.' }));
+        box.append(h('p', { class: 'ds-body-s ds-text-secondary', text: 'Sign-in isn’t set up yet. Add ANALYTICS_PASSWORD and ANALYTICS_STAFF_EMAILS to this project in Vercel.' }));
       }
     } else if (kind === 'denied') {
       box.append(h('h1', { class: 'ds-h3', text: 'Not on the list' }),
@@ -202,28 +214,9 @@
     clear(app).append(h('main', { class: 'an-gate' }, box));
   }
 
-  function loadScript(src) {
-    return new Promise((resolve, reject) => {
-      const el = document.createElement('script');
-      el.src = src; el.async = true; el.crossOrigin = 'anonymous';
-      el.onload = resolve; el.onerror = reject;
-      document.head.appendChild(el);
-    });
-  }
-  async function initClerk(pk) {
-    // The Frontend API host is encoded in the publishable key.
-    const fapi = atob(pk.split('_')[2]).replace(/\$$/, '');
-    await loadScript('https://' + fapi + '/npm/@clerk/ui@1.39.1/dist/ui.browser.js');
-    const el = document.createElement('script');
-    el.setAttribute('data-clerk-publishable-key', pk);
-    await new Promise((resolve, reject) => { el.src = 'https://' + fapi + '/npm/@clerk/clerk-js@6.38.1/dist/clerk.browser.js'; el.crossOrigin = 'anonymous'; el.onload = resolve; el.onerror = reject; document.head.appendChild(el); });
-    await window.Clerk.load({ ui: { ClerkUI: window.__internal_ClerkUICtor } });
-    getToken = async () => (window.Clerk.session ? window.Clerk.session.getToken() : null);
-    return window.Clerk.isSignedIn;
-  }
   async function signOut() {
     store.set('a_dev_staff', null); state.devStaff = '';
-    if (window.Clerk && window.Clerk.signOut) await window.Clerk.signOut();
+    await fetch('/api/analytics/data?r=logout', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
     location.reload();
   }
 
@@ -231,12 +224,7 @@
     try {
       state.config = await (await fetch('/api/analytics/data?r=config')).json();
       TZ = state.config.tz || TZ;
-      if (state.config.clerkPublishableKey && !state.devStaff) {
-        const signedIn = await initClerk(state.config.clerkPublishableKey);
-        if (!signedIn) return gate('signin');
-      } else if (!state.devStaff) {
-        return gate('signin');
-      }
+      // A session cookie, if there is one, answers this; otherwise show the sign-in form.
       state.user = await api('me');
       // A browser that signs in here is the team's: the tracking script on the site will skip it.
       if (store.get('a_staff_counted') !== '1') store.set('a_staff', '1');

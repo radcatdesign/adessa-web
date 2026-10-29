@@ -9,7 +9,6 @@
     "dev": "node scripts/dev-server.mjs"
   },
   "dependencies": {
-    "@clerk/backend": "3.26.4",
     "@electric-sql/pglite": "0.5.13",
     "@neondatabase/serverless": "1.2.0"
   }

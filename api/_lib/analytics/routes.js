@@ -1,6 +1,6 @@
 // Dashboard API: GET/POST /api/analytics/data?r=<route>. Staff only, except r=config.
 import { realDb, sampleDb } from './db.js';
-import { staffUser } from './auth.js';
+import { staffUser, login, logout, authConfigured } from './auth.js';
 import { seedSample, freshenSamplePresence } from './sample.js';
 import { getSettings, setSetting } from './store.js';
 import { parseRange, rangeRows, chartRows, series, sumBy, list, totals, localDay } from './query.js';
@@ -194,7 +194,13 @@ export async function data(req, res) {
   const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
   try {
     if (q.r === 'config') {
-      return send(res, 200, { clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY || null, tz: TZ, devAuth: process.env.ANALYTICS_DEV_AUTH === '1' && !process.env.VERCEL });
+      return send(res, 200, { signIn: authConfigured(), tz: TZ, devAuth: process.env.ANALYTICS_DEV_AUTH === '1' && !process.env.VERCEL });
+    }
+    if (q.r === 'login' || q.r === 'logout') {
+      if (req.method !== 'POST') return send(res, 405);
+      const body = q.r === 'login' ? await readJson(req, 4096).catch(() => ({})) : {};
+      const { status, ...out } = q.r === 'login' ? login(req, res, body || {}) : logout(req, res);
+      return send(res, status, out);
     }
     const user = await staffUser(req);
     if (!user) return send(res, 401, { error: 'Sign in to see analytics.' });

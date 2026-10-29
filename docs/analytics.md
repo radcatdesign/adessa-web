@@ -21,13 +21,13 @@ First-party analytics for adessamind.com: a small tracking script on every publi
 | Name | What it does |
 |---|---|
 | `ADESSA_DATABASE_URL` (or `DATABASE_URL`) | Postgres connection string, added by the Neon integration (connected 2026-10-28 with the `ADESSA_` prefix). Without it the functions fall back to an in-memory database that forgets everything. |
-| `CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY` | The "Adessa Website" Clerk app. Staff sign in with it. |
-| `ANALYTICS_STAFF_EMAILS` | Comma-separated emails allowed into the dashboard. A Clerk account with a verified email on this list gets in; nobody else does. |
+| `ANALYTICS_STAFF_EMAILS` | Comma-separated emails allowed into the dashboard. |
+| `ANALYTICS_PASSWORD` | The team password. A staff email plus this password signs in. Changing it signs everyone out. |
 | `CRON_SECRET` | Any long random string. Vercel sends it to the daily job; other callers are refused. |
 | `ANALYTICS_TZ` | Optional. Time zone for days and hours in the reports. Default `America/New_York`. |
 | `ANALYTICS_ORIGINS` | Optional. Extra origins allowed to send events, comma-separated (for example a second domain). The site's own host is always allowed. |
 
-Local only: `ANALYTICS_DEV=1` (adds a test SQL hook to the dev server) and `ANALYTICS_DEV_AUTH=1` (sign in with any email, no Clerk). Never set these on Vercel.
+Local only: `ANALYTICS_DEV=1` (adds a test SQL hook to the dev server) and `ANALYTICS_DEV_AUTH=1` (sign in with any email, no password). Never set these on Vercel.
 
 ## Run it locally
 
@@ -38,7 +38,7 @@ node tests/analytics/collect.test.cjs
 node tests/analytics/dashboard.test.cjs /tmp/shots
 ```
 
-Open `http://127.0.0.1:8790/admin/analytics` and continue with any email.
+Open `http://127.0.0.1:8790/admin/analytics` and continue with any email (or set `ANALYTICS_PASSWORD` and `ANALYTICS_STAFF_EMAILS` to try the real sign-in).
 
 ## What's collected
 
@@ -93,3 +93,7 @@ Vercel can't run a headless browser cheaply, so heatmaps paint over the live pag
 
 - The site also loads HubSpot's tracking code through the Webflow HubSpot app. That's separate from this system and sets its own cookies.
 - `*.vercel.app` addresses are team-only, so real traffic arrives only once adessamind.com points at this project.
+
+## Sign-in
+
+No outside service. The dashboard asks for a staff email (from `ANALYTICS_STAFF_EMAILS`) and the team password (`ANALYTICS_PASSWORD`). A correct pair starts a 30-day session: a signed, httpOnly, SameSite=Strict cookie scoped to `/api/analytics`, used only by staff. Removing an email from the list ends that person's session on their next request; changing the password ends everyone's. Wrong tries are limited to 8 a minute per IP address.
