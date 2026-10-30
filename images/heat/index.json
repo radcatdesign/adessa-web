@@ -5,19 +5,19 @@
     "file": "home-desktop.jpg",
     "w": 1440,
     "h": 8900,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "tablet": {
     "file": "home-tablet.jpg",
     "w": 820,
     "h": 10643,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "phone": {
     "file": "home-phone.jpg",
     "w": 390,
     "h": 8838,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    }
   },
   "/detail_team": {
@@ -25,39 +25,39 @@
     "file": "detail-team-desktop.jpg",
     "w": 1440,
     "h": 900,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "tablet": {
     "file": "detail-team-tablet.jpg",
     "w": 820,
     "h": 1180,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "phone": {
     "file": "detail-team-phone.jpg",
     "w": 390,
     "h": 844,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    }
   },
   "/investors": {
    "desktop": {
     "file": "investors-desktop.jpg",
     "w": 1440,
-    "h": 11383,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "h": 11329,
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "tablet": {
     "file": "investors-tablet.jpg",
     "w": 820,
-    "h": 14379,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "h": 14325,
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "phone": {
     "file": "investors-phone.jpg",
     "w": 390,
-    "h": 14153,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "h": 14045,
+    "taken": "2026-10-30T15:18:27.672Z"
    }
   },
   "/miami": {
@@ -65,19 +65,19 @@
     "file": "miami-desktop.jpg",
     "w": 1440,
     "h": 2715,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "tablet": {
     "file": "miami-tablet.jpg",
     "w": 820,
     "h": 3147,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "phone": {
     "file": "miami-phone.jpg",
     "w": 390,
     "h": 3536,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    }
   },
   "/old-home": {
@@ -85,19 +85,19 @@
     "file": "old-home-desktop.jpg",
     "w": 1440,
     "h": 5593,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "tablet": {
     "file": "old-home-tablet.jpg",
     "w": 820,
     "h": 5253,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "phone": {
     "file": "old-home-phone.jpg",
     "w": 390,
     "h": 5154,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    }
   },
   "/phl": {
@@ -105,19 +105,19 @@
     "file": "phl-desktop.jpg",
     "w": 1440,
     "h": 4876,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "tablet": {
     "file": "phl-tablet.jpg",
     "w": 820,
     "h": 4547,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "phone": {
     "file": "phl-phone.jpg",
     "w": 390,
     "h": 5584,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    }
   },
   "/privacy-policy": {
@@ -125,21 +125,21 @@
     "file": "privacy-policy-desktop.jpg",
     "w": 1440,
     "h": 5776,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "tablet": {
     "file": "privacy-policy-tablet.jpg",
     "w": 820,
     "h": 5574,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    },
    "phone": {
     "file": "privacy-policy-phone.jpg",
     "w": 390,
     "h": 7649,
-    "taken": "2026-10-29T21:30:40.340Z"
+    "taken": "2026-10-30T15:18:27.672Z"
    }
   }
  },
- "updated": "2026-10-29T21:30:40.340Z"
+ "updated": "2026-10-30T15:18:27.672Z"
 }
